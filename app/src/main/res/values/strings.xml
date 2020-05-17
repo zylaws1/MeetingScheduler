@@ -1,0 +1,102 @@
+<resources>
+    <string name="app_name">Meetings</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="blank"> </string>
+    <string name="title_profile">Profile</string>
+    <string name="title_category">Timetable</string>
+    <string name="title_my_meeting">My Meetings</string>
+    <string name="title_settings">Setting</string>
+    <string name="title_search">Search</string>
+    <string name="new_post_question">"What would you like to post"</string>
+    <string name="lecture_description">"Lecture Description"</string>
+    <string name="lecture_name">"Lecture Name"</string>
+    <string name="save_changes">"Save Changes"</string>
+    <string name="meet_name">"Meets Name Here.."</string>
+    <string name="quick_description">"Quick Description"</string>
+    <string name="complete_setup">"Complete Setup"</string>
+
+    <string name="monday">Monday</string>
+    <string name="monday_letter">M</string>
+    <string name="monday_short">Mon</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="tuesday_letter">T</string>
+    <string name="tuesday_short">Tue</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="wednesday_letter">W</string>
+    <string name="wednesday_short">Wed</string>
+    <string name="thursday">Thursday</string>
+    <string name="thursday_letter">T</string>
+    <string name="thursday_short">Thu</string>
+    <string name="friday">Friday</string>
+    <string name="friday_letter">F</string>
+    <string name="friday_short">Fri</string>
+    <string name="saturday">Saturday</string>
+    <string name="saturday_letter">S</string>
+    <string name="saturday_short">Sat</string>
+    <string name="sunday">Sunday</string>
+    <string name="sunday_first">Start week on Sunday</string>
+    <string name="sunday_letter">S</string>
+    <string name="sunday_short">Sun</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+    <string-array name="months">
+        <item>@string/january</item>
+        <item>@string/february</item>
+        <item>@string/march</item>
+        <item>@string/april</item>
+        <item>@string/may</item>
+        <item>@string/june</item>
+        <item>@string/july</item>
+        <item>@string/august</item>
+        <item>@string/september</item>
+        <item>@string/october</item>
+        <item>@string/november</item>
+        <item>@string/december</item>
+    </string-array>
+    <array name="week_day_letters">
+        <item>@string/monday_letter</item>
+        <item>@string/tuesday_letter</item>
+        <item>@string/wednesday_letter</item>
+        <item>@string/thursday_letter</item>
+        <item>@string/friday_letter</item>
+        <item>@string/saturday_letter</item>
+        <item>@string/sunday_letter</item>
+    </array>
+    <string-array name="week_days">
+        <item>@string/monday</item>
+        <item>@string/tuesday</item>
+        <item>@string/wednesday</item>
+        <item>@string/thursday</item>
+        <item>@string/friday</item>
+        <item>@string/saturday</item>
+        <item>@string/sunday</item>
+    </string-array>
+    <array name="week_days_short">
+        <item>@string/monday_short</item>
+        <item>@string/tuesday_short</item>
+        <item>@string/wednesday_short</item>
+        <item>@string/thursday_short</item>
+        <item>@string/friday_short</item>
+        <item>@string/saturday_short</item>
+        <item>@string/sunday_short</item>
+    </array>
+</resources>

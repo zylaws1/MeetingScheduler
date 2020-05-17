@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.xinshen.comp2100_meetingschedule.main.MeetingsListview
+        android:id="@+id/scroll_coming_meetingLv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="58dp" />
+
+
+    <LinearLayout
+        android:id="@+id/mutil_delete_meetings_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0.88"
+        android:background="@drawable/post_status_bg"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="deleteSelectedMeetings"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView_mutil_del_meetings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="delete selected meetings"
+            android:textAlignment="center"
+            android:textColor="@drawable/setup_new_meeting_selector"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_meetings_controls"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:alpha="0.88"
+        android:background="@drawable/post_status_bg"
+        android:clickable="true"
+        android:gravity="center_horizontal"
+        android:onClick="startNewMeetings"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView_add_new_meeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text=" add new meeting "
+            android:textAlignment="center"
+            android:textColor="@drawable/setup_new_meeting_selector"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:layout_weight="2.8"
+            android:gravity="center"
+            app:srcCompat="@android:drawable/ic_input_add" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
