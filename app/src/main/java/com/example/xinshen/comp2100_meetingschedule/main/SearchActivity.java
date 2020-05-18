@@ -81,7 +81,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
         TitleBar.initStyle(new TitleBarLightStyle());
         mTitleBar = findViewById(R.id.title_bar);
         mTitleBar.setAlpha(0.92f);

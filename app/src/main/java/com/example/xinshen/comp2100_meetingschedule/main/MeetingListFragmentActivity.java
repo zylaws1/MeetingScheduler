@@ -6,10 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,7 +21,7 @@ import static com.example.xinshen.comp2100_meetingschedule.main.MainActivity.SCR
 
 public class MeetingListFragmentActivity extends Fragment {
     private MeetingsListview lv_coming_meetins;
-    public List<ScrolledMeetings> meetings_list;
+    public List<MeetingModel> meetings_list;
     public ScrolledMeetingAdapter meetings_list_adapter;
 
     private LinearLayout mutil_del_meetings_controls;
@@ -35,7 +32,7 @@ public class MeetingListFragmentActivity extends Fragment {
         meetings_list = get_mock_data();
     }
 
-    MeetingListFragmentActivity(List<ScrolledMeetings> data) {
+    MeetingListFragmentActivity(List<MeetingModel> data) {
         super();
         if (data.size() == 0) {
             meetings_list = get_mock_past_data();
@@ -44,40 +41,41 @@ public class MeetingListFragmentActivity extends Fragment {
         }
     }
 
-    List<ScrolledMeetings> get_mock_data() {
-        List<ScrolledMeetings> data = new ArrayList<>();
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp1110",
+    List<MeetingModel> get_mock_data() {
+        List<MeetingModel> data = new ArrayList<>();
+        data.add(new MeetingModel(R.drawable.icon, "comp1110",
                 "meeting agenda", "110", "CSIT ground floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "engn6528",
+        data.add(new MeetingModel(R.drawable.icon, "engn6528",
                 "project perspective", "111", "CSIT ground floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp8600",
+        data.add(new MeetingModel(R.drawable.icon, "comp8600",
                 "stage 1 tasks", "3.32", "hancock 3rd floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp8330",
+        data.add(new MeetingModel(R.drawable.icon, "comp8330",
                 "comp2100 assignment group meeting", "113", "Lena building 9th floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp1110",
+        data.add(new MeetingModel(R.drawable.icon, "comp1110",
                 "meeting agenda", "114", "CSIT ground floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "engn6528",
+        data.add(new MeetingModel(R.drawable.icon, "engn6528",
                 "project perspective", "115", "CSIT ground floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp8600",
+        data.add(new MeetingModel(R.drawable.icon, "comp8600",
                 "stage 1 tasks", "3.36", "hancock 3rd floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp8330",
+        data.add(new MeetingModel(R.drawable.icon, "comp8330",
                 "comp2100 assignment group meeting", "117", "Lena building 9th floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp8300",
+        data.add(new MeetingModel(R.drawable.icon, "comp8300",
                 "comp2100 assignment group meeting", "118", "Lena building 9th floor"));
         return data;
     }
 
-    List<ScrolledMeetings> get_mock_past_data() {
-        List<ScrolledMeetings> data = new ArrayList<>();
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp2100",
+    List<MeetingModel> get_mock_past_data() {
+        List<MeetingModel> data = new ArrayList<>();
+        data.add(new MeetingModel(R.drawable.icon, "comp2100",
                 "team formation", "101", "CSIT ground floor"));
-        data.add(new ScrolledMeetings(R.drawable.icon, "comp6442",
+        data.add(new MeetingModel(R.drawable.icon, "comp6442",
                 "Choose the topic for assignment", "108", "Hanna Building 1st floor"));
         return data;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
         View view = inflater.inflate(R.layout.activity_fragment_meeting_lv, null);
         lv_coming_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
@@ -89,12 +87,13 @@ public class MeetingListFragmentActivity extends Fragment {
             public void onEdit(int index) {
 //                Log.i("shenxin", "activity onEdit index:"+index);
                 meetings_list.remove(index);
+                lv_coming_meetins.items_view_ary.remove(index);
                 meetings_list_adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onMutilEdit(int[] indexs) {
-                meetings_list.remove(indexs[0]);
+                //meetings_list.remove(indexs[0]);
                 meetings_list_adapter.notifyDataSetChanged();
             }
 
@@ -116,17 +115,19 @@ public class MeetingListFragmentActivity extends Fragment {
                 mutil_del_meetings_controls.setVisibility(View.GONE);
             }
         });
+        lv_coming_meetins.bondAdapter(meetings_list_adapter);
         return view;
     }
 
     public void deleteSelectedMeetings(View v) {
         Log.i("shenxin", "delete btn: " + lv_coming_meetins.selecting_cbs.size());
-//        Log.i("shenxin", "bef:" + meetings_list.size());
-
+        lv_coming_meetins.isMutilDeleteShown = false;
         for (int i = lv_coming_meetins.selecting_cbs.size() - 1; i >= 0; i--) {
-//            Log.i("shenxin", "delete id: " + lv_coming_meetins.selecting_cbs.get(i));
-            //lv_coming_meetins.removeViewAt(lv_coming_meetins.selecting_cbs.get(i));
-            meetings_list.remove((int) lv_coming_meetins.selecting_cbs.get(i));
+            int id = lv_coming_meetins.selecting_cbs.get(i);
+            if (id < meetings_list.size()) {
+                meetings_list.remove(id);
+                lv_coming_meetins.items_view_ary.remove(id);
+            }
         }
         meetings_list_adapter.notifyDataSetChanged();
         if (add_meetings_controls == null) {

@@ -19,11 +19,7 @@ import android.os.Message;
 //import android.support.v7.app.AlertDialog;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -62,14 +58,10 @@ public class MainActivity extends AppCompatActivity {
     private SettingsFragment settingsFragment;
     private PostStatusFragment postStatusFragement;
     private OtherProfileFragment otherProfileFragment;
-
-    private SetupNewMeetingFragment setupNewMeetingFragment;
-
     private AddNewMeetingFragment addNewMeetingFragment;
     private OwnProfileFragment ownProfileFragment;
     private EditOwnMeetingProfileFragment editOwnMeetingProfileFragment;
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
-    private OwnMeetingFragment ownMeetingFragment;
 
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
@@ -158,11 +150,6 @@ public class MainActivity extends AppCompatActivity {
 //        dialog.show();
 //    }
 //
-//    private void pickPhoto() {
-//        Intent intent = new Intent(Intent.ACTION_PICK,
-//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(intent, SELECT_PIC_BY_PICK_PHOTO);
-//    }
 
     private void postStatus() {
         replaceFragment(postStatusFragement);
@@ -282,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
             //add listener to right login icon in titlebar
             @Override
             public void onRightClick(View view) {
+                chosen_coming_meetings = false;
                 replaceMeetingsFragment(false);
                 setActiveCategory(false);
             }
@@ -290,9 +278,6 @@ public class MainActivity extends AppCompatActivity {
         initFragment();
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
         //postStatusSaveBtn=new Button(new );
-
-        chosen_coming_meetings = false;
-
 
         setmTitleBarStyle(true);
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
@@ -421,13 +406,8 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(ownProfileFragment);
     }
 
-    public void saveEditOwnClassDescription(View v) {
-        Toast.makeText(MainActivity.this, "Description saved!", Toast.LENGTH_SHORT).show();
-        replaceFragment(ownMeetingFragment);
-    }
-
     public void setUpNewMeetings(View v) {
-        replaceFragment(setupNewMeetingFragment);
+        replaceFragment(addNewMeetingFragment);
     }
 
 
@@ -454,33 +434,52 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(editOwnUserProfileFragment);
     }
 
-
-    public void completeSetup(View v) {
-        Toast.makeText(MainActivity.this, "Set up completed!", Toast.LENGTH_SHORT).show();
-
-        setmTitleBarStyle(false);
-        replaceFragment(ownProfileFragment);
+    public void cancelAdd(View v) {
+        setmTitleBarStyle(true);
+        replaceFragment(ComingMeetingsFragment);
     }
+
+    public void addMeeting(View v) {
+        Toast.makeText(MainActivity.this, "meeting added!", Toast.LENGTH_LONG).show();
+        String name = addNewMeetingFragment.name.getText().toString();
+        String room = addNewMeetingFragment.room.getText().toString();
+        String description = addNewMeetingFragment.description.getText().toString();
+        String venue = addNewMeetingFragment.venue.getText().toString();
+        int date = addNewMeetingFragment.date - 1;
+        if (date == 0) date = 7;
+        int hour = addNewMeetingFragment.hour;
+        Log.i(TAG, "addMeeting: date:" + date + " " + hour);
+        ComingMeetingsFragment.meetings_list.add(new MeetingModel(name, room,
+                venue, description, date, hour, addNewMeetingFragment.minute));
+        mScheduleFragment.mList.add(new MeetingModel(0, hour - 8, hour - 8 + 1, date,
+                hour + ":00", (hour + 1) + ":00", name,
+                description, room, venue));
+        if (mScheduleFragment.mTimaTableView != null)
+            mScheduleFragment.mTimaTableView.refreshTable();
+        setmTitleBarStyle(true);
+        replaceFragment(ComingMeetingsFragment);
+    }
+
+//    public void chooseDate(View v) {
+//        addNewMeetingFragment.showPicker(this, v);
+//    }
+//
+//    public void chooseTime(View v) {
+//        addNewMeetingFragment.showPicker(this, v);
+//    }
+
 
     //
     private void initFragment() {
 
         ComingMeetingsFragment = new MeetingListFragmentActivity();
-        PastMeetingsFragment = new MeetingListFragmentActivity(new ArrayList<ScrolledMeetings>());
+        PastMeetingsFragment = new MeetingListFragmentActivity(new ArrayList<MeetingModel>());
         settingsFragment = new SettingsFragment();
         postStatusFragement = new PostStatusFragment();
         otherProfileFragment = new OtherProfileFragment();
         ownProfileFragment = new OwnProfileFragment();
-
-        setupNewMeetingFragment = new SetupNewMeetingFragment();
-//        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
-//        editOwnUserProfileFragment = new EditOwnUserProfileFragment();
-        ownMeetingFragment = new OwnMeetingFragment();
-
         addNewMeetingFragment = new AddNewMeetingFragment();
-//        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
-//        editOwnUserProfileFragment = new EditOwnUserProfileFragment();
-        ownMeetingFragment = new OwnMeetingFragment();
+        addNewMeetingFragment = new AddNewMeetingFragment();
         weekScheduleFragment = new WeekScheduleFragment();
         mScheduleFragment = new MeetingSchedulerFragment();
         setDefaultFragment();

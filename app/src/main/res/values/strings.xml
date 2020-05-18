@@ -36,7 +36,8 @@
     <string name="save_changes">"Save Changes"</string>
     <string name="meet_name">"Meets Name Here.."</string>
     <string name="quick_description">"Quick Description"</string>
-    <string name="complete_setup">"Complete Setup"</string>
+    <string name="add_meeting">" Add meeting "</string>
+    <string name="cancel">" Cancel "</string>
 
     <string name="bt_info_modification">User info modification</string>
     <string name="user_info_modification">modification</string>
@@ -45,10 +46,11 @@
     <string name="about_meeting">About meeting</string>
     <string name="sign_out">Sign out</string>
 
-    <string name="app_version">Meetting V1.0</string>
+    <string name="app_version">Meeting SchedulerV1.0</string>
     <string name="app_copyright">Copyright © 2020</string>
     <string name="app_update1">1.Add booking meeting function</string>
     <string name="app_update2">2.Add user feedback function</string>
+    <string name="app_update3">3.test</string>
 
     <string name="app_help1">1.How to give feedback on meeting issues?\n
         Click the feedback list of the setting interface to enter the user feedback interface, enter the question to be feedback in the input box, and finally click the submit button in the upper right corner.</string>
@@ -60,7 +62,6 @@
 
     <string name="home">Home</string>
     <string name="time_table">Time Table</string>
-    <string name="add_meeting">Add Meeting</string>
     <string name="setting">Setting</string>
     <string name="search">Search</string>
 
@@ -151,5 +152,4 @@
         <item>@string/saturday_short</item>
         <item>@string/sunday_short</item>
     </array>
->>>>>>> 5cf4f9f6aa26363ae3794f0e5d01c429bd127c77
 </resources>

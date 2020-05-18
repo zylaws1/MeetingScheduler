@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingSchedulerFragment extends Fragment {
-    private MeetingSchedulerView mTimaTableView;
-    private List<MeetingModel> mList;
+    public MeetingSchedulerView mTimaTableView;
+    public List<MeetingModel> mList = new ArrayList<MeetingModel>();
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sheduler, null);
-        mList = new ArrayList<MeetingModel>();
         mTimaTableView = (MeetingSchedulerView) view.findViewById(R.id.scheduler_timetable_ly);
         addList();
         mTimaTableView.setTimeTable(mList);

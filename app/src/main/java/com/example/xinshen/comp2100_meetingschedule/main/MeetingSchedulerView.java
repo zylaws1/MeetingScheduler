@@ -347,6 +347,10 @@ public class MeetingSchedulerView extends LinearLayout {
         invalidate();
     }
 
+    public void refreshTable(){
+        setTimeTable(mListTimeTable);
+    }
+
     /**
      * 输入课表名循环判断是否数组存在该课表 如果存在输出true并退出循环 如果不存在则存入colorSt[20]数组
      *

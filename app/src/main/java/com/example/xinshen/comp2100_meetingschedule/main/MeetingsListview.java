@@ -9,11 +9,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.CheckBox;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 
@@ -22,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MeetingsListview extends ListView implements OnGestureListener, View.OnTouchListener {
+
+    private static final String TAG = "shenxin";
 
     public interface LongOnClickCallback {
         public void onLongOnClick();
@@ -51,11 +51,13 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     private ViewGroup itemLayout;   // item to be changed, ViewGroup object
 
+    public ArrayList<ViewGroup> items_view_ary = new ArrayList<>();
+
     private int selectedId;   //chosen item
 
     private boolean isDeleteShown;   // is delete button shown flag
 
-    private boolean isMutilDeleteShown;   // is mutil delete button shown flag
+    public boolean isMutilDeleteShown;   // is mutil delete button shown flag
 
     public HashMap<ViewGroup, View> all_meeting_items = new HashMap<>(); //all meeting items list
 
@@ -90,16 +92,26 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     public MeetingsListview(Context context) {
         super(context);
+        Log.i(TAG, "MeetingsListview:0 ");
         init();
+    }
+
+    public void bondAdapter(ListAdapter adapter) {
+        Log.i(TAG, "bondAdapter: cnt" + adapter.getCount());
+        for (int i = 0; i < adapter.getCount(); i++) {
+            items_view_ary.add((ViewGroup) getChildAt(i));
+        }
     }
 
     public MeetingsListview(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Log.i(TAG, "MeetingsListview:1 ");
         init();
     }
 
     public MeetingsListview(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        Log.i(TAG, "MeetingsListview:2 ");
         init();
     }
 
@@ -158,14 +170,14 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (!isMutilDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
-            Log.i("shenxin", "onLongPress:child count " + getChildCount());
+            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMutilDeleteShown + " " + isDeleteShown);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
             );
             params.setMargins(20, 45, 3, 45);
             for (int i = 0; i < child_cnt; i++) {
-                itemLayout = (ViewGroup) getChildAt(i - getFirstVisiblePosition());
+                itemLayout = (ViewGroup) getChildAt(i );
                 View mutilDeleteCbs = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_mutil_delete_cb, null);
                 selectedId = i;
                 mutilDeleteCbs.setOnClickListener(new OnClickListener() {

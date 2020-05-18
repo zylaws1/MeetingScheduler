@@ -22,14 +22,14 @@ import java.util.List;
 
 public class ScrolledMeetingAdapter extends ArrayAdapter {
 
-    public ScrolledMeetingAdapter(Context context, int resource, List<ScrolledMeetings> objects) {
+    public ScrolledMeetingAdapter(Context context, int resource, List<MeetingModel> objects) {
         super(context, resource, objects);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ScrolledMeetings meeting = (ScrolledMeetings) getItem(position);
+        MeetingModel meeting = (MeetingModel) getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.scrolled_meetings_listview, null);
 
         ImageView icon = (ImageView) view.findViewById(R.id.scroll_meeting_list_icons);
