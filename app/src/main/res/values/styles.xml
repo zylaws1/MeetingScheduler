@@ -9,4 +9,7 @@
 
     </style>
 
+    <style name="myNavigationDrawerStyle">
+        <item name="android:textSize">29sp</item>
+    </style>
 </resources>

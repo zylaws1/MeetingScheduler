@@ -3,6 +3,7 @@ package com.example.xinshen.comp2100_meetingschedule.main;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 
-public class SettingsFragment extends Fragment implements View.OnClickListener{
+public class SettingsFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mFeedback;
     RelativeLayout mQuickHelp;
     RelativeLayout mAboutMeeting;
@@ -27,10 +28,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_setting, null);
-        mFeedback=view.findViewById(R.id.layout_feedback);
-        mQuickHelp=view.findViewById(R.id.layout_quick_help);
-        mAboutMeeting=view.findViewById(R.id.layout_about_meeting);
-        mSignOut=view.findViewById(R.id.layout_sign_out);
+        mFeedback = view.findViewById(R.id.layout_feedback);
+        mQuickHelp = view.findViewById(R.id.layout_quick_help);
+        mAboutMeeting = view.findViewById(R.id.layout_about_meeting);
+        mSignOut = view.findViewById(R.id.layout_sign_out);
         mFeedback.setOnClickListener(this);
         mQuickHelp.setOnClickListener(this);
         mAboutMeeting.setOnClickListener(this);

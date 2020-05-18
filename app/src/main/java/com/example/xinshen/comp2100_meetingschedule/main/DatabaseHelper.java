@@ -1,9 +1,3 @@
-
-/**
- * xiangyun Kong
- * U6556183
- */
-
 package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.content.ContentValues;
@@ -169,7 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             return true;
 
-        }else {
+        } else {
             cursor.close();
             return false;
         }

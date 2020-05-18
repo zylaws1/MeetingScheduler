@@ -52,7 +52,7 @@
             android:id="@+id/scroll_courses_list_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pricing 150$ p/month" />
+            android:text="meeting veneu" />
     </LinearLayout>
 
 </LinearLayout>

@@ -2,10 +2,9 @@ package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.example.xinshen.comp2100_meetingschedule.MeetingApplication;
 import com.example.xinshen.comp2100_meetingschedule.R;
@@ -14,7 +13,9 @@ import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginActivity;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterActivity;
-
+import androidx.fragment.app.Fragment;
+import android.os.Bundle;
+import com.example.xinshen.comp2100_meetingschedule.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OwnProfileFragment extends Fragment implements View.OnClickListener{
+public class OwnProfileFragment extends Fragment implements View.OnClickListener {
     TextView mTvUser;
     TextView mTvLogin;
     RelativeLayout mInfoModification;
@@ -52,7 +53,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
         mMyNotes.setOnClickListener(this);
         mTvUser.setOnClickListener(this);
         mTvLogin.setOnClickListener(this);
-        userName= SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+        userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         if (userName != null) {
             isLogin = true;
             mTvUser.setVisibility(View.VISIBLE);
@@ -102,12 +103,12 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
             mTvUser.setText(event.getMessage());
             mTvLogin.setVisibility(View.GONE);
             isLogin = true;
-            userName= SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+            userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         } else if (event.getLoginState() == Result.LOGIN_ERROR) {
             mTvUser.setVisibility(View.GONE);
             mTvLogin.setVisibility(View.VISIBLE);
             isLogin = false;
-            userName= SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+            userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         }
     }
 
@@ -120,4 +121,5 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
     private void showToast(String info) {
         Toast.makeText(getActivity().getApplicationContext(), info, Toast.LENGTH_SHORT).show();
     }
+
 }

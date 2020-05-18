@@ -36,12 +36,19 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.no_slide);
         setContentView(R.layout.activity_search);
         for (int i = 0; i < data.length; ++i) {
             list.add(data[i]);
         }
 
         initViews();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.no_slide, R.anim.slide_out_right);
     }
 
     private void initViews() {
@@ -77,7 +84,7 @@ public class SearchActivity extends AppCompatActivity {
 
         TitleBar.initStyle(new TitleBarLightStyle());
         mTitleBar = findViewById(R.id.title_bar);
-        mTitleBar.setAlpha(0.6f);
+        mTitleBar.setAlpha(0.92f);
         //Drawable title_bar_left_ic = getResources().getDrawable(R.drawable.titlebar_logo_vivid);
         //mTitleBar.setLeftIcon(MainActivity.zoomDrawable(title_bar_left_ic, 820, 330));
         mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
@@ -87,18 +94,15 @@ public class SearchActivity extends AppCompatActivity {
     private class Buttonlistener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Intent intent2 = new Intent(SearchActivity.this,MainActivity.class);
-            startActivity(intent2);
+            finish();
+//            Intent intent2 = new Intent(SearchActivity.this,MainActivity.class);
+//            startActivity(intent2);
         }
     }
 
     private class Buttonlistener2 implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
-
-
-
             list.clear();
             Log.d("shuru",search.getText().toString());
             if (search.getText().toString() != "") {

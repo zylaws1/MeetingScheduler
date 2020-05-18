@@ -1,5 +1,6 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -23,6 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +34,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import androidx.multidex.MultiDex;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 
@@ -45,25 +51,34 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "shenxin";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
-    //    private Cursor cursor;
-//    private DatabaseHelper mDbHelper;
-//    public ContextManager mCtxManager;
     private TitleBar mTitleBar;
     //    private ImageView bgImgView;
+//  private Cursor cursor;
+//    private DatabaseHelper mDbHelper;
+//    public ContextManager mCtxManager;
 //    private TableLayout mCategoryTable;
     private MeetingListFragmentActivity ComingMeetingsFragment;
     private MeetingListFragmentActivity PastMeetingsFragment;
     private SettingsFragment settingsFragment;
     private PostStatusFragment postStatusFragement;
     private OtherProfileFragment otherProfileFragment;
+
     private SetupNewMeetingFragment setupNewMeetingFragment;
+
+    private AddNewMeetingFragment addNewMeetingFragment;
     private OwnProfileFragment ownProfileFragment;
     private EditOwnMeetingProfileFragment editOwnMeetingProfileFragment;
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
     private OwnMeetingFragment ownMeetingFragment;
+
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
     private FragmentManager mFraManager;
+
+    private WeekScheduleFragment weekScheduleFragment;
+    private MeetingSchedulerFragment mScheduleFragment;
+    private boolean chosen_coming_meetings = true;
+    private OnTitleBarListener mTitleListener;
 //    private boolean first_loaded = true;
 //    private int postTarget = 0;
 //    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
@@ -81,30 +96,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             int id = item.getItemId();
-            if (id == R.id.navigation_profile) {
-                mTitleBar.setLeftTitle(R.string.home);
-                replaceFragment(ownProfileFragment);
-                return true;
-            } else if (id == R.id.navigation_category) {
-                mTitleBar.setLeftTitle(R.string.time_table);
-                replaceFragment(ownMeetingFragment);
-                return true;
-            } else if (id == R.id.navigation_meeting_lists) {
-                mTitleBar.setLeftTitle(R.string.add_meeting);
+
+
+            if (id == R.id.navigation_meeting_lists) {
+                setmTitleBarStyle(true);
                 replaceFragment(ComingMeetingsFragment);
-//                if (first_loaded)
-//                    first_loaded = false;
-//                else
-//                    showPostDialog();
                 return true;
-            } else if (id == R.id.navigation_settings) {
-                mTitleBar.setLeftTitle(R.string.setting);
-                replaceFragment(settingsFragment);
-                return true;
-            } else if (id == R.id.navigation_search) {
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-                return true;
+            } else {
+                setmTitleBarStyle(false);
+                if (id == R.id.navigation_category) {
+                    //replaceFragment(ownMeetingFragment);
+                    //replaceFragment(weekScheduleFragment);
+                    replaceFragment(mScheduleFragment);
+                    return true;
+                } else if (id == R.id.navigation_profile) {
+                    replaceFragment(ownProfileFragment);
+                    return true;
+                } else if (id == R.id.navigation_settings) {
+                    replaceFragment(settingsFragment);
+                    return true;
+                } else if (id == R.id.navigation_search) {
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
             }
             return false;
         }
@@ -203,6 +218,13 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -234,43 +256,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        initFragment();
         BottomNavigationView botm_navigation = (BottomNavigationView) findViewById(R.id.navigation);
         botm_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        botm_navigation.setAlpha(0.8f);
+        botm_navigation.setAlpha(1f);
         botm_navigation.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
-        //botm_navigation.setact(Color.BLACK);
+        botm_navigation.setItemIconSize(90);
 
         TitleBar.initStyle(new TitleBarLightStyle());
         mTitleBar = findViewById(R.id.title_bar);
-        mTitleBar.setAlpha(0.8f);
-        String space_str = "           ";
-        mTitleBar.setLeftTitle(space_str + "Home");
-        mTitleBar.setLeftSize(1, 25);
-        mTitleBar.setLeftColor(Color.BLACK);
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        if (mTitleBar.getLeftView() != null) {
-            mTitleBar.getLeftView().setLayoutParams(params);
-        }
-        if (mTitleBar.getRightView() != null) {
-            mTitleBar.getRightView().setVisibility(View.GONE);
-        }
-
-//        mTitleBar.setRightTitle("Past" + space_str + "   ");
-//        mTitleBar.setRightSize(1, 17);
-//        mTitleBar.setRightColor(Color.GRAY);
-        mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
-        mTitleBar.setOnTitleBarListener(new OnTitleBarListener() {
-
+        mTitleListener = new OnTitleBarListener() {
             @Override
             public void onLeftClick(View v) {
                 setActiveCategory(true);
                 replaceMeetingsFragment(true);
+
+                chosen_coming_meetings = true;
             }
 
             @Override
             public void onTitleClick(View v) {
-                // Toast.makeText(getApplicationContext(),"mmmm",Toast.LENGTH_SHORT ).show();
+                // Toast.makeText(getApplicationContext(),"shenxin",Toast.LENGTH_SHORT ).show();
             }
 
             //add listener to right login icon in titlebar
@@ -279,25 +285,56 @@ public class MainActivity extends AppCompatActivity {
                 replaceMeetingsFragment(false);
                 setActiveCategory(false);
             }
-        });
+        };
         //mCategoryTable = (TableLayout) findViewById(R.id.selector_category_table);
         initFragment();
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
         //postStatusSaveBtn=new Button(new );
+
+        chosen_coming_meetings = false;
+
+
+        setmTitleBarStyle(true);
+        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
     }
+
+    void setmTitleBarStyle(boolean isHomepage) {
+        if (isHomepage) {
+            mTitleBar.setAlpha(0.94f);
+            String space_str = "           ";
+            mTitleBar.setLeftTitle(space_str + "Coming");
+            mTitleBar.setLeftSize(1, 25);
+            mTitleBar.setLeftColor(Color.LTGRAY);
+            mTitleBar.setRightTitle("Past" + space_str + "   ");
+            mTitleBar.setRightSize(1, 17);
+            mTitleBar.setRightColor(Color.GRAY);
+            mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
+            mTitleBar.setOnTitleBarListener(mTitleListener);
+            mTitleBar.setTitle("");
+        } else {
+            mTitleBar.setAlpha(1f);
+            mTitleBar.setLeftTitle("");
+            mTitleBar.setRightTitle("");
+            mTitleBar.setTitle("    My meetings scheduler");
+            mTitleBar.setTitleSize(2, 25);
+            mTitleBar.setTitleColor(Color.MAGENTA);
+        }
+
+    }
+
 
     // change tag style with active category
     void setActiveCategory(Boolean isLeft) {
         if (isLeft) {
             mTitleBar.setLeftSize(1, 25);
-            mTitleBar.setLeftColor(Color.BLACK);
+            mTitleBar.setLeftColor(Color.LTGRAY);
             mTitleBar.setRightSize(1, 17);
             mTitleBar.setRightColor(Color.GRAY);
         } else {
             mTitleBar.setLeftSize(1, 17);
             mTitleBar.setLeftColor(Color.GRAY);
             mTitleBar.setRightSize(1, 25);
-            mTitleBar.setRightColor(Color.BLACK);
+            mTitleBar.setRightColor(Color.LTGRAY);
         }
     }
 
@@ -367,16 +404,20 @@ public class MainActivity extends AppCompatActivity {
             this.removeMessages(0);
             sendMessageDelayed(obtainMessage(0), delayMillis);
         }
+
     }
 
     public void savePostStatus(View v) {
         //first_loaded = true;
         Toast.makeText(MainActivity.this, "Status saved!", Toast.LENGTH_SHORT).show();
+        setmTitleBarStyle(false);
         replaceFragment(ComingMeetingsFragment);
     }
 
     public void saveEditOwnUserDescription(View v) {
         Toast.makeText(MainActivity.this, "Description saved!", Toast.LENGTH_SHORT).show();
+
+        setmTitleBarStyle(false);
         replaceFragment(ownProfileFragment);
     }
 
@@ -390,17 +431,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void startNewMeetings(View v) {
+        setmTitleBarStyle(true);
+        replaceFragment(addNewMeetingFragment);
+    }
+
+    public void deleteSelectedMeetings(View v) {
+        if (chosen_coming_meetings)
+            ComingMeetingsFragment.deleteSelectedMeetings(v);
+        else
+            PastMeetingsFragment.deleteSelectedMeetings(v);
+    }
+
     public void editClassProfileDescription(View v) {
+        setmTitleBarStyle(false);
         replaceFragment(editOwnMeetingProfileFragment);
     }
 
     public void editUserProfileDescription(View v) {
+
+        setmTitleBarStyle(false);
         replaceFragment(editOwnUserProfileFragment);
     }
 
 
     public void completeSetup(View v) {
         Toast.makeText(MainActivity.this, "Set up completed!", Toast.LENGTH_SHORT).show();
+
+        setmTitleBarStyle(false);
         replaceFragment(ownProfileFragment);
     }
 
@@ -413,10 +471,18 @@ public class MainActivity extends AppCompatActivity {
         postStatusFragement = new PostStatusFragment();
         otherProfileFragment = new OtherProfileFragment();
         ownProfileFragment = new OwnProfileFragment();
+
         setupNewMeetingFragment = new SetupNewMeetingFragment();
 //        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
 //        editOwnUserProfileFragment = new EditOwnUserProfileFragment();
         ownMeetingFragment = new OwnMeetingFragment();
+
+        addNewMeetingFragment = new AddNewMeetingFragment();
+//        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
+//        editOwnUserProfileFragment = new EditOwnUserProfileFragment();
+        ownMeetingFragment = new OwnMeetingFragment();
+        weekScheduleFragment = new WeekScheduleFragment();
+        mScheduleFragment = new MeetingSchedulerFragment();
         setDefaultFragment();
     }
 

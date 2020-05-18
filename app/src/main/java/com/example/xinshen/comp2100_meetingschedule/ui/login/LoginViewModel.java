@@ -8,12 +8,12 @@ import android.util.Patterns;
 
 import com.example.xinshen.comp2100_meetingschedule.data.LoginRepository;
 import com.example.xinshen.comp2100_meetingschedule.data.Result;
+
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
@@ -34,6 +34,7 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password) {
         // can be launched in a separate asynchronous job
+
         Result<UserInfo> result = loginRepository.login(username, password);
 
         if (result instanceof Result.Success) {
@@ -43,6 +44,7 @@ public class LoginViewModel extends ViewModel {
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
     }
+
 
     public void regiester(UserInfo info) {
         int result = loginRepository.register(info);
@@ -144,5 +146,4 @@ public class LoginViewModel extends ViewModel {
             }
         }
     }
-
 }

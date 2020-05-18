@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -85,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                     event.setLoginState(Result.LOGIN_OK);
                     event.setMessage(loginResult.getSuccess().getDisplayName());
                     EventBus.getDefault().post(event);
-
                 }
                 setResult(Activity.RESULT_OK);
 

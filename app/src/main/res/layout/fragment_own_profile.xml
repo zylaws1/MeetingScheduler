@@ -95,13 +95,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textView_add_new_meeting"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="3dp"
                     android:layout_weight="1"
-                    android:text="Setup new meet"
+                    android:text="add new meeting"
                     android:textAlignment="center"
                     android:textColor="@drawable/setup_new_meeting_selector"
                     android:textSize="30dp" />

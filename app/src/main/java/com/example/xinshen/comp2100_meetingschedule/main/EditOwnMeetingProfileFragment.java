@@ -1,9 +1,4 @@
 
-/**
- * xiangyun Kong
- * U6556183
- */
-
 package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.os.Bundle;
