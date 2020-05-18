@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_feedback"
+        style="@style/setting_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/setting_item_text"
+            android:text="@string/feedback" />
+
+        <ImageView
+            style="@style/img_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+    <ImageView style="@style/bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/layout_quick_help"
+        style="@style/setting_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/setting_item_text"
+            android:text="@string/quick_help" />
+
+        <ImageView
+            style="@style/img_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+    <ImageView style="@style/bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/layout_about_meeting"
+        style="@style/setting_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/setting_item_text"
+            android:text="@string/about_meeting" />
+
+        <ImageView
+            style="@style/img_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+    <ImageView style="@style/bg_line" />
+
+    <RelativeLayout
+        android:id="@+id/layout_sign_out"
+        style="@style/setting_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/setting_item_text"
+            android:text="@string/sign_out" />
+
+        <ImageView
+            style="@style/img_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+    <ImageView style="@style/bg_line" />
+</LinearLayout>

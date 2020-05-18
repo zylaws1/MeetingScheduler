@@ -4,6 +4,12 @@ package com.example.xinshen.comp2100_meetingschedule.data;
  * A generic class that holds a result success w/ data or an error exception.
  */
 public class Result<T> {
+    public final static int LOGIN_ERROR = 0;
+    public final static int LOGIN_OK = 1;
+    public final static int REGISTER_OK = 2;
+    public final static int REGISTER_HAS_REGISTERED = 3;
+    public final static int REGISTER_INFO_NULL = 4;
+
     // hide the private constructor to limit subclass types (Success, Error)
     private Result() {
     }

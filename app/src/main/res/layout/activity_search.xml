@@ -11,11 +11,11 @@
 
     <com.hjq.bar.TitleBar
         android:id="@+id/title_bar"
+        app:layout_constraintTop_toTopOf="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@color/bar_pressed_black5"
-        app:icon_back="false">
+        android:layout_marginTop="2dp"
+        android:background="@color/bar_pressed_black5">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

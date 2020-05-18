@@ -19,6 +19,11 @@ import android.os.Message;
 //import android.support.v7.app.AlertDialog;
 //import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -29,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import androidx.multidex.MultiDex;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
@@ -45,27 +51,32 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "shenxin";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
+    private TitleBar mTitleBar;
+    //    private ImageView bgImgView;
 //  private Cursor cursor;
 //    private DatabaseHelper mDbHelper;
 //    public ContextManager mCtxManager;
-    static public TitleBar mTitleBar;
-//        private ImageView bgImgView;
 //    private TableLayout mCategoryTable;
     private MeetingListFragmentActivity ComingMeetingsFragment;
     private MeetingListFragmentActivity PastMeetingsFragment;
     private SettingsFragment settingsFragment;
     private PostStatusFragment postStatusFragement;
     private OtherProfileFragment otherProfileFragment;
+
+    private SetupNewMeetingFragment setupNewMeetingFragment;
+
     private AddNewMeetingFragment addNewMeetingFragment;
     private OwnProfileFragment ownProfileFragment;
     private EditOwnMeetingProfileFragment editOwnMeetingProfileFragment;
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
     private OwnMeetingFragment ownMeetingFragment;
-    private WeekScheduleFragment weekScheduleFragment;
-    private MeetingSchedulerFragment mScheduleFragment;
+
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
     private FragmentManager mFraManager;
+
+    private WeekScheduleFragment weekScheduleFragment;
+    private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = true;
     private OnTitleBarListener mTitleListener;
 //    private boolean first_loaded = true;
@@ -85,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             int id = item.getItemId();
+
 
             if (id == R.id.navigation_meeting_lists) {
                 setmTitleBarStyle(true);
@@ -112,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
 //
 //    private void showPostDialog() {
 //        AlertDialog.Builder postBuilder = new AlertDialog.Builder(this);
@@ -168,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         getDevicedInfo();
 //        mCtxManager = ContextManager.getInstance();
 //        //Create public class single instance in context and save them in ContextManager
@@ -258,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLeftClick(View v) {
                 setActiveCategory(true);
                 replaceMeetingsFragment(true);
+
                 chosen_coming_meetings = true;
             }
 
@@ -271,9 +284,16 @@ public class MainActivity extends AppCompatActivity {
             public void onRightClick(View view) {
                 replaceMeetingsFragment(false);
                 setActiveCategory(false);
-                chosen_coming_meetings = false;
             }
         };
+        //mCategoryTable = (TableLayout) findViewById(R.id.selector_category_table);
+        initFragment();
+        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
+        //postStatusSaveBtn=new Button(new );
+
+        chosen_coming_meetings = false;
+
+
         setmTitleBarStyle(true);
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
     }
@@ -301,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 
     // change tag style with active category
     void setActiveCategory(Boolean isLeft) {
@@ -351,7 +372,6 @@ public class MainActivity extends AppCompatActivity {
 
     private RefreshHandler refreshHandler = new RefreshHandler();
 
-
     //handler
     class RefreshHandler extends Handler {
 
@@ -384,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
             this.removeMessages(0);
             sendMessageDelayed(obtainMessage(0), delayMillis);
         }
+
     }
 
     public void savePostStatus(View v) {
@@ -395,15 +416,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveEditOwnUserDescription(View v) {
         Toast.makeText(MainActivity.this, "Description saved!", Toast.LENGTH_SHORT).show();
+
         setmTitleBarStyle(false);
         replaceFragment(ownProfileFragment);
     }
 
     public void saveEditOwnClassDescription(View v) {
         Toast.makeText(MainActivity.this, "Description saved!", Toast.LENGTH_SHORT).show();
-        setmTitleBarStyle(false);
         replaceFragment(ownMeetingFragment);
     }
+
+    public void setUpNewMeetings(View v) {
+        replaceFragment(setupNewMeetingFragment);
+    }
+
 
     public void startNewMeetings(View v) {
         setmTitleBarStyle(true);
@@ -423,6 +449,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editUserProfileDescription(View v) {
+
         setmTitleBarStyle(false);
         replaceFragment(editOwnUserProfileFragment);
     }
@@ -430,6 +457,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void completeSetup(View v) {
         Toast.makeText(MainActivity.this, "Set up completed!", Toast.LENGTH_SHORT).show();
+
         setmTitleBarStyle(false);
         replaceFragment(ownProfileFragment);
     }
@@ -443,6 +471,12 @@ public class MainActivity extends AppCompatActivity {
         postStatusFragement = new PostStatusFragment();
         otherProfileFragment = new OtherProfileFragment();
         ownProfileFragment = new OwnProfileFragment();
+
+        setupNewMeetingFragment = new SetupNewMeetingFragment();
+//        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
+//        editOwnUserProfileFragment = new EditOwnUserProfileFragment();
+        ownMeetingFragment = new OwnMeetingFragment();
+
         addNewMeetingFragment = new AddNewMeetingFragment();
 //        editOwnMeetingProfileFragment = new EditOwnMeetingProfileFragment();
 //        editOwnUserProfileFragment = new EditOwnUserProfileFragment();

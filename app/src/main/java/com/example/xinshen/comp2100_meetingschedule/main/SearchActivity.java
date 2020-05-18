@@ -103,7 +103,6 @@ public class SearchActivity extends AppCompatActivity {
     private class Buttonlistener2 implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
             list.clear();
             Log.d("shuru",search.getText().toString());
             if (search.getText().toString() != "") {

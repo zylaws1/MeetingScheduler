@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,8 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
+import com.example.xinshen.comp2100_meetingschedule.data.Result;
+import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
+import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginViewModel;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginViewModelFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
+        final TextView registerTextView = findViewById(R.id.tv_register);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
@@ -66,10 +72,18 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 loadingProgressBar.setVisibility(View.GONE);
                 if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
+                    showFailed(loginResult.getError());
+                    MessageEvent event=new MessageEvent();
+                    event.setLoginState(Result.LOGIN_ERROR);
+                    EventBus.getDefault().post(event);
                 }
                 if (loginResult.getSuccess() != null) {
                     updateUiWithUser(loginResult.getSuccess());
+                    SpManager.getInstance(getApplicationContext()).setUserName(loginResult.getSuccess().getDisplayName(),true);
+                    MessageEvent event = new MessageEvent();
+                    event.setLoginState(Result.LOGIN_OK);
+                    event.setMessage(loginResult.getSuccess().getDisplayName());
+                    EventBus.getDefault().post(event);
                 }
                 setResult(Activity.RESULT_OK);
 
@@ -117,15 +131,24 @@ public class LoginActivity extends AppCompatActivity {
                         passwordEditText.getText().toString());
             }
         });
+
+        registerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("isLogin",false);
+                startActivity(intent);
+            }
+        });
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+        SpManager.getInstance(getApplicationContext()).setUserName(model.getDisplayName(),true);
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }

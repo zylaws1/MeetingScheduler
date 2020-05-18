@@ -39,6 +39,6 @@ public class WelcomeActivity extends Activity {
         //delay for 2500ms
         Timer timer = new Timer();
         //todo(shenxin : fix to 2500
-        timer.schedule(delayTask,2500);
+        timer.schedule(delayTask,1);
     }
 }

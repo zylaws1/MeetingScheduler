@@ -16,6 +16,7 @@
     <color name="search_tv_selected_bg">#2b0a62</color>
     <color name="search_tab_checked">#11ceba</color>
     <color name="scroll_tips">#e8fa5454</color>
+    <color name="top_background">#FFFFFFFF</color>
     <color name="divider_grey">#88808080</color>
     <color name="view_line">#2A46D1</color>
     <color name="schedule_text_color">#071A27</color>
@@ -52,4 +53,5 @@
     <color name="ic_coure_yiliu_pr">#DDB97B</color>
     <color name="ic_coure_wuw">#7B7B7B</color>
     <color name="ic_coure_wuw_pr">#ADADAD</color>
+>>>>>>> 5cf4f9f6aa26363ae3794f0e5d01c429bd127c77
 </resources>

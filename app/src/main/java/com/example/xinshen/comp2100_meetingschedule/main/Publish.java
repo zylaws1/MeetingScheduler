@@ -1,4 +1,3 @@
-
 package com.example.xinshen.comp2100_meetingschedule.main;
 
 public class Publish {
@@ -11,13 +10,14 @@ public class Publish {
     "2012-12-30 12:10:04"
      */
 
-    public Publish(int id, int userID, String date, String content){
+    public Publish(int id, int userID, String date, String content) {
         this.content = content;
         this.date = date;
         this.publishID = id;
         this.userID = userID;
     }
-    public Publish(int userID, String date, String content){
+
+    public Publish(int userID, String date, String content) {
         this.content = content;
         this.date = date;
         this.userID = userID;

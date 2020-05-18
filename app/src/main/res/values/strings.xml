@@ -7,11 +7,26 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_confirm_password">Confirm password is not equal with password</string>
+    <string name="phone_digit_count_error">Phone number must be 11 digits</string>
+    <string name="phone_number_format_error">Phone number format error</string>
+    <string name="age_range_or_format_error">age range or format error</string>
+    <string name="register_has_registered">Has registered</string>
+    <string name="register_error">register error</string>
+    <string name="update_error">update error</string>
+    <string name="update_ok">update success</string>
+    <string name="sign_out_success">sign out success</string>
+    <string name="has_signed_out">has signed out</string>
+    <string name="register_info_null">Register info null</string>
+    <string name="no_login">Please log in first</string>
     <string name="blank"> </string>
+
     <string name="title_profile">Profile</string>
     <string name="title_category">Timetable</string>
+    <string name="title_new_post">Start Meeting</string>
+    <string name="login_failed">"Login failed"</string>
     <string name="title_my_meeting">My Meetings</string>
     <string name="title_settings">Setting</string>
     <string name="title_search">Search</string>
@@ -23,6 +38,43 @@
     <string name="quick_description">"Quick Description"</string>
     <string name="complete_setup">"Complete Setup"</string>
 
+    <string name="bt_info_modification">User info modification</string>
+    <string name="user_info_modification">modification</string>
+    <string name="feedback">Feedback</string>
+    <string name="quick_help">Quick help</string>
+    <string name="about_meeting">About meeting</string>
+    <string name="sign_out">Sign out</string>
+
+    <string name="app_version">Meetting V1.0</string>
+    <string name="app_copyright">Copyright © 2020</string>
+    <string name="app_update1">1.Add booking meeting function</string>
+    <string name="app_update2">2.Add user feedback function</string>
+
+    <string name="app_help1">1.How to give feedback on meeting issues?\n
+        Click the feedback list of the setting interface to enter the user feedback interface, enter the question to be feedback in the input box, and finally click the submit button in the upper right corner.</string>
+    <string name="app_help2">2.How to modify user information?\n
+        In the personal center interface, click the user information modification list. If you have not logged in, please log in first. If you are already logged in, you can modify the user information. It is best to click the modify button.</string>
+
+    <string name="hint_feedback">Please write down your comments and suggestions</string>
+    <string name="other_user_feedback">Other user feedback</string>
+
+    <string name="home">Home</string>
+    <string name="time_table">Time Table</string>
+    <string name="add_meeting">Add Meeting</string>
+    <string name="setting">Setting</string>
+    <string name="search">Search</string>
+
+    <string name="submit">Submit</string>
+
+    <string name="login_value">Sign in/Register</string>
+    <string name="register_value">REGISTER</string>
+    <string name="my_meeting">My meeting</string>
+    <string name="my_notes">My notes</string>
+
+    <string name="sp_name">sp_name</string>
+
+
+=======
     <string name="monday">Monday</string>
     <string name="monday_letter">M</string>
     <string name="monday_short">Mon</string>
@@ -99,4 +151,5 @@
         <item>@string/saturday_short</item>
         <item>@string/sunday_short</item>
     </array>
+>>>>>>> 5cf4f9f6aa26363ae3794f0e5d01c429bd127c77
 </resources>
