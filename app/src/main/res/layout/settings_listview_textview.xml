@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/setting_lv_textview"
+    android:layout_marginTop="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:text="TextView"
+    android:textColor="@color/search_result_textview"
+    android:background="@color/search_result_bg"
+    android:textSize="34dp"
+    android:gravity="center"
+    android:clickable="true"
+    android:alpha="0.75"/>

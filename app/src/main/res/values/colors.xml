@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0014FF</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorBottomNavigation">#F00014FF</color>
+    <color name="tab_checked">#ed2c2c</color>
+    <color name="tab_unchecked">#cce8e4</color>
+    <color name="settings_text">#c0dfdb</color>
+    <color name="search_result_bg">#c1fff8</color>
+    <color name="search_result_textview">#03316d</color>
+    <color name="settings_textview_bg">#360881</color>
+    <color name="search_tv_bg">#360881</color>
+    <color name="search_tv_selected_bg">#2b0a62</color>
+    <color name="search_tab_checked">#11ceba</color>
+    <color name="scroll_tips">#e8fa5454</color>
+    <color name="top_background">#FFFFFFFF</color>
+</resources>

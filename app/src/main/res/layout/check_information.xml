@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/homepage_background"
+    >
+
+    <LinearLayout style="@style/wrap_layout" >
+        <LinearLayout style="@style/top_layout" >
+            <TextView style="@style/usertext" android:text="Profile Name: "
+                android:inputType="textPersonName"
+                android:id="@+id/showprofile"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" >
+            <TextView style="@style/usertext" android:text="Payment Method:"
+                android:id="@+id/showpayment"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" >
+            <TextView style="@style/usertext" android:text="Location: "
+                android:id="@+id/showlocation"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" >
+            <TextView style="@style/usertext" android:text="Introduction: "
+                android:id="@+id/showprivacy"
+                android:singleLine="false"/>
+        </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:gravity="bottom"
+        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/backtoset"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Back" />
+    </RelativeLayout>
+</LinearLayout>

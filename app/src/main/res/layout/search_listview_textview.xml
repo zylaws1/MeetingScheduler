@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_listview_textview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@drawable/search_lv_tvbg_selector"
+    android:textColor="@drawable/search_lv_tv_selector"
+    android:clickable="true"
+    android:gravity="center"
+    android:text="TextView"
+    android:descendantFocusability="blocksDescendants"
+    android:focusable="true"
+    android:textSize="38dp" />

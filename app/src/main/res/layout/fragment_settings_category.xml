@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout style="@style/wrap_layout" >
+        <LinearLayout style="@style/top_layout" android:id="@+id/profile">
+            <TextView style="@style/usertext" android:text="Edit Profile Name" />
+            <ImageView style="@style/img_arrow"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" android:id="@+id/payment">
+            <TextView style="@style/usertext" android:text="Edit Payment Method" />
+            <ImageView style="@style/img_arrow"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" android:id="@+id/location">
+            <TextView style="@style/usertext" android:text="Edit Location" />
+            <ImageView style="@style/img_arrow"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/mid_layout" android:id="@+id/privacy">
+            <TextView style="@style/usertext" android:text="Edit Introduction" />
+            <ImageView style="@style/img_arrow"/>
+        </LinearLayout>
+        <View style="@style/bg_line"/>
+        <LinearLayout style="@style/bottom_layout" android:id="@+id/check">
+            <TextView style="@style/usertext" android:text="Check My Information" />
+            <ImageView style="@style/img_arrow"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
