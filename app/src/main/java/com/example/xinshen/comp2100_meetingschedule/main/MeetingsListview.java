@@ -158,7 +158,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (!isMutilDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
-            Log.i("shenxin", "onLongPress:child cuont " + getChildCount());
+            Log.i("shenxin", "onLongPress:child count " + getChildCount());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
@@ -181,7 +181,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             mEditListener.show_delete_all_btn();
             isMutilDeleteShown = true;
         } else {
-            Log.i("shenxin", "onFling: else");
+            Log.i("shenxin", "onLongPress: else");
             //itemLayout.removeView(mutilDeleteCbs);
             for (Map.Entry<ViewGroup, View> e : all_meeting_items.entrySet()) {
                 e.getKey().removeView(e.getValue());
@@ -204,11 +204,12 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-//        Log.i("shenxin", "onSingleTapUp: " + e.getX() + " " + e.getY());
+//        Log.i("shenxin", "onSingleTapUp x y: " + e.getX() + " " + e.getY());
+//        Log.i("shenxin", "onSingleTapUp: " + MainActivity.SCREEN_WIDTH);
         if (isDeleteShown && selectedId != pointToPosition((int) e.getX(), (int) e.getY())) {
             itemLayout.removeView(deleteButton);
             isDeleteShown = false;
-        } else if (isMutilDeleteShown && e.getX() < 1190) {
+        } else if (isMutilDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
             for (Map.Entry<ViewGroup, View> ent : all_meeting_items.entrySet()) {
                 ent.getKey().removeView(ent.getValue());
             }

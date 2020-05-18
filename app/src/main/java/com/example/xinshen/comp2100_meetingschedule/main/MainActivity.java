@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 //        mCtxManager.createInstances(getApplicationContext());
 //        //mCtxManager.initInstances(getApplicationContext());
 //        mDbHelper = mCtxManager.getDbHelper();
-//        mDbReadInThread = new Thread(new Runnable() {
+//        mDbReadInThread = new Thread(new Runnable() {is
 //            @Override
 //            public void run() {
 //                // Power.get_zysj_gpio_value(4);
