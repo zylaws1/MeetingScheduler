@@ -1,6 +1,7 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 //import android.support.annotation.NonNull;
 import android.util.AttributeSet;
@@ -11,6 +12,9 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 
@@ -228,7 +232,7 @@ public class MeetingSchedulerView extends LinearLayout {
         LinearLayout blank = new LinearLayout(getContext());
         blank.setOrientation(VERTICAL);
         for (int i = 1; i < count; i++) {
-            View classView = new View(getContext());
+            final View classView = new View(getContext());
             classView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dip2px(TIME_TABLE_HEIGHT)));
             blank.addView(classView);
             blank.addView(getWeekHorizontalLine());
@@ -243,7 +247,25 @@ public class MeetingSchedulerView extends LinearLayout {
             classView.setOnLongClickListener(new OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Toast.makeText(getContext(), "long clicked", Toast.LENGTH_LONG).show();
+                    AlertDialog alert_add = new AlertDialog.Builder(getContext())
+                            .setTitle("Add a new meeting?")
+                            .setPositiveButton("Add", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                                    transaction.replace(R.id.main_linear, MainActivity.addNewMeetingFragment);
+                                    transaction.commit();
+                                }
+                            })
+
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {//添加取消
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                   return;
+                                }
+                            })
+                            .create();
+                    alert_add.show();
                     return true;
                 }
             });

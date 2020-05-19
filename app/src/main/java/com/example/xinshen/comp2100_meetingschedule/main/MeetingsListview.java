@@ -13,6 +13,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import java.util.ArrayList;
@@ -73,20 +75,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-//        Log.i("shenxin", "onTouch: " + isDeleteShown);
-//        if (isDeleteShown) {
-//            itemLayout.removeView(deleteButton);
-//            deleteButton = null;
-//            isDeleteShown = false;
-//            return true;
-//        } else {
-//            // 如果在空白地方继续滑动  ,  禁止非法位置出现  删除按钮
-//            if (AdapterView.INVALID_POSITION == pointToPosition((int) event.getX(), (int) event.getY())) {
-//                return false;
-//            }
-//            selectedId = pointToPosition((int) event.getX(), (int) event.getY());
-//            return gestureDetector.onTouchEvent(event);
-//        }
+
         return false;
     }
 
@@ -220,8 +209,9 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     public boolean onSingleTapUp(MotionEvent e) {
 //        Log.i("shenxin", "onSingleTapUp x y: " + e.getX() + " " + e.getY());
 //        Log.i("shenxin", "onSingleTapUp: " + MainActivity.SCREEN_WIDTH);
+        int touched_id = pointToPosition((int) e.getX(), (int) e.getY());
         if (getChildCount() == 0) return false;
-        if (isDeleteShown && selectedId != pointToPosition((int) e.getX(), (int) e.getY())) {
+        if (isDeleteShown && selectedId != touched_id) {
             itemLayout.removeView(deleteButton);
             isDeleteShown = false;
         } else if (isMutilDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
@@ -230,8 +220,13 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             }
             mEditListener.hide_delete_all_btn();
             isMutilDeleteShown = false;
-        } else {
-
+        } else if (!isMutilDeleteShown && !isDeleteShown) {
+            Log.i(TAG, "apply onTouch ");
+            MainActivity.setmTitleBarInactive();
+            MainActivity.meetingInfoFragment.setTouched_id(touched_id);
+            FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+            transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
+            transaction.commit();
         }
         return false;
     }

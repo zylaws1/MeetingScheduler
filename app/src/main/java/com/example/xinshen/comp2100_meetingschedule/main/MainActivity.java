@@ -47,28 +47,28 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "shenxin";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
-    private TitleBar mTitleBar;
+    private static TitleBar mTitleBar;
     //    private ImageView bgImgView;
 //  private Cursor cursor;
 //    private DatabaseHelper mDbHelper;
 //    public ContextManager mCtxManager;
 //    private TableLayout mCategoryTable;
-    private MeetingListFragmentActivity ComingMeetingsFragment;
-    private MeetingListFragmentActivity PastMeetingsFragment;
+    protected MeetingListFragment ComingMeetingsFragment;
+    private MeetingListFragment PastMeetingsFragment;
     private SettingsFragment settingsFragment;
-    private PostStatusFragment postStatusFragement;
-    private OtherProfileFragment otherProfileFragment;
-    private AddNewMeetingFragment addNewMeetingFragment;
+    protected static AddNewMeetingFragment addNewMeetingFragment;
+    protected static MeetingInfoFragment meetingInfoFragment;
     private OwnProfileFragment ownProfileFragment;
     private EditOwnMeetingProfileFragment editOwnMeetingProfileFragment;
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
-
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
-    private FragmentManager mFraManager;
+    protected static FragmentManager mFraManager;
     private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = true;
     private OnTitleBarListener mTitleListener;
+    private BottomNavigationView botm_navigation;
+    private static int titile_bar_color;
 //    private boolean first_loaded = true;
 //    private int postTarget = 0;
 //    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
@@ -149,10 +149,6 @@ public class MainActivity extends AppCompatActivity {
 //    }
 //
 
-    private void postStatus() {
-        replaceFragment(postStatusFragement);
-    }
-
     private void getDevicedInfo() {
         DisplayMetrics dMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dMetrics);
@@ -212,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
         super.onResume();
     }
 
@@ -242,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
         initFragment();
-        BottomNavigationView botm_navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        botm_navigation = (BottomNavigationView) findViewById(R.id.navigation);
         botm_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         botm_navigation.setAlpha(1f);
         botm_navigation.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
@@ -279,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
         setmTitleBarStyle(true);
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
+        titile_bar_color = getResources().getColor(R.color.colorBottomNavigation);
     }
 
     void setmTitleBarStyle(boolean isHomepage) {
@@ -291,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
             mTitleBar.setRightTitle("Past" + space_str + "   ");
             mTitleBar.setRightSize(1, 17);
             mTitleBar.setRightColor(Color.GRAY);
-            mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
+            mTitleBar.setBackgroundColor(titile_bar_color);
             mTitleBar.setOnTitleBarListener(mTitleListener);
             mTitleBar.setTitle("");
         } else {
@@ -302,7 +300,15 @@ public class MainActivity extends AppCompatActivity {
             mTitleBar.setTitleSize(2, 25);
             mTitleBar.setTitleColor(Color.MAGENTA);
         }
+    }
 
+    static void setmTitleBarInactive() {
+        mTitleBar.setAlpha(1f);
+        mTitleBar.setLeftTitle("");
+        mTitleBar.setRightTitle("");
+        mTitleBar.setTitle("    My meetings scheduler");
+        mTitleBar.setTitleSize(2, 25);
+        mTitleBar.setTitleColor(Color.MAGENTA);
     }
 
 
@@ -444,6 +450,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void cancelAdd(View v) {
         setmTitleBarStyle(true);
+        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
         replaceFragment(ComingMeetingsFragment);
     }
 
@@ -480,14 +487,13 @@ public class MainActivity extends AppCompatActivity {
     //
     private void initFragment() {
 
-        ComingMeetingsFragment = new MeetingListFragmentActivity();
-        PastMeetingsFragment = new MeetingListFragmentActivity(new ArrayList<MeetingModel>());
+        ComingMeetingsFragment = new MeetingListFragment();
+        PastMeetingsFragment = new MeetingListFragment(new ArrayList<MeetingModel>());
         settingsFragment = new SettingsFragment();
-        postStatusFragement = new PostStatusFragment();
-        otherProfileFragment = new OtherProfileFragment();
         ownProfileFragment = new OwnProfileFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();
         mScheduleFragment = new MeetingSchedulerFragment(ComingMeetingsFragment.meetings_list);
+        meetingInfoFragment = new MeetingInfoFragment();
         setDefaultFragment();
     }
 

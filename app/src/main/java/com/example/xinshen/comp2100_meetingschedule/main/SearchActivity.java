@@ -61,12 +61,12 @@ public class SearchActivity extends AppCompatActivity {
         button2 = findViewById(R.id.button_go);
         button2.setOnClickListener(new Buttonlistener2());
 
-     //   ArrayAdapter<String> adapter;
-     //   adapter = new ArrayAdapter<String>(this,R.layout.activity_search,R.id.search_listview_textview,data);
-     //   adapter=new ArrayAdapter<String>(this,R.layout.activity_search,R.id.item_text,data);
+        //   ArrayAdapter<String> adapter;
+        //   adapter = new ArrayAdapter<String>(this,R.layout.activity_search,R.id.search_listview_textview,data);
+        //   adapter=new ArrayAdapter<String>(this,R.layout.activity_search,R.id.item_text,data);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
 
-    //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.search_listview_textview, data);
+        //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.search_listview_textview, data);
         search_result_lv = findViewById(R.id.search_result_lv);
         search_result_lv.setAdapter(adapter);
         search_result_lv.setClickable(true);
@@ -74,10 +74,11 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("itemClick", String.valueOf(position));
-                if (!list.contains("Results not found"))
-                { Intent intent = new Intent(SearchActivity.this, MeetingInfoActivity.class);
-                intent.putExtra("label", data[position]);
-                startActivity(intent);}
+                if (!list.contains("Results not found")) {
+//                    Intent intent = new Intent(SearchActivity.this, MeetingInfoActivity.class);
+//                    intent.putExtra("label", data[position]);
+//                    startActivity(intent);
+                }
             }
         });
 
@@ -103,22 +104,21 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             list.clear();
-            Log.d("shuru",search.getText().toString());
+            Log.d("shuru", search.getText().toString());
             if (search.getText().toString() != "") {
                 int i = search.getText().length();
                 Log.d("jinru", Integer.toString(i));
                 String str = search.getText().toString();
                 for (String string : data)
                     if (string.length() >= i) {
-                        Log.d("zhiwei",string.substring(0, i));
+                        Log.d("zhiwei", string.substring(0, i));
                         if (str.equalsIgnoreCase(string.substring(0, i))) {
                             list.add(string);
                         }
                     }
-            }
-            else
-            {   Log.d("shiyan","111111111111");
-                Toast.makeText(SearchActivity.this,"serach can't be null", Toast.LENGTH_SHORT);
+            } else {
+                Log.d("shiyan", "111111111111");
+                Toast.makeText(SearchActivity.this, "serach can't be null", Toast.LENGTH_SHORT);
 
             }
             if (list.isEmpty())

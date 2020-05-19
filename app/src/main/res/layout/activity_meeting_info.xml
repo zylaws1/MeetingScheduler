@@ -21,49 +21,186 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewClassname"
+                android:id="@+id/textView_meeting_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:alpha="0.8"
                 android:background="@color/settings_text"
                 android:text="My meeting schedule"
                 android:textAlignment="center"
-                android:textSize="34dp" />
+                android:textSize="32sp" />
 
             <ImageView
-                android:id="@+id/imageView_Class"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginTop="6dp"
+                android:id="@+id/imageView_meeting_icon"
+                android:layout_width="120sp"
+                android:layout_height="120sp"
+                android:layout_marginTop="8sp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="2sp"
                 app:srcCompat="@drawable/ic_meeting_icon" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="34sp"
+                android:layout_marginEnd="34sp"
+                android:layout_marginTop="10sp">
+
+                <TextView
+                    android:id="@+id/textView112"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Date:"
+                    android:layout_marginLeft="30sp"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textView_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="room119"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="34sp"
+                android:layout_marginEnd="34sp"
+                android:layout_marginTop="4sp">
+
+                <TextView
+                    android:id="@+id/textView111"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Time:"
+                    android:layout_marginLeft="30sp"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textView_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="room119"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="34sp"
+                android:layout_marginEnd="34sp"
+                android:layout_marginTop="4sp">
+
+                <TextView
+                    android:id="@+id/textView111"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Room:"
+                    android:layout_marginLeft="30sp"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textView_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="room119"
+                    android:textAlignment="center"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="34sp"
+                android:layout_marginEnd="34sp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView1_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="30sp"
+                    android:text="Venue:"
+                    android:layout_marginTop="4sp"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/textView_venue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="venue1"
+                    android:textAlignment="center"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
             <TextView
-                android:id="@+id/textView_ClassNum"
+                android:layout_marginTop="8sp"
+                android:id="@+id/textView_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textAlignment="center"
+                android:layout_weight="1"
+                android:text="Description:"
+                android:layout_marginStart="39sp"
+                android:textAlignment="textStart"
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/textView_Search_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/textView_description"
+                android:layout_width="360sp"
+                android:layout_height="220sp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8sp"
                 android:layout_marginRight="10dp"
                 android:text="description description description description description description description description description description description description description description"
                 android:textAlignment="center"
-                android:textSize="20dp" />
+                android:textSize="19dp" />
 
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Exit"
-                android:gravity="center"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="45sp"
+                android:layout_marginEnd="44sp">
 
+                <Button
+                    android:id="@+id/button_share_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Share"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10sp"/>
+
+                <Button
+                    android:id="@+id/button_exit_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Exit"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10sp"/>
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
