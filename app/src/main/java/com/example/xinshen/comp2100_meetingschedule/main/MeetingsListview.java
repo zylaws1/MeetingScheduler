@@ -137,6 +137,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if (getChildCount() == 0) return false;
         if (!isMutilDeleteShown && !isDeleteShown && Math.abs(velocityX) > Math.abs(velocityY)) {
             deleteButton = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_delete_btn, null);
             deleteButton.setOnClickListener(new OnClickListener() {
@@ -167,6 +168,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public void onLongPress(MotionEvent event) {
+        if (getChildCount() == 0) return;
         if (!isMutilDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
@@ -177,7 +179,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             );
             params.setMargins(20, 45, 3, 45);
             for (int i = 0; i < child_cnt; i++) {
-                itemLayout = (ViewGroup) getChildAt(i );
+                itemLayout = (ViewGroup) getChildAt(i);
                 View mutilDeleteCbs = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_mutil_delete_cb, null);
                 selectedId = i;
                 mutilDeleteCbs.setOnClickListener(new OnClickListener() {
@@ -218,6 +220,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     public boolean onSingleTapUp(MotionEvent e) {
 //        Log.i("shenxin", "onSingleTapUp x y: " + e.getX() + " " + e.getY());
 //        Log.i("shenxin", "onSingleTapUp: " + MainActivity.SCREEN_WIDTH);
+        if (getChildCount() == 0) return false;
         if (isDeleteShown && selectedId != pointToPosition((int) e.getX(), (int) e.getY())) {
             itemLayout.removeView(deleteButton);
             isDeleteShown = false;

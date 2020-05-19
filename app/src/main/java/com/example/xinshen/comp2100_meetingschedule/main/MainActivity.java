@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
     private FragmentManager mFraManager;
-
-    private WeekScheduleFragment weekScheduleFragment;
     private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = true;
     private OnTitleBarListener mTitleListener;
@@ -489,9 +487,7 @@ public class MainActivity extends AppCompatActivity {
         otherProfileFragment = new OtherProfileFragment();
         ownProfileFragment = new OwnProfileFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();
-        addNewMeetingFragment = new AddNewMeetingFragment();
-        weekScheduleFragment = new WeekScheduleFragment();
-        mScheduleFragment = new MeetingSchedulerFragment();
+        mScheduleFragment = new MeetingSchedulerFragment(ComingMeetingsFragment.meetings_list);
         setDefaultFragment();
     }
 

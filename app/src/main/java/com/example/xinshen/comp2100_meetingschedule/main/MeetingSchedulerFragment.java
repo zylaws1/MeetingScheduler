@@ -1,11 +1,13 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
@@ -15,16 +17,32 @@ import java.util.List;
 
 public class MeetingSchedulerFragment extends Fragment {
     public MeetingSchedulerView mTimaTableView;
-    public static ArrayList<MeetingModel> mList = new ArrayList<MeetingModel>();
-    View rootView;
+    public ArrayList<MeetingModel> mList = new ArrayList<MeetingModel>();
+    public static ArrayList<Integer> rm_idx_ary = new ArrayList<>();
+    private View rootView;
+    private List<MeetingModel> meetings_list;
+
+    MeetingSchedulerFragment(List<MeetingModel> meetings_list) {
+        this.meetings_list = meetings_list;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_sheduler, null);
-            mList.addAll(MeetingListFragmentActivity.get_mock_data());
+            mList.addAll(meetings_list);
             mTimaTableView = (MeetingSchedulerView) rootView.findViewById(R.id.scheduler_timetable_ly);
+        }
+        if (rm_idx_ary.size() > 0) {
+            for (int i = rm_idx_ary.size() - 1; i >= 0; i--)
+                mList.remove(rm_idx_ary.get(i));
+            rm_idx_ary.clear();
         }
 
         mTimaTableView.setTimeTable(mList);

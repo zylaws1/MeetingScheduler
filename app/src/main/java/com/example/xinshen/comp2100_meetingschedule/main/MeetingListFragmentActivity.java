@@ -88,7 +88,7 @@ public class MeetingListFragmentActivity extends Fragment {
 //                Log.i("shenxin", "activity onEdit index:"+index);
                 meetings_list.remove(index);
                 lv_coming_meetins.items_view_ary.remove(index);
-                MeetingSchedulerFragment.mList.remove(index);
+                MeetingSchedulerFragment.rm_idx_ary.add(index);
                 meetings_list_adapter.notifyDataSetChanged();
             }
 
