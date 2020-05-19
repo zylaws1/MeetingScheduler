@@ -417,9 +417,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteSelectedMeetings(View v) {
-        if (chosen_coming_meetings)
-            ComingMeetingsFragment.deleteSelectedMeetings(v);
-        else
+
+        if (chosen_coming_meetings) {
+            Integer del_ids[] = ComingMeetingsFragment.deleteSelectedMeetings(v);
+            Log.i(TAG, "mList size:" + mScheduleFragment.mList.size());
+            for (int i = del_ids.length - 1; i >= 0; i--) {
+                Log.i(TAG, "deleteSelectedMeetings: id:" + del_ids[i]);
+                if (del_ids[i] < mScheduleFragment.mList.size())
+                    mScheduleFragment.mList.remove((int) del_ids[i]);
+            }
+            if (mScheduleFragment.mTimaTableView != null)
+                mScheduleFragment.mTimaTableView.refreshTable();
+            else Log.i(TAG, "mTimaTableView null");
+        } else
             PastMeetingsFragment.deleteSelectedMeetings(v);
     }
 

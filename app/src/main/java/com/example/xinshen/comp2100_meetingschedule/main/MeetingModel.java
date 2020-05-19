@@ -26,15 +26,31 @@ public class MeetingModel {
         this.venue = venue;
         star_time_hour = hour;
         star_time_minute = minute;
+        end_time = star_time_hour + 1;
     }
 
-    public MeetingModel(int icon, String name, String description, String room, String venue) {
+    public MeetingModel(int icon, String name, String description, String room, String venue, int day, int star_time_hour) {
         super();
         this.icon = icon;
         this.name = name;
         this.description = description;
         this.room = room;
         this.venue = venue;
+        this.day = day;
+        this.star_time_hour = star_time_hour - 7;
+        end_time = star_time_hour - 7;
+    }
+
+    public MeetingModel(int icon, String name, String description, String room, String venue, int day, int star_time_hour, int end_time) {
+        super();
+        this.icon = icon;
+        this.name = name;
+        this.description = description;
+        this.room = room;
+        this.venue = venue;
+        this.day = day;
+        this.star_time_hour = star_time_hour - 7;
+        this.end_time = end_time - 7;
     }
 
     public MeetingModel(int id, int start_time, int end_time, int day,

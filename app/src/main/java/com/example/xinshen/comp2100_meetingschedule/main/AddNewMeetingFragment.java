@@ -44,7 +44,7 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
 
     AddNewMeetingFragment() {
         super();
-        Log.i(TAG, "init AddNewMeetingFragment");
+//        Log.i(TAG, "init AddNewMeetingFragment");
     }
 
     @Override

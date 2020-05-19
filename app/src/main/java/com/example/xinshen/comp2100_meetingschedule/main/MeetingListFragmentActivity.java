@@ -41,41 +41,41 @@ public class MeetingListFragmentActivity extends Fragment {
         }
     }
 
-    List<MeetingModel> get_mock_data() {
+    static public List<MeetingModel> get_mock_data() {
         List<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp1110",
-                "meeting agenda", "110", "CSIT ground floor"));
+                "meeting agenda", "110", "CSIT ground floor",1,11,12));
         data.add(new MeetingModel(R.drawable.icon, "engn6528",
-                "project perspective", "111", "CSIT ground floor"));
+                "project perspective", "111", "CSIT ground floor",1,15,16));
         data.add(new MeetingModel(R.drawable.icon, "comp8600",
-                "stage 1 tasks", "3.32", "hancock 3rd floor"));
+                "stage 1 tasks", "3.32", "hancock 3rd floor",2,9,11));
         data.add(new MeetingModel(R.drawable.icon, "comp8330",
-                "comp2100 assignment group meeting", "113", "Lena building 9th floor"));
+                "comp2100 assignment group meeting", "113", "Lena building 9th floor",3,14));
         data.add(new MeetingModel(R.drawable.icon, "comp1110",
-                "meeting agenda", "114", "CSIT ground floor"));
+                "meeting agenda", "114", "CSIT ground floor",4,18,19));
         data.add(new MeetingModel(R.drawable.icon, "engn6528",
-                "project perspective", "115", "CSIT ground floor"));
+                "project perspective", "115", "CSIT ground floor",4,14,15));
         data.add(new MeetingModel(R.drawable.icon, "comp8600",
-                "stage 1 tasks", "3.36", "hancock 3rd floor"));
+                "stage 1 tasks", "3.36", "hancock 3rd floor",6,12,13));
         data.add(new MeetingModel(R.drawable.icon, "comp8330",
-                "comp2100 assignment group meeting", "117", "Lena building 9th floor"));
+                "comp2100 assignment group meeting", "117", "Lena building 9th floor",6,10));
         data.add(new MeetingModel(R.drawable.icon, "comp8300",
-                "comp2100 assignment group meeting", "118", "Lena building 9th floor"));
+                "comp2100 assignment group meeting", "118", "Lena building 9th floor",7,14,15));
         return data;
     }
 
     List<MeetingModel> get_mock_past_data() {
         List<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp2100",
-                "team formation", "101", "CSIT ground floor"));
+                "team formation", "101", "CSIT ground floor",3,8));
         data.add(new MeetingModel(R.drawable.icon, "comp6442",
-                "Choose the topic for assignment", "108", "Hanna Building 1st floor"));
+                "Choose the topic for assignment", "108", "Hanna Building 1st floor",3,8));
         return data;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
+//        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
         View view = inflater.inflate(R.layout.activity_fragment_meeting_lv, null);
         lv_coming_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
@@ -84,10 +84,11 @@ public class MeetingListFragmentActivity extends Fragment {
         lv_coming_meetins.getLayoutParams().height = (int) (SCREEN_HEIGHT * 0.8);
         lv_coming_meetins.setOnDeleteListener(new MeetingsListview.OnEditListener() {
             @Override
-            public void onEdit(int index) {
+            public void onDeletePressed(int index) {
 //                Log.i("shenxin", "activity onEdit index:"+index);
                 meetings_list.remove(index);
                 lv_coming_meetins.items_view_ary.remove(index);
+                MeetingSchedulerFragment.mList.remove(index);
                 meetings_list_adapter.notifyDataSetChanged();
             }
 
@@ -119,7 +120,7 @@ public class MeetingListFragmentActivity extends Fragment {
         return view;
     }
 
-    public void deleteSelectedMeetings(View v) {
+    public Integer[] deleteSelectedMeetings(View v) {
         Log.i("shenxin", "delete btn: " + lv_coming_meetins.selecting_cbs.size());
         lv_coming_meetins.isMutilDeleteShown = false;
         for (int i = lv_coming_meetins.selecting_cbs.size() - 1; i >= 0; i--) {
@@ -136,6 +137,7 @@ public class MeetingListFragmentActivity extends Fragment {
         }
         add_meetings_controls.setVisibility(View.VISIBLE);
         mutil_del_meetings_controls.setVisibility(View.GONE);
+        return lv_coming_meetins.selecting_cbs.toArray(new Integer[lv_coming_meetins.selecting_cbs.size()]);
     }
 
 }

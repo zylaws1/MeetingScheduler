@@ -30,7 +30,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     }
 
     public interface OnEditListener {       // callback to activity for edit
-        void onEdit(int index);
+        void onDeletePressed(int index);
 
         void onMutilEdit(int[] indexs);
 
@@ -97,7 +97,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     }
 
     public void bondAdapter(ListAdapter adapter) {
-        Log.i(TAG, "bondAdapter: cnt" + adapter.getCount());
+//        Log.i(TAG, "bondAdapter: cnt" + adapter.getCount());
         for (int i = 0; i < adapter.getCount(); i++) {
             items_view_ary.add((ViewGroup) getChildAt(i));
         }
@@ -145,7 +145,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
                     itemLayout.removeView(deleteButton);
                     deleteButton = null;
                     isDeleteShown = false;
-                    mEditListener.onEdit(selectedId);
+                    mEditListener.onDeletePressed(selectedId);
                 }
             });
             itemLayout = (ViewGroup) getChildAt(selectedId - getFirstVisiblePosition());
@@ -157,7 +157,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             itemLayout.addView(deleteButton, params);
             isDeleteShown = true;
         } else {
-            Log.i("shenxin", "onFling: else");
+//            Log.i("shenxin", "onFling: else");
             if (isDeleteShown)
                 itemLayout.removeView(deleteButton);
             isDeleteShown = false;
@@ -170,7 +170,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (!isMutilDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
-            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMutilDeleteShown + " " + isDeleteShown);
+//            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMutilDeleteShown + " " + isDeleteShown);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
@@ -193,7 +193,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             mEditListener.show_delete_all_btn();
             isMutilDeleteShown = true;
         } else {
-            Log.i("shenxin", "onLongPress: else");
+//            Log.i("shenxin", "onLongPress: else");
             //itemLayout.removeView(mutilDeleteCbs);
             for (Map.Entry<ViewGroup, View> e : all_meeting_items.entrySet()) {
                 e.getKey().removeView(e.getValue());
@@ -205,7 +205,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        Log.i("shenxin", "onScroll");
+//        Log.i("shenxin", "onScroll");
         return false;
     }
 

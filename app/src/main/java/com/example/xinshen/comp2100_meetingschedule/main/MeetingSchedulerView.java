@@ -38,7 +38,7 @@ public class MeetingSchedulerView extends LinearLayout {
             R.drawable.select_label_yi, R.drawable.select_label_wuw};
     private final static int START = 0;
     //最大节数
-    public final static int MAXNUM = 15;
+    public final static int MAX_NUM_IN_DAY = 15;
     //显示到星期几
     public final static int WEEKNUM = 7;
     /**
@@ -57,9 +57,9 @@ public class MeetingSchedulerView extends LinearLayout {
     private LinearLayout mHorizontalWeekLayout;
     private LinearLayout mVerticalWeekLaout;
     private String[] mWeekTitle = {"Mon", "Tues", "Wedn", "Thur", "Fri", "Sat", "Sun"};
-    public static String[] colorStr = new String[20];
+    public static String[] colorStr = new String[50];
     int colorNum = 0;
-    private List<MeetingModel> mListTimeTable = new ArrayList<MeetingModel>();
+    private List<MeetingModel> mListTimeTable = new ArrayList<>();
 
     private Context mContext;
 
@@ -75,6 +75,8 @@ public class MeetingSchedulerView extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        initView();
+        invalidate();
     }
 
     /**
@@ -103,7 +105,7 @@ public class MeetingSchedulerView extends LinearLayout {
 
 
     private void initView() {
-
+        removeAllViews();
         mHorizontalWeekLayout = new LinearLayout(getContext());
         mHorizontalWeekLayout.setOrientation(HORIZONTAL);
         mVerticalWeekLaout = new LinearLayout(getContext());
@@ -129,7 +131,7 @@ public class MeetingSchedulerView extends LinearLayout {
 
     private View createTableVerticalLine() {
         View l = new View(getContext());
-        l.setLayoutParams(new ViewGroup.LayoutParams(TIME_TABLE_LINE_HEIGHT, dip2px(TIME_TABLE_HEIGHT * MAXNUM) + (MAXNUM - 2) * TIME_TABLE_LINE_HEIGHT));
+        l.setLayoutParams(new ViewGroup.LayoutParams(TIME_TABLE_LINE_HEIGHT, dip2px(TIME_TABLE_HEIGHT * MAX_NUM_IN_DAY) + (MAX_NUM_IN_DAY - 2) * TIME_TABLE_LINE_HEIGHT));
         l.setBackgroundColor(getResources().getColor(R.color.view_line));
         return l;
     }
@@ -189,9 +191,9 @@ public class MeetingSchedulerView extends LinearLayout {
 
         //绘制1~MAXNUM
         LinearLayout numberView = new LinearLayout(mContext);
-        numberView.setLayoutParams(new ViewGroup.LayoutParams(dip2px(LEFT_TITLE_WIDTH), dip2px(MAXNUM * TIME_TABLE_HEIGHT) + MAXNUM * 2));
+        numberView.setLayoutParams(new ViewGroup.LayoutParams(dip2px(LEFT_TITLE_WIDTH), dip2px(MAX_NUM_IN_DAY * TIME_TABLE_HEIGHT) + MAX_NUM_IN_DAY * 2));
         numberView.setOrientation(VERTICAL);
-        for (int j = 1; j <= MAXNUM; j++) {
+        for (int j = 1; j <= MAX_NUM_IN_DAY; j++) {
             TextView number = createNumberView(j);
             numberView.addView(number);
             numberView.addView(getWeekHorizontalLine());
@@ -261,7 +263,7 @@ public class MeetingSchedulerView extends LinearLayout {
         weekTableView.setOrientation(VERTICAL);
         int size = weekList.size();
         if (weekList.isEmpty()) {
-            weekTableView.addView(addBlankView(MAXNUM + 1, week, 0));
+            weekTableView.addView(addBlankView(MAX_NUM_IN_DAY + 1, week, 0));
         } else {
             for (int i = 0; i < size; i++) {
                 MeetingModel tableModel = weekList.get(i);
@@ -276,7 +278,7 @@ public class MeetingSchedulerView extends LinearLayout {
                 }
                 //绘制剩下的空白
                 if (i + 1 == size) {
-                    weekTableView.addView(addBlankView(MAXNUM - weekList.get(i).getEnd_time() + 1, week, weekList.get(i).getEnd_time()));
+                    weekTableView.addView(addBlankView(MAX_NUM_IN_DAY - weekList.get(i).getEnd_time() + 1, week, weekList.get(i).getEnd_time()));
                 }
             }
         }
