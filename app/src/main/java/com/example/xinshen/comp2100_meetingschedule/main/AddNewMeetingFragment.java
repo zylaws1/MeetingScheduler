@@ -32,13 +32,16 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     private Button btnDate;
     private Button btnTime;
     private Button btnAddMeeting;
-    static public int date;
-    static public int hour;
-    static public int minute;
+    public static int date;
+    public static int hour;
+    public static int minute;
+    public static String date_str;
+    public static String time_str;
     public EditText name;
     public EditText room;
     public EditText venue;
     public EditText description;
+
     Calendar my_calendar = Calendar.getInstance(Locale.ENGLISH);
 
     AddNewMeetingFragment() {
@@ -64,6 +67,7 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     }
 
     public static void showDatePickerDialog(Activity activity, int themeResId, final TextView tv, Calendar calendar) {
+       // calendar.set(2020, 05, 20);
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
         new DatePickerDialog(activity, themeResId, new DatePickerDialog.OnDateSetListener() {
             // 绑定监听器(How the parent is notified that the date is set.)
@@ -71,7 +75,8 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Log.i(TAG, "monthOfYear: " + monthOfYear);
                 monthOfYear++;
-                tv.setText("Date:" + year + "/" + monthOfYear + "/" + dayOfMonth);
+                date_str = "" + year + "/" + monthOfYear + "/" + dayOfMonth;
+                tv.setText("Date:" + date_str);
                 if (monthOfYear < 10) {
                     date = dateToWeek(year + "-0" + monthOfYear + "-" + dayOfMonth);
                 } else {
@@ -119,6 +124,7 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minuteC) {
+                        time_str = hourOfDay + ":" + minuteC;
                         tv.setText("Time:" + hourOfDay + ":" + minuteC);
                         hour = hourOfDay;
                         minute = minuteC;

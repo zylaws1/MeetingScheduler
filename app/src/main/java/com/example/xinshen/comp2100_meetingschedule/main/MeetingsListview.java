@@ -94,7 +94,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     public MeetingsListview(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.i(TAG, "MeetingsListview:1 ");
+//        Log.i(TAG, "MeetingsListview:1 ");
         init();
     }
 

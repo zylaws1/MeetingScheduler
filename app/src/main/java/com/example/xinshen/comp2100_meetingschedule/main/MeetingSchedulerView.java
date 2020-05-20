@@ -344,7 +344,12 @@ public class MeetingSchedulerView extends LinearLayout {
         mTimeTableView.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(getContext(), "long clicked class", Toast.LENGTH_LONG).show();
+                MainActivity.setmTitleBarInactive();
+                MainActivity.meetingInfoFragment.setMeetingModel(model);
+                FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
+                transaction.commit();
+                //Toast.makeText(getContext(), "long clicked class", Toast.LENGTH_LONG).show();
                 return true;
             }
         });

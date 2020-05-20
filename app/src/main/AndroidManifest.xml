@@ -60,6 +60,8 @@
         <activity
             android:name=".ui.login.RegisterActivity">
         </activity>
+
+        <service android:enabled="true" android:name=".main.MeetingDeadlineNotification" android:process="system"></service>
     </application>
 
 </manifest>

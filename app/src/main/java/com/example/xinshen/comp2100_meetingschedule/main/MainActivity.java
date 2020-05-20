@@ -1,5 +1,6 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     private OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private static int titile_bar_color;
+    protected static Context mContext;
+    MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
 //    private boolean first_loaded = true;
 //    private int postTarget = 0;
 //    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
@@ -114,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    public static Context getContext() {
+        return mContext;
+    }
 //
 //    private void showPostDialog() {
 //        AlertDialog.Builder postBuilder = new AlertDialog.Builder(this);
@@ -160,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         getDevicedInfo();
+        mContext = getApplicationContext();
 //        mCtxManager = ContextManager.getInstance();
 //        //Create public class single instance in context and save them in ContextManager
 //        mCtxManager.createInstances(getApplicationContext());
@@ -208,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
     }
 
@@ -271,12 +279,9 @@ public class MainActivity extends AppCompatActivity {
         };
         //mCategoryTable = (TableLayout) findViewById(R.id.selector_category_table);
         initFragment();
-        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
-        //postStatusSaveBtn=new Button(new );
-
         setmTitleBarStyle(true);
-        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
         titile_bar_color = getResources().getColor(R.color.colorBottomNavigation);
+        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
     }
 
     void setmTitleBarStyle(boolean isHomepage) {
@@ -443,7 +448,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editUserProfileDescription(View v) {
-
         setmTitleBarStyle(false);
         replaceFragment(editOwnUserProfileFragment);
     }
@@ -454,23 +458,45 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(ComingMeetingsFragment);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addMeeting(View v) {
         Toast.makeText(MainActivity.this, "meeting added!", Toast.LENGTH_LONG).show();
         String name = addNewMeetingFragment.name.getText().toString();
         String room = addNewMeetingFragment.room.getText().toString();
         String description = addNewMeetingFragment.description.getText().toString();
         String venue = addNewMeetingFragment.venue.getText().toString();
+        String date_str = addNewMeetingFragment.date_str;
+        String time_str = addNewMeetingFragment.time_str;
         int date = addNewMeetingFragment.date - 1;
         if (date == 0) date = 7;
         int hour = addNewMeetingFragment.hour;
         Log.i(TAG, "addMeeting: date:" + date + " " + hour);
-        ComingMeetingsFragment.meetings_list.add(new MeetingModel(name, room,
-                venue, description, date, hour, addNewMeetingFragment.minute));
-        mScheduleFragment.mList.add(new MeetingModel(0, hour - 8, hour - 8 + 1, date,
-                hour + ":00", (hour + 1) + ":00", name,
-                description, room, venue));
-        if (mScheduleFragment.mTimaTableView != null)
-            mScheduleFragment.mTimaTableView.refreshTable();
+        MeetingModel model = new MeetingModel(
+                name, room, venue, description, date, date_str, time_str, hour, addNewMeetingFragment.minute
+        );
+        long res = model.getTimeRemain();
+        if (res > 0) {
+            ComingMeetingsFragment.meetings_list.add(model);
+            Log.i(TAG, "addMeeting res: " + res);
+            m_notification.startNoti(res, "at "
+                    + model.getStart_time_str()+" have meeting:" +model.getName(), model.getName());
+        } else {
+            Toast.makeText(getContext(), "Bad meeting time", Toast.LENGTH_LONG);
+        }
+        setmTitleBarStyle(true);
+        replaceFragment(ComingMeetingsFragment);
+    }
+
+    public void exitMeetInfo(View v) {
+        botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
+        setmTitleBarStyle(true);
+        replaceFragment(ComingMeetingsFragment);
+    }
+
+    public void shareMeeting(View v) {
+        MeetingDeadlineNotification m = new MeetingDeadlineNotification();
+        m.startNoti(1000, ",", "asdasd");
+//        MeetingDeadlineNotification.addNotification(1500,"1 ticket","2 title","3 content");
         setmTitleBarStyle(true);
         replaceFragment(ComingMeetingsFragment);
     }

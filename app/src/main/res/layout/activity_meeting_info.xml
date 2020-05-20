@@ -155,26 +155,26 @@
             </LinearLayout>
 
             <TextView
-                android:layout_marginTop="8sp"
+                android:layout_marginTop="10sp"
                 android:id="@+id/textView_des"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Description:"
-                android:layout_marginStart="39sp"
+                android:layout_marginStart="32sp"
                 android:textAlignment="textStart"
-                android:textSize="20dp" />
+                android:textSize="21dp" />
 
             <TextView
                 android:id="@+id/textView_description"
-                android:layout_width="360sp"
+                android:layout_width="match_parent"
                 android:layout_height="220sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="8sp"
-                android:layout_marginRight="10dp"
+                android:layout_marginLeft="45sp"
+                android:layout_marginTop="4sp"
+                android:layout_marginRight="45sp"
                 android:text="description description description description description description description description description description description description description description"
                 android:textAlignment="center"
-                android:textSize="19dp" />
+                android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -190,7 +190,8 @@
                     android:gravity="center"
                     android:text="Share"
                     android:layout_weight="1"
-                    android:layout_marginEnd="10sp"/>
+                    android:layout_marginEnd="10sp"
+                    android:onClick="shareMeeting"/>
 
                 <Button
                     android:id="@+id/button_exit_info"
@@ -199,7 +200,8 @@
                     android:gravity="center"
                     android:text="Exit"
                     android:layout_weight="1"
-                    android:layout_marginStart="10sp"/>
+                    android:layout_marginStart="10sp"
+                    android:onClick="exitMeetInfo"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,17 +40,21 @@ public class MeetingSchedulerFragment extends Fragment {
             mList.addAll(meetings_list);
             mTimaTableView = (MeetingSchedulerView) rootView.findViewById(R.id.scheduler_timetable_ly);
         }
-        if (rm_idx_ary.size() > 0) {
-            for (int i = rm_idx_ary.size() - 1; i >= 0; i--)
-                mList.remove(rm_idx_ary.get(i));
-            rm_idx_ary.clear();
-        }
 
-        mTimaTableView.setTimeTable(mList);
+
         return rootView;
     }
 
-//    private void addList() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("shenxin", "scheduler onResume: " + meetings_list.size());
+        mList.clear();
+        mList.addAll(meetings_list);
+        mTimaTableView.setTimeTable(mList);
+    }
+
+    //    private void addList() {
 //        mList.add(new MeetingModel(0, 1, 2, 1, "8:20", "10:10", "comp6442",
 //                "disscuss about ...", "csit101", " CSIT"));
 //        mList.add(new MeetingModel(0, 3, 4, 1, "8:20", "10:10", "2100 gourp project",

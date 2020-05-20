@@ -41,32 +41,32 @@ public class MeetingListFragment extends Fragment {
     static public ArrayList<MeetingModel> get_mock_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "2100 group assigment",
-                "meeting agenda", "110", "CSIT ground floor",1,11,12));
+                "meeting agenda", "110", "CSIT ground floor", 1, "2020/05/20", "15:30", 11, 12));
         data.add(new MeetingModel(R.drawable.icon, "engn6528",
-                "project perspective", "111", "CSIT ground floor",1,15,16));
+                "project perspective", "111", "CSIT ground floor", 1, "2020/05/20", "15:30", 15, 16));
         data.add(new MeetingModel(R.drawable.icon, "8110 ass3",
-                "stage 1 tasks", "3.32", "hancock 3rd floor",2,9,11));
+                "stage 1 tasks", "3.32", "hancock 3rd floor", 2, "2020/05/20", "15:30", 9, 11));
         data.add(new MeetingModel(R.drawable.icon, "comp8330",
-                "comp2100 assignment group meeting", "113", "Lena building 9th floor",3,14));
+                "comp2100 assignment group meeting", "113", "Lena building 9th floor", 3, "2020/05/20", "15:30", 14));
         data.add(new MeetingModel(R.drawable.icon, "critical writing seminar",
-                "meeting agenda", "114", "CSIT ground floor",4,18,19));
+                "meeting agenda", "114", "CSIT ground floor", 4, "2020/05/20", "15:30", 18, 19));
         data.add(new MeetingModel(R.drawable.icon, "family call",
-                "project perspective", "115", "CSIT ground floor",4,14,15));
+                "project perspective", "115", "CSIT ground floor", 4, "2020/05/20", "15:30", 14, 15));
         data.add(new MeetingModel(R.drawable.icon, "comp8600",
-                "stage 1 tasks", "3.36", "hancock 3rd floor",6,12,13));
+                "stage 1 tasks", "3.36", "hancock 3rd floor", 6, "2020/05/20", "15:30", 12, 13));
         data.add(new MeetingModel(R.drawable.icon, "database workshop",
-                "comp2100 assignment group meeting", "117", "Lena building 9th floor",6,10));
+                "comp2100 assignment group meeting", "117", "Lena building 9th floor", 6, "2020/05/20", "15:30", 10));
         data.add(new MeetingModel(R.drawable.icon, "beer party",
-                "comp2100 assignment group meeting", "118", "Lena building 9th floor",7,14,15));
+                "comp2100 assignment group meeting", "118", "Lena building 9th floor", 7, "2020/05/20", "15:30", 14, 15));
         return data;
     }
 
     ArrayList<MeetingModel> get_mock_past_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp2100 group formation",
-                "team formation", "101", "CSIT ground floor",3,8));
+                "team formation", "101", "CSIT ground floor", 3, "2020/05/20", "15:30", 8));
         data.add(new MeetingModel(R.drawable.icon, "comp6442",
-                "Choose the topic for assignment", "108", "Hanna Building 1st floor",3,8));
+                "Choose the topic for assignment", "108", "Hanna Building 1st floor", 3, "2020/05/20", "15:30", 8));
         return data;
     }
 
