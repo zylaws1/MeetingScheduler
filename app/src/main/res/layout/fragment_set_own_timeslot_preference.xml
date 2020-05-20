@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/post_status_bg"
+        android:alpha="0.75"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Preference Timeslot"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/colorBottomNavigation"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:id="@+id/editText_pref_1"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_weight="1"
+            android:ems="60"
+            android:inputType="textPersonName"
+            android:text="10：00"
+            android:textAlignment="center"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/editText_pref_2"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:textSize="20dp"
+            android:ems="60"
+            android:inputType="textPersonName"
+            android:text="10：00"
+            android:textAlignment="center"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/editText_pref_3"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:textSize="20dp"
+            android:ems="60"
+            android:inputType="textPersonName"
+            android:text="10：00"
+            android:textAlignment="center"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/post_status_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:onClick="savePrefTimeslot"
+            android:text="@string/save_changes" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,6 +14,8 @@ import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginActivity;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import android.view.LayoutInflater;
@@ -37,6 +39,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
     RelativeLayout mInfoModification;
     RelativeLayout mMyMeeting;
     RelativeLayout mMyNotes;
+    RelativeLayout mMyTimeslotPreference;
     boolean isLogin;
     String userName;
 
@@ -46,11 +49,13 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
         mInfoModification = view.findViewById(R.id.layout_info_modification);
         mMyMeeting = view.findViewById(R.id.layout_my_meeting);
         mMyNotes = view.findViewById(R.id.layout_my_notes);
+        mMyTimeslotPreference= view.findViewById(R.id.layout_timeslot_preference);
         mTvUser = view.findViewById(R.id.tv_user);
         mTvLogin = view.findViewById(R.id.tv_login);
         mInfoModification.setOnClickListener(this);
         mMyMeeting.setOnClickListener(this);
         mMyNotes.setOnClickListener(this);
+        mMyTimeslotPreference.setOnClickListener(this);
         mTvUser.setOnClickListener(this);
         mTvLogin.setOnClickListener(this);
         userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
@@ -90,6 +95,12 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
             case R.id.layout_my_meeting:
                 break;
             case R.id.layout_my_notes:
+                break;
+            case R.id.layout_timeslot_preference:
+                MainActivity.setmTitleBarInactive();
+                FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
+                transaction.commit();
                 break;
             default:
                 break;

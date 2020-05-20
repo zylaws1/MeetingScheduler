@@ -71,11 +71,9 @@
     <string name="register_value">REGISTER</string>
     <string name="my_meeting">My meeting</string>
     <string name="my_notes">My notes</string>
-
+    <string name="my_timeslot_preference">My timeslot preference</string>
     <string name="sp_name">sp_name</string>
 
-
-=======
     <string name="monday">Monday</string>
     <string name="monday_letter">M</string>
     <string name="monday_short">Mon</string>

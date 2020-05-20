@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="spinner_category">
-        <item>Instruments</item>
-        <item>Sports</item>
-        <item>Languages</item>
+    <string-array name="spinner_preference_time">
+        <item>9:00</item>
+        <item>14:00</item>
+        <item>18:00</item>
     </string-array>
 
-    <string-array name="spinner_meeting_type">
-        <item>Personal</item>
-        <item>Business</item>
-        <item>Leisure</item>
-    </string-array>
-
-    <string-array name="spinner_time_unit">
-        <item>Minute</item>
-        <item>Hour</item>
-        <item>Seesion</item>
-    </string-array>
 </resources>

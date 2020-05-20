@@ -13,11 +13,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +45,8 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     public EditText room;
     public EditText venue;
     public EditText description;
-
+    private Spinner mSpinner;
+    private String[] spinnerItems = {"10:00", "14:00", "18:00"};
     Calendar my_calendar = Calendar.getInstance(Locale.ENGLISH);
 
     AddNewMeetingFragment() {
@@ -60,14 +65,15 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
         room = (EditText) view.findViewById(R.id.edit_txt_room);
         venue = (EditText) view.findViewById(R.id.edit_txt_venue);
         description = (EditText) view.findViewById(R.id.edit_txt_description);
-//        btnAddMeeting =  (TextView) view.findViewById(R.id.btn_submit_add);
+        mSpinner = (Spinner) view.findViewById(R.id.spinner_add);
         btnDate.setOnClickListener(this);
         btnTime.setOnClickListener(this);
+        ChangeSpinner(view);
         return view;
     }
 
     public static void showDatePickerDialog(Activity activity, int themeResId, final TextView tv, Calendar calendar) {
-       // calendar.set(2020, 05, 20);
+        // calendar.set(2020, 05, 20);
         // 直接创建一个DatePickerDialog对话框实例，并将它显示出来
         new DatePickerDialog(activity, themeResId, new DatePickerDialog.OnDateSetListener() {
             // 绑定监听器(How the parent is notified that the date is set.)
@@ -155,5 +161,49 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    public void ChangeSpinner(View v) {
+        mSpinner.setDropDownWidth(400); //下拉宽度
+        mSpinner.setDropDownHorizontalOffset(100); //下拉的横向偏移
+        mSpinner.setDropDownVerticalOffset(100); //下拉的纵向偏移
+        //mSpinner.setBackgroundColor(AppUtil.getColor(instance,R.color.wx_bg_gray)); //下拉的背景色
+        //spinner mode ： dropdown or dialog , just edit in layout xml
+        //mSpinner.setPrompt("Spinner Title"); //弹出框标题，在dialog下有效
+
+        //自定义选择填充后的字体样式
+        //只能是textview样式，否则报错：ArrayAdapter requires the resource ID to be a TextView
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                R.layout.spinner_select, spinnerItems);
+        //自定义下拉的字体样式
+        spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop);
+        //这个在不同的Theme下，显示的效果是不同的
+        //spinnerAdapter.setDropDownViewTheme(Theme.LIGHT);
+        mSpinner.setAdapter(spinnerAdapter);
+
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //parent就是父控件spinner
+            //view就是spinner内填充的textview,id=@android:id/text1
+            //position是值所在数组的位置
+            //id是值所在行的位置，一般来说与positin一致
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                time_str = spinnerItems[(int) id];
+                String hour_str = time_str.substring(0, time_str.indexOf(":"));
+                hour = Integer.parseInt(hour_str);
+                txtTime.setText("Time:" + time_str);
+//                Log.i("shenxin","onItemSelected : parent.id=" + parent.getId() +
+//                        ",isSpinnerI,d=" + parent.getId() +
+//                        ",viewid=" + view.getId() + ",pos=" + pos + ",id=" + id);
+
+                //设置spinner内的填充文字居中
+                //((TextView)view).setGravity(Gravity.CENTER);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
     }
 }

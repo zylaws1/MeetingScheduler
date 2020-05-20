@@ -1,6 +1,5 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private SettingsFragment settingsFragment;
     protected static AddNewMeetingFragment addNewMeetingFragment;
     protected static MeetingInfoFragment meetingInfoFragment;
+    protected static SetPreferTimeslotFragment setPreferTimeslotFragment;
     private OwnProfileFragment ownProfileFragment;
-    private EditOwnMeetingProfileFragment editOwnMeetingProfileFragment;
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
@@ -444,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void editClassProfileDescription(View v) {
         setmTitleBarStyle(false);
-        replaceFragment(editOwnMeetingProfileFragment);
+        replaceFragment(setPreferTimeslotFragment);
     }
 
     public void editUserProfileDescription(View v) {
@@ -479,7 +478,7 @@ public class MainActivity extends AppCompatActivity {
             ComingMeetingsFragment.meetings_list.add(model);
             Log.i(TAG, "addMeeting res: " + res);
             m_notification.startNoti(res, "at "
-                    + model.getStart_time_str()+" have meeting:" +model.getName(), model.getName());
+                    + model.getStart_time_str() + " have meeting:" + model.getName(), model.getName());
         } else {
             Toast.makeText(getContext(), "Bad meeting time", Toast.LENGTH_LONG);
         }
@@ -520,6 +519,7 @@ public class MainActivity extends AppCompatActivity {
         addNewMeetingFragment = new AddNewMeetingFragment();
         mScheduleFragment = new MeetingSchedulerFragment(ComingMeetingsFragment.meetings_list);
         meetingInfoFragment = new MeetingInfoFragment();
+        setPreferTimeslotFragment = new SetPreferTimeslotFragment();
         setDefaultFragment();
     }
 

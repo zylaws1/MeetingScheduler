@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.xinshen.comp2100_meetingschedule.main.MainActivity.SCREEN_HEIGHT;
 
@@ -73,7 +72,7 @@ public class MeetingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 //        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
-        View view = inflater.inflate(R.layout.activity_fragment_meeting_lv, null);
+        View view = inflater.inflate(R.layout.fragment_meeting_lv, null);
         lv_coming_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
                 R.layout.scrolled_meetings_listview, meetings_list);

@@ -144,43 +144,69 @@
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/textView11"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50sp"
-                    android:layout_marginTop="8sp"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:text="Meeting time"
-                    android:textColor="@color/colorBottomNavigation"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginLeft="49sp"
+                    android:layout_marginRight="49sp">
+
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Meeting time"
+                        android:textColor="@color/colorBottomNavigation"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textAlignment="textEnd"
+                        android:text="Preference time:"
+                        android:textColor="@color/colorBottomNavigation"
+                        android:textSize="16sp" />
+
+                    <Spinner
+                        android:id="@+id/spinner_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="6sp"
+                        android:layout_weight="3.1"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40sp"
-                    android:layout_marginRight="46sp"
                     android:layout_marginLeft="46sp"
                     android:layout_marginTop="0sp"
+                    android:layout_marginRight="46sp"
                     android:layout_weight="0.5"
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                        <Button
-                            android:id="@+id/btn_Date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="select date"
-                            android:layout_marginRight="7sp"
-                            android:layout_weight="0.5"
-                            android:onClick="chooseDate"/>
-                        <Button
-                            android:id="@+id/btn_Time"
-                            android:layout_marginLeft="7sp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="select time"
-                            android:layout_weight="0.5"
-                            android:onClick="chooseTime"/>
+                    <Button
+                        android:id="@+id/btn_Date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7sp"
+                        android:layout_weight="0.5"
+                        android:onClick="chooseDate"
+                        android:text="select date" />
+
+                    <Button
+                        android:id="@+id/btn_Time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7sp"
+                        android:layout_weight="0.5"
+                        android:onClick="chooseTime"
+                        android:text="select time" />
                 </LinearLayout>
 
                 <LinearLayout

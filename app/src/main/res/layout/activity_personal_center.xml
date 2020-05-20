@@ -46,8 +46,6 @@
     <RelativeLayout
         android:id="@+id/layout_info_modification"
         style="@style/setting_item_layout">
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
             style="@style/setting_item_text"
@@ -64,8 +62,6 @@
     <RelativeLayout
         android:id="@+id/layout_my_meeting"
         style="@style/setting_item_layout">
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
             style="@style/setting_item_text"
@@ -83,12 +79,25 @@
     <RelativeLayout
         android:id="@+id/layout_my_notes"
         style="@style/setting_item_layout">
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
             style="@style/setting_item_text"
             android:text="@string/my_notes" />
+
+        <ImageView
+            style="@style/img_arrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_timeslot_preference"
+        style="@style/setting_item_layout">
+
+        <TextView
+            style="@style/setting_item_text"
+            android:text="@string/my_timeslot_preference" />
 
         <ImageView
             style="@style/img_arrow"
