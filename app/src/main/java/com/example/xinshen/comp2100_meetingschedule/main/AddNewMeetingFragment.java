@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +32,7 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     private static final String TAG = "shenxin";
     private TextView txtDate;
     private TextView txtTime;
+    private TextView txtRemindTime;
     private Button btnDate;
     private Button btnTime;
     private Button btnAddMeeting;
@@ -41,13 +41,16 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     public static int minute;
     public static String date_str;
     public static String time_str;
+    public static long remind_time_advance = 1;
     public EditText name;
     public EditText room;
     public EditText venue;
     public EditText description;
-    private Spinner mSpinner;
-    private String[] spinnerItems = {"10:00", "14:00", "18:00"};
+    private Spinner mSpinner_pref_time;
+    private Spinner mSpinner_remind_time;
+    public static String[] spinnerItems = {"10:00", "14:00", "18:00"};
     Calendar my_calendar = Calendar.getInstance(Locale.ENGLISH);
+    View rootView;
 
     AddNewMeetingFragment() {
         super();
@@ -56,20 +59,50 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_new_meeting, null);
-        btnDate = (Button) view.findViewById(R.id.btn_Date);
-        btnTime = (Button) view.findViewById(R.id.btn_Time);
-        txtDate = (TextView) view.findViewById(R.id.txtDate);
-        txtTime = (TextView) view.findViewById(R.id.txtTime);
-        name = (EditText) view.findViewById(R.id.edit_txt_name);
-        room = (EditText) view.findViewById(R.id.edit_txt_room);
-        venue = (EditText) view.findViewById(R.id.edit_txt_venue);
-        description = (EditText) view.findViewById(R.id.edit_txt_description);
-        mSpinner = (Spinner) view.findViewById(R.id.spinner_add);
-        btnDate.setOnClickListener(this);
-        btnTime.setOnClickListener(this);
-        ChangeSpinner(view);
-        return view;
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_add_new_meeting, null);
+            btnDate = (Button) rootView.findViewById(R.id.btn_Date);
+            btnTime = (Button) rootView.findViewById(R.id.btn_Time);
+            txtDate = (TextView) rootView.findViewById(R.id.txtDate);
+            txtTime = (TextView) rootView.findViewById(R.id.txtTime);
+            txtRemindTime = (TextView) rootView.findViewById(R.id.txt_remind_time);
+            name = (EditText) rootView.findViewById(R.id.edit_txt_name);
+            room = (EditText) rootView.findViewById(R.id.edit_txt_room);
+            venue = (EditText) rootView.findViewById(R.id.edit_txt_venue);
+            description = (EditText) rootView.findViewById(R.id.edit_txt_description);
+            mSpinner_pref_time = (Spinner) rootView.findViewById(R.id.spinner_add);
+            mSpinner_remind_time = (Spinner) rootView.findViewById(R.id.spinner_remind_time);
+            btnDate.setOnClickListener(this);
+            btnTime.setOnClickListener(this);
+            name.setSaveEnabled(false);
+            room.setSaveEnabled(false);
+            venue.setSaveEnabled(false);
+            description.setSaveEnabled(false);
+        }
+        ChangeSpinner(rootView);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String data = bundle.getString("item");
+            Log.i(TAG, "onCreateView get bundle:" + data);
+            if (data != null) {
+                String datas[] = data.split(",");
+                if (datas.length == 8) {
+                    Log.i(TAG, "onCreateView: bundle info good");
+                    name.setText(datas[0]);
+                    room.setText(datas[1]);
+                    description.setText(datas[2]);
+                    venue.setText(datas[3]);
+                    txtDate.setText(datas[4]);
+                    date_str = datas[4];
+                    time_str = datas[5];
+                    date = Integer.parseInt(datas[6]);
+                    txtTime.setText(datas[5]);
+                    hour = Integer.parseInt(datas[7]);
+                }
+            }
+            bundle.clear();
+        }
+        return rootView;
     }
 
     public static void showDatePickerDialog(Activity activity, int themeResId, final TextView tv, Calendar calendar) {
@@ -164,9 +197,9 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     }
 
     public void ChangeSpinner(View v) {
-        mSpinner.setDropDownWidth(400); //下拉宽度
-        mSpinner.setDropDownHorizontalOffset(100); //下拉的横向偏移
-        mSpinner.setDropDownVerticalOffset(100); //下拉的纵向偏移
+        mSpinner_pref_time.setDropDownWidth(400); //下拉宽度
+        mSpinner_pref_time.setDropDownHorizontalOffset(100); //下拉的横向偏移
+        mSpinner_pref_time.setDropDownVerticalOffset(100); //下拉的纵向偏移
         //mSpinner.setBackgroundColor(AppUtil.getColor(instance,R.color.wx_bg_gray)); //下拉的背景色
         //spinner mode ： dropdown or dialog , just edit in layout xml
         //mSpinner.setPrompt("Spinner Title"); //弹出框标题，在dialog下有效
@@ -179,25 +212,38 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop);
         //这个在不同的Theme下，显示的效果是不同的
         //spinnerAdapter.setDropDownViewTheme(Theme.LIGHT);
-        mSpinner.setAdapter(spinnerAdapter);
+        mSpinner_pref_time.setAdapter(spinnerAdapter);
 
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinner_pref_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             //parent就是父控件spinner
             //view就是spinner内填充的textview,id=@android:id/text1
             //position是值所在数组的位置
             //id是值所在行的位置，一般来说与positin一致
+            boolean isSpinnerFirst = true;
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                time_str = spinnerItems[(int) id];
-                String hour_str = time_str.substring(0, time_str.indexOf(":"));
-                hour = Integer.parseInt(hour_str);
-                txtTime.setText("Time:" + time_str);
-//                Log.i("shenxin","onItemSelected : parent.id=" + parent.getId() +
-//                        ",isSpinnerI,d=" + parent.getId() +
-//                        ",viewid=" + view.getId() + ",pos=" + pos + ",id=" + id);
+                Log.i(TAG, "onItemSelected: " + id);
+                if (isSpinnerFirst) {
+                    isSpinnerFirst = false;
+                } else {
+                    time_str = spinnerItems[(int) id];
+                    String hour_str = time_str.substring(0, time_str.indexOf(":"));
+                    hour = Integer.parseInt(hour_str);
+                    txtTime.setText("Time: " + time_str);
+                }
+            }
 
-                //设置spinner内的填充文字居中
-                //((TextView)view).setGravity(Gravity.CENTER);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
+        mSpinner_remind_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                txtRemindTime.setText(mSpinner_remind_time.getAdapter().getItem(pos).toString());
             }
 
             @Override

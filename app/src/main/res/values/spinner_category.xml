@@ -6,4 +6,12 @@
         <item>18:00</item>
     </string-array>
 
+    <string-array name="remind_before_entries">
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+    </string-array>
+
 </resources>

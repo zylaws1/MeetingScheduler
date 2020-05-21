@@ -1,6 +1,10 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,6 +16,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 //import android.support.design.widget.BottomNavigationView;
 //import android.support.v4.app.Fragment;
@@ -28,6 +33,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import android.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,6 +51,8 @@ import com.hjq.bar.TitleBar;
 import com.hjq.bar.style.TitleBarLightStyle;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private static int titile_bar_color;
     protected static Context mContext;
     MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
+    public static MeetingModel param_model = new MeetingModel();
 //    private boolean first_loaded = true;
 //    private int postTarget = 0;
 //    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
@@ -217,6 +228,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        TimerTask delayTask = new TimerTask() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                getClipTxt();
+                Looper.loop();
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(delayTask, 2000);
     }
 
     public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
@@ -470,17 +491,17 @@ public class MainActivity extends AppCompatActivity {
         if (date == 0) date = 7;
         int hour = addNewMeetingFragment.hour;
         Log.i(TAG, "addMeeting: date:" + date + " " + hour);
-        MeetingModel model = new MeetingModel(
+        param_model = new MeetingModel(
                 name, room, venue, description, date, date_str, time_str, hour, addNewMeetingFragment.minute
         );
-        long res = model.getTimeRemain();
-        if (res > 0) {
-            ComingMeetingsFragment.meetings_list.add(model);
-            Log.i(TAG, "addMeeting res: " + res);
-            m_notification.startNoti(res, "at "
-                    + model.getStart_time_str() + " have meeting:" + model.getName(), model.getName());
+        long res_time = param_model.getTimeRemain() - 60 * 1000 * addNewMeetingFragment.remind_time_advance;
+        Log.i(TAG, "addMeeting remain time: " + res_time);
+        if (res_time > 0) {
+            ComingMeetingsFragment.meetings_list.add(param_model);
+            m_notification.startNoti(res_time, "at "
+                    + param_model.getStart_time_str() + " have meeting:" + param_model.getName(), param_model.getName());
         } else {
-            Toast.makeText(getContext(), "Bad meeting time", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Bad meeting time", Toast.LENGTH_LONG);
         }
         setmTitleBarStyle(true);
         replaceFragment(ComingMeetingsFragment);
@@ -493,11 +514,68 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void shareMeeting(View v) {
-        MeetingDeadlineNotification m = new MeetingDeadlineNotification();
-        m.startNoti(1000, ",", "asdasd");
-//        MeetingDeadlineNotification.addNotification(1500,"1 ticket","2 title","3 content");
+        Toast.makeText(MainActivity.this, "meeting info copied to clipboard!", Toast.LENGTH_LONG).show();
+        String name = param_model.getName();
+        String room = param_model.getRoom();
+        String description = param_model.getDescription();
+        String venue = param_model.getVenue();
+        String date_str = param_model.getDate_str();
+        String time_str = param_model.getStart_time_str();
+        int date = param_model.getDay();
+        if (date == 0) date = 7;
+        int hour = param_model.getStar_time();
+        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        // 创建普通字符型ClipData
+        ClipData mClipData = ClipData.newPlainText("token", "&_meetS:" + name + "," + room + ","
+                + description + "," + venue + "," + date_str + "," + time_str + "," + date + "," + hour);
+        // 将ClipData内容放到系统剪贴板里。
+        cm.setPrimaryClip(mClipData);
         setmTitleBarStyle(true);
         replaceFragment(ComingMeetingsFragment);
+    }
+
+    public void getClipTxt() {
+        ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
+        //无数据时直接返回
+        if (!clipboard.hasPrimaryClip()) {
+            return;
+        }
+        //如果是文本信息
+        if (clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+            ClipData cdText = clipboard.getPrimaryClip();
+            ClipData.Item item = cdText.getItemAt(0);
+            //此处是TEXT文本信息
+            if (item.getText() != null) {
+                final String str = item.getText().toString();
+                Log.i(TAG, "getClipTxt: " + str);
+                if (str.length() > 8 && str.substring(0, 8).equals("&_meetS:")) {
+                    final AlertDialog alert_add = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Add a new meeting with shared token?")
+                            .setPositiveButton("Yes & Add!", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String data = str.substring(8);
+                                    Log.i(TAG, "add share bundle data" +data);
+                                    FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                                    transaction.replace(R.id.main_linear, MainActivity.addNewMeetingFragment);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("item", data);
+                                    addNewMeetingFragment.setArguments(bundle);
+                                    transaction.commit();
+                                }
+                            })
+
+                            .setNegativeButton("later", new DialogInterface.OnClickListener() {//添加取消
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    return;
+                                }
+                            })
+                            .create();
+                    alert_add.show();
+                }
+            }
+        }
     }
 
 //    public void chooseDate(View v) {

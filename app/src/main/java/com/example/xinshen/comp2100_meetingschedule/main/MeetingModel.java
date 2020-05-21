@@ -17,10 +17,15 @@ public class MeetingModel {
     private final static int DEFAULT_ICON = 700041;
     private int icon = DEFAULT_ICON;
     private int id;
-    private int star_time_hour;
-    private int star_time_minute;
+    private int start_time_hour;
+    private int start_time_minute;
     private int end_time;
     private int day;
+
+    public void setDate_str(String date_str) {
+        this.date_str = date_str;
+    }
+
     private String date_str;
     private String start_time_str = "";
     private String end_time_str = "";
@@ -29,11 +34,25 @@ public class MeetingModel {
     private String room = "";
     private String venue = "";
 
+
+    public int getStart_time_minute() {
+        return start_time_minute;
+    }
+
+    public void setStart_time_minute(int start_time_minute) {
+        this.start_time_minute = start_time_minute;
+    }
+
+
     public String getDate_str() {
         return date_str;
     }
 
-    public MeetingModel(String name, String room, String venue, String description, int date, String date_str, String time_str, int hour, int minute) {
+    public MeetingModel(){
+        icon = R.drawable.icon;
+    }
+
+    public MeetingModel(String name, String room, String venue, String description, int day, String date_str, String time_str, int hour, int minute) {
         super();
         id = id_cnt++;
         icon = R.drawable.icon;
@@ -41,15 +60,15 @@ public class MeetingModel {
         this.description = description;
         this.room = room;
         this.venue = venue;
-        star_time_hour = hour - 7;
-        star_time_minute = minute;
-        this.day = date;
-        end_time = star_time_hour + 1;
+        start_time_hour = hour - 7;
+        start_time_minute = minute;
+        this.day = day;
+        end_time = start_time_hour + 1;
         start_time_str = time_str;
         this.date_str = date_str;
     }
 
-    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int star_time_hour) {
+    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int start_time_hour) {
         super();
         id = id_cnt++;
         this.icon = icon;
@@ -58,13 +77,13 @@ public class MeetingModel {
         this.room = room;
         this.venue = venue;
         this.day = day;
-        this.star_time_hour = star_time_hour - 7;
-        end_time = star_time_hour - 7;
+        this.start_time_hour = start_time_hour - 7;
+        end_time = start_time_hour - 7;
         start_time_str = time_str;
         this.date_str = date_str;
     }
 
-    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int star_time_hour, int end_time) {
+    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int start_time_hour, int end_time) {
         super();
         id = id_cnt++;
         this.icon = icon;
@@ -73,7 +92,7 @@ public class MeetingModel {
         this.room = room;
         this.venue = venue;
         this.day = day;
-        this.star_time_hour = star_time_hour - 7;
+        this.start_time_hour = start_time_hour - 7;
         this.end_time = end_time - 7;
         start_time_str = time_str;
         this.date_str = date_str;
@@ -86,7 +105,7 @@ public class MeetingModel {
         id = id_cnt++;
         this.icon = DEFAULT_ICON;
         this.id = id;
-        this.star_time_hour = start_time - 7;
+        this.start_time_hour = start_time - 7;
         this.end_time = end_time - 7;
         this.day = day;
         this.start_time_str = start_time_str;
@@ -100,7 +119,7 @@ public class MeetingModel {
 
     @Override
     public String toString() {
-        return "TimeTableModel [id=" + id + ", startnum=" + star_time_hour
+        return "TimeTableModel [id=" + id + ", startnum=" + start_time_hour
                 + ", endnum=" + end_time + ", week=" + day + ", starttime="
                 + start_time_str + ", endtime=" + end_time_str + ", name=" + name
                 + ", teacher=" + description + ", classroom=" + room
@@ -112,7 +131,7 @@ public class MeetingModel {
     }
 
     public int getStar_time() {
-        return star_time_hour;
+        return start_time_hour;
     }
 
     public int getEnd_time() {
@@ -149,8 +168,8 @@ public class MeetingModel {
         this.id = id;
     }
 
-    public void setStar_time_hour(int star_time_hour) {
-        this.star_time_hour = star_time_hour;
+    public void setStart_time_hour(int start_time_hour) {
+        this.start_time_hour = start_time_hour;
     }
 
     public void setEnd_time(int end_time) {

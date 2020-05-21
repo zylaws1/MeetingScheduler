@@ -2,7 +2,6 @@ package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
@@ -33,7 +30,6 @@ public class MeetingInfoFragment extends Fragment {
     private ImageView meet_icon;
     View root_view;
     private Activity base_activity;
-    private String meet_name_str;
     private MeetingModel meeting_obj;
     public int touched_id = -1;
 
@@ -62,6 +58,20 @@ public class MeetingInfoFragment extends Fragment {
             setMeetingInfo(touched_id);
         else
             setMeetingInfo(meeting_obj);
+        MainActivity.param_model.setName(meet_name.getText().toString());
+        MainActivity.param_model.setRoom(meet_room.getText().toString());
+        MainActivity.param_model.setDescription(meet_description.getText().toString());
+        MainActivity.param_model.setVenue(meet_venue.getText().toString());
+        String time_str = meet_time.getText().toString();
+        MainActivity.param_model.setStart_time_str(time_str);
+        int hour = Integer.parseInt(time_str.substring(0, time_str.indexOf(":")));
+        int minute = Integer.parseInt(time_str.substring(time_str.indexOf(":") + 1));
+        MainActivity.param_model.setStart_time_hour(hour);
+        MainActivity.param_model.setStart_time_minute(minute);
+        MainActivity.param_model.setVenue(meet_venue.getText().toString());
+        String date_str = meet_date.getText().toString();
+        MainActivity.param_model.setDay(AddNewMeetingFragment.dateToWeek(date_str));
+        MainActivity.param_model.setDate_str(date_str);
         return root_view;
     }
 
@@ -78,7 +88,7 @@ public class MeetingInfoFragment extends Fragment {
 //        if (obj == null) Log.i(TAG, "null obj");
         meet_icon.setImageResource(obj.getIcon());
         meet_name.setText(obj.getName());
-        meet_room.setText(obj.getName());
+        meet_room.setText(obj.getRoom());
         meet_venue.setText(obj.getVenue());
         meet_description.setText(obj.getDescription());
         meet_date.setText(obj.getDate_str());
@@ -93,7 +103,7 @@ public class MeetingInfoFragment extends Fragment {
         //Log.i(TAG, "setInfo obj name:" + obj.getName());
         meet_icon.setImageResource(obj.getIcon());
         meet_name.setText(obj.getName());
-        meet_room.setText(obj.getName());
+        meet_room.setText(obj.getRoom());
         meet_venue.setText(obj.getVenue());
         meet_description.setText(obj.getDescription());
         meet_date.setText(obj.getDate_str());

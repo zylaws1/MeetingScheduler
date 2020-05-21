@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/linearlayout_setup_meeting"
@@ -21,13 +21,12 @@
                 android:background="@drawable/post_status_bg"
                 android:orientation="vertical">
 
-
                 <TextView
                     android:id="@+id/textView7"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:layout_marginLeft="50dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="27dp"
                     android:layout_weight="0.5"
                     android:text="Meeting Name"
                     android:textColor="@color/colorBottomNavigation"
@@ -39,14 +38,42 @@
                     android:layout_height="32dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="46dp"
+                    android:layout_marginTop="1sp"
                     android:layout_marginRight="46dp"
-                    android:layout_marginTop="-4dp"
                     android:layout_weight="0.5"
                     android:alpha="0.7"
                     android:background="@drawable/setup_new_meeting_bg_purple"
                     android:text="@string/meet_name"
                     android:textAlignment="center"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50sp"
+                    android:layout_marginTop="6sp"
+                    android:layout_weight="0.5"
+                    android:text="Quick Description"
+                    android:textColor="@color/colorBottomNavigation"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/edit_txt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="120sp"
+                    android:layout_marginLeft="38sp"
+                    android:layout_marginTop="2sp"
+                    android:layout_marginRight="38sp"
+                    android:layout_weight="2"
+                    android:alpha="0.7"
+                    android:background="@drawable/setup_new_meeting_bg_purple"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:singleLine="false"
+                    android:text="eg: This is a sample description such as this meeting will discuss about the advanced features about meeting scheduler for comp2100 group project"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -62,8 +89,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2sp"
                         android:layout_weight="1.2"
-                        android:text="Room"
                         android:gravity="left"
+                        android:text="Room"
                         android:textColor="@color/colorBottomNavigation"
                         android:textSize="18sp" />
 
@@ -71,10 +98,10 @@
                         android:id="@+id/textView9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
                         android:layout_marginLeft="14sp"
                         android:layout_marginTop="2sp"
                         android:layout_weight="1"
+                        android:gravity="left"
                         android:text="Venue"
                         android:textColor="@color/colorBottomNavigation"
                         android:textSize="18sp" />
@@ -84,16 +111,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:layout_marginRight="46sp"
                     android:layout_marginLeft="46sp"
+                    android:layout_marginRight="46sp"
+                    android:layout_weight="0.5"
                     android:orientation="horizontal">
 
                     <EditText
-                       android:id="@+id/edit_txt_room"
+                        android:id="@+id/edit_txt_room"
                         android:layout_width="match_parent"
                         android:layout_height="32sp"
-                        android:layout_marginTop="-4sp"
+                        android:layout_marginTop="0sp"
                         android:layout_weight="1.2"
                         android:alpha="0.7"
                         android:background="@drawable/setup_new_meeting_bg_purple"
@@ -106,58 +133,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="32sp"
                         android:layout_marginStart="10sp"
-                        android:textAlignment="center"
                         android:layout_marginTop="0sp"
                         android:layout_weight="1"
                         android:alpha="0.7"
                         android:background="@drawable/setup_new_meeting_bg_purple"
                         android:text="eg: Hancock library"
+                        android:textAlignment="center"
                         android:textSize="14sp" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50sp"
-                    android:layout_marginTop="5sp"
-                    android:layout_weight="0.5"
-                    android:text="Quick Description"
-                    android:textColor="@color/colorBottomNavigation"
-                    android:textSize="18sp" />
-
-                <EditText
-                    android:id="@+id/edit_txt_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="120sp"
-                    android:layout_marginLeft="38sp"
-                    android:layout_marginRight="38sp"
-                    android:layout_marginTop="0sp"
-                    android:layout_weight="2"
-                    android:alpha="0.7"
-                    android:background="@drawable/setup_new_meeting_bg_purple"
-                    android:inputType="textMultiLine"
-                    android:scrollHorizontally="false"
-                    android:singleLine="false"
-                    android:text="eg: This is a sample description such as this meeting will discuss about the advanced features about meeting scheduler for comp2100 group project"
-                    android:textAlignment="center"
-                    android:textSize="16sp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8sp"
                     android:layout_marginLeft="49sp"
-                    android:layout_marginRight="49sp">
+                    android:layout_marginTop="8sp"
+                    android:layout_marginRight="49sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1.7"
                         android:text="Meeting time"
                         android:textColor="@color/colorBottomNavigation"
                         android:textSize="18sp" />
@@ -166,9 +165,10 @@
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8sp"
                         android:layout_weight="2"
-                        android:textAlignment="textEnd"
                         android:text="Preference time:"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/colorBottomNavigation"
                         android:textSize="16sp" />
 
@@ -176,8 +176,9 @@
                         android:id="@+id/spinner_add"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="6sp"
-                        android:layout_weight="3.1"/>
+                        android:layout_marginStart="10sp"
+                        android:layout_marginTop="2sp"
+                        android:layout_weight="3" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -203,7 +204,7 @@
                         android:id="@+id/btn_Time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="7sp"
+                        android:layout_marginLeft="5sp"
                         android:layout_weight="0.5"
                         android:onClick="chooseTime"
                         android:text="select time" />
@@ -214,47 +215,93 @@
                     android:layout_height="40sp"
                     android:layout_marginLeft="46sp"
                     android:layout_marginRight="46sp"
-                    android:paddingBottom="3sp"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="3sp">
+
                     <TextView
                         android:id="@+id/txtDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="eg: yyyy/mm/dd"
                         android:layout_weight="1"
-                        android:textSize="18sp"/>
+                        android:layout_marginStart="6sp"
+                        android:text="eg: yyyy/mm/dd"
+                        android:textSize="18sp" />
+
                     <TextView
                         android:id="@+id/txtTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="eg: hh:mm"
                         android:layout_weight="1"
-                        android:textSize="18sp"/>
+                        android:text="eg: hh:mm"
+                        android:textSize="18sp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="46sp"
+                    android:layout_marginRight="46sp"
+                    android:layout_marginTop="2sp"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4sp"
+                        android:layout_weight="1"
+                        android:text="Remind before:"
+                        android:textColor="@color/colorBottomNavigation"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/txt_remind_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textAlignment="textEnd"
+                        android:layout_marginEnd="-2sp"
+                        android:layout_weight="1.2"
+                        android:text="5 minutes"
+                        android:textSize="18sp" />
+
+
+                    <Spinner
+                        android:id="@+id/spinner_remind_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="14sp"
+                        android:gravity="left"
+                        android:layout_weight="1.6"
+                        android:entries="@array/remind_before_entries" />
+
+                </LinearLayout>
+
 
                 <Button
                     android:id="@+id/btn_submit_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8sp"
                     android:layout_weight="0.3"
+                    android:onClick="addMeeting"
                     android:text="@string/add_meeting"
-                    android:textSize="16sp"
-                    android:onClick="addMeeting"/>
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btn_cancel_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="4sp"
+                    android:layout_marginTop="2sp"
                     android:layout_weight="0.3"
                     android:onClick="cancelAdd"
                     android:text="@string/cancel"
                     android:textSize="17sp" />
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
