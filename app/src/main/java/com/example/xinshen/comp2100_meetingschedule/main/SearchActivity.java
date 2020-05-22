@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.hjq.bar.TitleBar;
@@ -25,23 +27,29 @@ public class SearchActivity extends AppCompatActivity {
     private ListView search_result_lv;
     public EditText search;
     private Button button;
-    private Button button2;
-    private String[] data = {
-            "Meeting01", "Video01", "Post03", "Meeting04", "Meeting05",
-            "Meeting06", "Post07", "Meeting08", "Meeting09", "Meeting10",
-            "Meeting11", "Video22", "Meeting33", "Meeting44", "Meeting55"
-    };
-    ArrayList<String> list = new ArrayList<String>();
+    private Button button_go;
+    ArrayList<String> list = new ArrayList<>();
+    ArrayList<MeetingModel> meeting_model_list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_slide);
         setContentView(R.layout.activity_search);
-        for (int i = 0; i < data.length; ++i) {
-            list.add(data[i]);
-        }
+        meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+        search = findViewById(R.id.editText2);
+        mTitleBar = findViewById(R.id.title_bar);
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new Buttonlistener());
+        button_go = findViewById(R.id.button_go);
+        button_go.setOnClickListener(new Buttonlistenner_go());
+        TitleBar.initStyle(new TitleBarLightStyle());
+        mTitleBar = findViewById(R.id.title_bar);
+        mTitleBar.setAlpha(0.92f);
+        mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
 
+        for (MeetingModel m : meeting_model_list)
+            list.add(m.getName());
         initViews();
     }
 
@@ -52,20 +60,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        search = findViewById(R.id.editText2);
-        mTitleBar = findViewById(R.id.title_bar);
 
-        button = findViewById(R.id.button);
-        button.setOnClickListener(new Buttonlistener());
-
-        button2 = findViewById(R.id.button_go);
-        button2.setOnClickListener(new Buttonlistener2());
-
-        //   ArrayAdapter<String> adapter;
-        //   adapter = new ArrayAdapter<String>(this,R.layout.activity_search,R.id.search_listview_textview,data);
-        //   adapter=new ArrayAdapter<String>(this,R.layout.activity_search,R.id.item_text,data);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, list);
-
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, list);
         //    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.search_listview_textview, data);
         search_result_lv = findViewById(R.id.search_result_lv);
         search_result_lv.setAdapter(adapter);
@@ -73,21 +69,15 @@ public class SearchActivity extends AppCompatActivity {
         search_result_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("itemClick", String.valueOf(position));
+                Log.d("shenxin itemClick", String.valueOf(position));
                 if (!list.contains("Results not found")) {
-//                    Intent intent = new Intent(SearchActivity.this, MeetingInfoActivity.class);
-//                    intent.putExtra("label", data[position]);
-//                    startActivity(intent);
+                    Log.i("shenxin", "onItemClick: " + meeting_model_list.get(position).getName());
+                    Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+                    intent.putExtra("Info", meeting_model_list.get(position).getName());
+                    startActivity(intent);
                 }
             }
         });
-
-        TitleBar.initStyle(new TitleBarLightStyle());
-        mTitleBar = findViewById(R.id.title_bar);
-        mTitleBar.setAlpha(0.92f);
-        //Drawable title_bar_left_ic = getResources().getDrawable(R.drawable.titlebar_logo_vivid);
-        //mTitleBar.setLeftIcon(MainActivity.zoomDrawable(title_bar_left_ic, 820, 330));
-        mTitleBar.setBackgroundColor(getResources().getColor(R.color.colorBottomNavigation));
     }
 
 
@@ -95,34 +85,35 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             finish();
-//            Intent intent2 = new Intent(SearchActivity.this,MainActivity.class);
-//            startActivity(intent2);
         }
     }
 
-    private class Buttonlistener2 implements View.OnClickListener {
+    private class Buttonlistenner_go implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             list.clear();
-            Log.d("shuru", search.getText().toString());
-            if (search.getText().toString() != "") {
-                int i = search.getText().length();
-                Log.d("jinru", Integer.toString(i));
-                String str = search.getText().toString();
-                for (String string : data)
-                    if (string.length() >= i) {
-                        Log.d("zhiwei", string.substring(0, i));
-                        if (str.equalsIgnoreCase(string.substring(0, i))) {
-                            list.add(string);
-                        }
+            meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+            ArrayList<MeetingModel> tmp_ary = new ArrayList<>();
+            String input = search.getText().toString();
+            Log.i("shenxin input:", input);
+            if (input != "" && input.length() > 0) {
+                for (MeetingModel m : meeting_model_list) {
+                    String mod_name = m.getName();
+                    if (mod_name.toLowerCase().contains(input.toLowerCase())) {
+                        list.add(mod_name);
+                        tmp_ary.add(m);
                     }
+                }
             } else {
-                Log.d("shiyan", "111111111111");
+                Log.i("shenxin", " search input null");
                 Toast.makeText(SearchActivity.this, "serach can't be null", Toast.LENGTH_SHORT);
-
+                for (MeetingModel m : meeting_model_list)
+                    list.add(m.getName());
+                tmp_ary = meeting_model_list;
             }
             if (list.isEmpty())
                 list.add("Results not found");
+            meeting_model_list = tmp_ary;
             initViews();
         }
     }

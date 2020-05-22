@@ -60,13 +60,18 @@ public class MainActivity extends AppCompatActivity {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     private static TitleBar mTitleBar;
+
+    public MeetingListFragment getComingMeetingsFragment() {
+        return comingMeetingsFragment;
+    }
+
     //    private ImageView bgImgView;
 //  private Cursor cursor;
 //    private DatabaseHelper mDbHelper;
 //    public ContextManager mCtxManager;
 //    private TableLayout mCategoryTable;
-    protected MeetingListFragment ComingMeetingsFragment;
-    private MeetingListFragment PastMeetingsFragment;
+    protected MeetingListFragment comingMeetingsFragment;
+    private MeetingListFragment pastMeetingsFragment;
     private SettingsFragment settingsFragment;
     protected static AddNewMeetingFragment addNewMeetingFragment;
     protected static MeetingInfoFragment meetingInfoFragment;
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     protected static Context mContext;
     MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
     public static MeetingModel param_model = new MeetingModel();
+    public static MainActivity instance = null;
 //    private boolean first_loaded = true;
 //    private int postTarget = 0;
 //    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
@@ -105,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (id == R.id.navigation_meeting_lists) {
                 setmTitleBarStyle(true);
-                replaceFragment(ComingMeetingsFragment);
+                replaceFragment(comingMeetingsFragment);
                 return true;
             } else {
                 setmTitleBarStyle(false);
@@ -181,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getDevicedInfo();
         mContext = getApplicationContext();
+        instance = this;
 //        mCtxManager = ContextManager.getInstance();
 //        //Create public class single instance in context and save them in ContextManager
 //        mCtxManager.createInstances(getApplicationContext());
@@ -238,6 +245,16 @@ public class MainActivity extends AppCompatActivity {
         };
         Timer timer = new Timer();
         timer.schedule(delayTask, 2000);
+        String info_intent = getIntent().getStringExtra("Info");
+        if (info_intent != null && info_intent.length() > 0) {
+            Log.i(TAG, "onResume got search info:" + info_intent);
+            MeetingModel m = comingMeetingsFragment.getModelByName(info_intent);
+            MainActivity.setmTitleBarInactive();
+            MainActivity.meetingInfoFragment.setMeetingModel(m);
+            FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+            transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
+            transaction.commit();
+        }
     }
 
     public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
@@ -425,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
         //first_loaded = true;
         Toast.makeText(MainActivity.this, "Status saved!", Toast.LENGTH_SHORT).show();
         setmTitleBarStyle(false);
-        replaceFragment(ComingMeetingsFragment);
+        replaceFragment(comingMeetingsFragment);
     }
 
     public void saveEditOwnUserDescription(View v) {
@@ -448,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
     public void deleteSelectedMeetings(View v) {
 
         if (chosen_coming_meetings) {
-            Integer del_ids[] = ComingMeetingsFragment.deleteSelectedMeetings(v);
+            Integer del_ids[] = comingMeetingsFragment.deleteSelectedMeetings(v);
             Log.i(TAG, "mList size:" + mScheduleFragment.mList.size());
             for (int i = del_ids.length - 1; i >= 0; i--) {
                 Log.i(TAG, "deleteSelectedMeetings: id:" + del_ids[i]);
@@ -459,7 +476,7 @@ public class MainActivity extends AppCompatActivity {
                 mScheduleFragment.mTimaTableView.refreshTable();
             else Log.i(TAG, "mTimaTableView null");
         } else
-            PastMeetingsFragment.deleteSelectedMeetings(v);
+            pastMeetingsFragment.deleteSelectedMeetings(v);
     }
 
     public void editClassProfileDescription(View v) {
@@ -475,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
     public void cancelAdd(View v) {
         setmTitleBarStyle(true);
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
-        replaceFragment(ComingMeetingsFragment);
+        replaceFragment(comingMeetingsFragment);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -497,20 +514,20 @@ public class MainActivity extends AppCompatActivity {
         long res_time = param_model.getTimeRemain() - 60 * 1000 * addNewMeetingFragment.remind_time_advance;
         Log.i(TAG, "addMeeting remain time: " + res_time);
         if (res_time > 0) {
-            ComingMeetingsFragment.meetings_list.add(param_model);
+            comingMeetingsFragment.meetings_list.add(param_model);
             m_notification.startNoti(res_time, "at "
                     + param_model.getStart_time_str() + " have meeting:" + param_model.getName(), param_model.getName());
         } else {
             Toast.makeText(getApplicationContext(), "Bad meeting time", Toast.LENGTH_LONG);
         }
         setmTitleBarStyle(true);
-        replaceFragment(ComingMeetingsFragment);
+        replaceFragment(comingMeetingsFragment);
     }
 
     public void exitMeetInfo(View v) {
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
         setmTitleBarStyle(true);
-        replaceFragment(ComingMeetingsFragment);
+        replaceFragment(comingMeetingsFragment);
     }
 
     public void shareMeeting(View v) {
@@ -531,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
         // 将ClipData内容放到系统剪贴板里。
         cm.setPrimaryClip(mClipData);
         setmTitleBarStyle(true);
-        replaceFragment(ComingMeetingsFragment);
+        replaceFragment(comingMeetingsFragment);
     }
 
     public void getClipTxt() {
@@ -555,7 +572,7 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     String data = str.substring(8);
-                                    Log.i(TAG, "add share bundle data" +data);
+                                    Log.i(TAG, "add share bundle data" + data);
                                     FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
                                     transaction.replace(R.id.main_linear, MainActivity.addNewMeetingFragment);
                                     Bundle bundle = new Bundle();
@@ -590,12 +607,12 @@ public class MainActivity extends AppCompatActivity {
     //
     private void initFragment() {
 
-        ComingMeetingsFragment = new MeetingListFragment();
-        PastMeetingsFragment = new MeetingListFragment(new ArrayList<MeetingModel>());
+        comingMeetingsFragment = new MeetingListFragment(0);
+        pastMeetingsFragment = new MeetingListFragment(new ArrayList<MeetingModel>());
         settingsFragment = new SettingsFragment();
         ownProfileFragment = new OwnProfileFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();
-        mScheduleFragment = new MeetingSchedulerFragment(ComingMeetingsFragment.meetings_list);
+        mScheduleFragment = new MeetingSchedulerFragment(comingMeetingsFragment.meetings_list);
         meetingInfoFragment = new MeetingInfoFragment();
         setPreferTimeslotFragment = new SetPreferTimeslotFragment();
         setDefaultFragment();
@@ -604,7 +621,7 @@ public class MainActivity extends AppCompatActivity {
     private void setDefaultFragment() {
         mFraManager = getSupportFragmentManager();
         transaction = mFraManager.beginTransaction();
-        transaction.replace(R.id.main_linear, ComingMeetingsFragment);
+        transaction.replace(R.id.main_linear, comingMeetingsFragment);
         transaction.commit();
     }
 
@@ -617,9 +634,9 @@ public class MainActivity extends AppCompatActivity {
     private void replaceMeetingsFragment(Boolean ChooseComing) {
         FragmentTransaction transaction = mFraManager.beginTransaction();
         if (ChooseComing) {
-            transaction.replace(R.id.main_linear, ComingMeetingsFragment);
+            transaction.replace(R.id.main_linear, comingMeetingsFragment);
         } else {
-            transaction.replace(R.id.main_linear, PastMeetingsFragment);
+            transaction.replace(R.id.main_linear, pastMeetingsFragment);
         }
         transaction.commit();
     }

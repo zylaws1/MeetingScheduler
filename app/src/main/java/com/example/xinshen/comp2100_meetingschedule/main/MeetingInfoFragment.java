@@ -82,9 +82,9 @@ public class MeetingInfoFragment extends Fragment {
     public void setMeetingInfo(int i) {
         MainActivity m = (MainActivity) base_activity;
         if (base_activity == null) Log.i(TAG, "null base_activity");
-        if (m.ComingMeetingsFragment == null) Log.i(TAG, "null ComingMeetingsFragment");
-        if (m.ComingMeetingsFragment.meetings_list == null) Log.i(TAG, "null meetings_list");
-        MeetingModel obj = m.ComingMeetingsFragment.meetings_list.get(i);
+        if (m.comingMeetingsFragment == null) Log.i(TAG, "null ComingMeetingsFragment");
+        if (m.comingMeetingsFragment.meetings_list == null) Log.i(TAG, "null meetings_list");
+        MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(i);
 //        if (obj == null) Log.i(TAG, "null obj");
         meet_icon.setImageResource(obj.getIcon());
         meet_name.setText(obj.getName());

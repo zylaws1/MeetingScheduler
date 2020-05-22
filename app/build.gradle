@@ -21,6 +21,11 @@ android {
     dataBinding {
         enabled = true
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -32,6 +37,7 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.hjq:titlebar:3.5'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.3'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.jakewharton:butterknife:8.4.0'

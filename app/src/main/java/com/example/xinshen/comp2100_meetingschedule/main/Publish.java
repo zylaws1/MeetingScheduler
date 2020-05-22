@@ -7,7 +7,7 @@ public class Publish {
     private String content;//store the photo address or video address
     /*
     example string of date
-    "2012-12-30 12:10:04"
+    "2020/05/20 12:10:04"
      */
 
     public Publish(int id, int userID, String date, String content) {

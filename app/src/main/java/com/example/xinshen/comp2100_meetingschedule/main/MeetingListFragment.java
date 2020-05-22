@@ -23,7 +23,12 @@ public class MeetingListFragment extends Fragment {
     private LinearLayout mutil_del_meetings_controls;
     private LinearLayout add_meetings_controls;
 
-    MeetingListFragment() {
+    public MeetingListFragment() {
+        super();
+        meetings_list = new ArrayList<>();
+    }
+
+    MeetingListFragment(int i) {
         super();
         meetings_list = get_mock_data();
     }
@@ -37,35 +42,43 @@ public class MeetingListFragment extends Fragment {
         }
     }
 
+    public MeetingModel getModelByName(String name) {
+        for (int i = 0; i < meetings_list.size(); i++) {
+            if (meetings_list.get(i).getName().equals(name))
+                return meetings_list.get(i);
+        }
+        return null;
+    }
+
     static public ArrayList<MeetingModel> get_mock_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "2100 group assigment",
-                "meeting agenda", "110", "CSIT ground floor", 1, "2020/05/22", "11:30", 11, 12));
+                "meeting agenda", "110", "CSIT ground floor", 1, "2020-05-22", "11:30", 11, 12));
         data.add(new MeetingModel(R.drawable.icon, "engn6528",
-                "project perspective", "111", "CSIT ground floor", 1, "2020/05/22", "15:30", 15, 16));
+                "project perspective", "111", "CSIT ground floor", 1, "2020-05-22", "15:30", 15, 16));
         data.add(new MeetingModel(R.drawable.icon, "8110 ass3",
-                "stage 1 tasks", "3.32", "hancock 3rd floor", 2, "2020/05/22", "9:30", 9, 11));
+                "stage 1 tasks", "3.32", "hancock 3rd floor", 2, "2020-05-22", "9:30", 9, 11));
         data.add(new MeetingModel(R.drawable.icon, "comp8330",
-                "comp2100 assignment group meeting", "113", "Lena building 9th floor", 3, "2020/05/22", "15:30", 14));
+                "comp2100 assignment group meeting", "113", "Lena building 9th floor", 3, "2020-05-22", "15:30", 14));
         data.add(new MeetingModel(R.drawable.icon, "critical writing seminar",
-                "meeting agenda", "114", "CSIT ground floor", 4, "2020/05/22", "18:30", 18, 19));
+                "meeting agenda", "114", "CSIT ground floor", 4, "2020-05-22", "18:30", 18, 19));
         data.add(new MeetingModel(R.drawable.icon, "family call",
-                "project perspective", "115", "CSIT ground floor", 4, "2020/05/22", "15:30", 15, 16));
+                "project perspective", "115", "CSIT ground floor", 4, "2020-05-22", "15:30", 15, 16));
         data.add(new MeetingModel(R.drawable.icon, "comp8600",
-                "stage 1 tasks", "3.36", "hancock 3rd floor", 6, "2020/05/22", "12:30", 12, 13));
+                "stage 1 tasks", "3.36", "hancock 3rd floor", 6, "2020-05-22", "12:30", 12, 13));
         data.add(new MeetingModel(R.drawable.icon, "database workshop",
-                "comp2100 assignment group meeting", "117", "Lena building 9th floor", 6, "2020/05/22", "10:30", 10));
+                "comp2100 assignment group meeting", "117", "Lena building 9th floor", 6, "2020-05-22", "10:30", 10));
         data.add(new MeetingModel(R.drawable.icon, "beer party",
-                "comp2100 assignment group meeting", "118", "Lena building 9th floor", 7, "2020/05/22", "14:30", 14, 15));
+                "comp2100 assignment group meeting", "118", "Lena building 9th floor", 7, "2020-05-22", "14:30", 14, 15));
         return data;
     }
 
     ArrayList<MeetingModel> get_mock_past_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp2100 group formation",
-                "team formation", "101", "CSIT ground floor", 3, "2020/05/22", "8:30", 8));
+                "team formation", "101", "CSIT ground floor", 3, "2020-05-22", "8:30", 8));
         data.add(new MeetingModel(R.drawable.icon, "comp6442",
-                "Choose the topic for assignment", "108", "Hanna Building 1st floor", 3, "2020/05/22", "8:30", 8));
+                "Choose the topic for assignment", "108", "Hanna Building 1st floor", 3, "2020-05-22", "8:30", 8));
         return data;
     }
 
