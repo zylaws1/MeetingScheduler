@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 public class MeetingsListview extends ListView implements OnGestureListener, View.OnTouchListener {
 
     private static final String TAG = "shenxin";
@@ -34,7 +36,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     public interface OnEditListener {       // callback to activity for edit
         void onDeletePressed(int index);
 
-        void onMutilEdit(int[] indexs);
+        void onMultiDeleted(int[] indexs);
 
         void show_delete_all_btn();
 
@@ -49,7 +51,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     private View deleteButton;     // delete  button view
 
-    private View mutilDeleteCbs;     // mutil delete checkboxes view
+    private View multiDeleteCbs;     // multi delete checkboxes view
 
     private ViewGroup itemLayout;   // item to be changed, ViewGroup object
 
@@ -59,7 +61,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     private boolean isDeleteShown;   // is delete button shown flag
 
-    public boolean isMutilDeleteShown;   // is mutil delete button shown flag
+    public boolean isMultiDeleteShown;   // is multi delete button shown flag
 
     public HashMap<ViewGroup, View> all_meeting_items = new HashMap<>(); //all meeting items list
 
@@ -127,7 +129,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (getChildCount() == 0) return false;
-        if (!isMutilDeleteShown && !isDeleteShown && Math.abs(velocityX) > Math.abs(velocityY)) {
+        if (!isMultiDeleteShown && !isDeleteShown && Math.abs(velocityX) > Math.abs(velocityY)) {
             deleteButton = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_delete_btn, null);
             deleteButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -158,10 +160,10 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
     @Override
     public void onLongPress(MotionEvent event) {
         if (getChildCount() == 0) return;
-        if (!isMutilDeleteShown && !isDeleteShown) {
+        if (!isMultiDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
-//            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMutilDeleteShown + " " + isDeleteShown);
+//            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMultiDeleteShown + " " + isDeleteShown);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
@@ -169,28 +171,27 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             params.setMargins(20, 45, 3, 45);
             for (int i = 0; i < child_cnt; i++) {
                 itemLayout = (ViewGroup) getChildAt(i);
-                View mutilDeleteCbs = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_mutil_delete_cb, null);
+                View multiDeleteCbs = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_multi_delete_cb, null);
                 selectedId = i;
-                mutilDeleteCbs.setOnClickListener(new OnClickListener() {
+                multiDeleteCbs.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (!selecting_cbs.contains(selectedId))
                             selecting_cbs.add(selectedId);
                     }
                 });
-                itemLayout.addView(mutilDeleteCbs, params);
-                all_meeting_items.put(itemLayout, mutilDeleteCbs);
+                itemLayout.addView(multiDeleteCbs, params);
+                all_meeting_items.put(itemLayout, multiDeleteCbs);
             }
             mEditListener.show_delete_all_btn();
-            isMutilDeleteShown = true;
+            isMultiDeleteShown = true;
         } else {
 //            Log.i("shenxin", "onLongPress: else");
-            //itemLayout.removeView(mutilDeleteCbs);
             for (Map.Entry<ViewGroup, View> e : all_meeting_items.entrySet()) {
                 e.getKey().removeView(e.getValue());
             }
             mEditListener.hide_delete_all_btn();
-            isMutilDeleteShown = false;
+            isMultiDeleteShown = false;
         }
     }
 
@@ -214,13 +215,13 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (isDeleteShown && selectedId != touched_id) {
             itemLayout.removeView(deleteButton);
             isDeleteShown = false;
-        } else if (isMutilDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
+        } else if (isMultiDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
             for (Map.Entry<ViewGroup, View> ent : all_meeting_items.entrySet()) {
                 ent.getKey().removeView(ent.getValue());
             }
             mEditListener.hide_delete_all_btn();
-            isMutilDeleteShown = false;
-        } else if (!isMutilDeleteShown && !isDeleteShown) {
+            isMultiDeleteShown = false;
+        } else if (!isMultiDeleteShown && !isDeleteShown) {
             Log.i(TAG, "apply onTouch ");
             MainActivity.setmTitleBarInactive();
             MainActivity.meetingInfoFragment.setTouched_id(touched_id);

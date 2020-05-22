@@ -24,13 +24,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * 课表显示View
- *
- * @author shallcheek
+ * Meeting timetable view
+ * @author shenxin
  */
 public class MeetingSchedulerView extends LinearLayout {
     /**
-     * 配色数组
+     * match the color arrays with data
      */
     public static int colors[] = {R.drawable.select_label_san,
             R.drawable.select_label_er, R.drawable.select_label_si,
@@ -41,30 +40,21 @@ public class MeetingSchedulerView extends LinearLayout {
             R.drawable.select_label_sy, R.drawable.select_label_yiwu,
             R.drawable.select_label_yi, R.drawable.select_label_wuw};
     private final static int START = 0;
-    //最大节数
+    // max showing tables for a day
     public final static int MAX_NUM_IN_DAY = 15;
-    //显示到星期几
+    // max showing days for a week
     public final static int WEEKNUM = 7;
-    /**
-     * 单个View高度
-     */
     private final static int TIME_TABLE_HEIGHT = 50;
-    /**
-     * 线的高度
-     */
     private final static int TIME_TABLE_LINE_HEIGHT = 2;
     private final static int LEFT_TITLE_WIDTH = 20;
     private final static int WEEK_TITLE_HEIGHT = 30;
-    /**
-     * 第一行的星期显示
-     */
     private LinearLayout mHorizontalWeekLayout;
     private LinearLayout mVerticalWeekLaout;
+    // Titles in first line for weekdays to display
     private String[] mWeekTitle = {"Mon", "Tues", "Wedn", "Thur", "Fri", "Sat", "Sun"};
     public static String[] colorStr = new String[50];
     int colorNum = 0;
     private List<MeetingModel> mListTimeTable = new ArrayList<>();
-
     private Context mContext;
 
     public MeetingSchedulerView(Context context) {
@@ -84,7 +74,7 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 横的分界线
+     * Get the horizontal lines for meeting timetable
      *
      * @return
      */
@@ -96,7 +86,7 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 竖向分界线
+     * Get the vertical lines for meeting timetable
      *
      * @return
      */
@@ -107,7 +97,7 @@ public class MeetingSchedulerView extends LinearLayout {
         return line;
     }
 
-
+    // Initialize the meeting timetable for display
     private void initView() {
         removeAllViews();
         mHorizontalWeekLayout = new LinearLayout(getContext());
@@ -115,7 +105,7 @@ public class MeetingSchedulerView extends LinearLayout {
         mVerticalWeekLaout = new LinearLayout(getContext());
         mVerticalWeekLaout.setOrientation(HORIZONTAL);
 
-        //表格
+        // draw the meeting timetable
         for (int i = 0; i <= WEEKNUM; i++) {
             if (i == 0) {
                 layoutLeftNumber();
@@ -132,7 +122,7 @@ public class MeetingSchedulerView extends LinearLayout {
         addView(mVerticalWeekLaout);
     }
 
-
+    // draw the meeting timetable vertical lines
     private View createTableVerticalLine() {
         View l = new View(getContext());
         l.setLayoutParams(new ViewGroup.LayoutParams(TIME_TABLE_LINE_HEIGHT, dip2px(TIME_TABLE_HEIGHT * MAX_NUM_IN_DAY) + (MAX_NUM_IN_DAY - 2) * TIME_TABLE_LINE_HEIGHT));
@@ -140,9 +130,10 @@ public class MeetingSchedulerView extends LinearLayout {
         return l;
     }
 
+    // create a meeting content view and add to root view
     private void layoutContentView(int week) {
         List<MeetingModel> weekClassList = findWeekClassList(week);
-        //添加
+        // add a meeting view
         LinearLayout mLayout = createWeekTimeTableView(weekClassList, week);
         mLayout.setOrientation(VERTICAL);
         mLayout.setLayoutParams(new ViewGroup.LayoutParams((getViewWidth() - dip2px(20)) / WEEKNUM, LayoutParams.MATCH_PARENT));
@@ -151,10 +142,10 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 遍历出星期1~7的课表
-     * 再进行排序
+     * Traverse the timetable of week days
+     *  and reorder the meetings data for display
      *
-     * @param week 星期
+     * @param week week days
      */
 
     private List<MeetingModel> findWeekClassList(int week) {
@@ -175,6 +166,7 @@ public class MeetingSchedulerView extends LinearLayout {
         return list;
     }
 
+    // init the weekday title view
     private void layoutWeekTitleView(int weekNumber) {
         TextView weekText = new TextView(getContext());
         weekText.setTextColor(getResources().getColor(R.color.schedule_text_color));
@@ -188,12 +180,12 @@ public class MeetingSchedulerView extends LinearLayout {
 
 
     private void layoutLeftNumber() {
-        //课表出的0,0格子 空白的
+        // draw a blank at left up corner (0,0)
         TextView mTime = new TextView(mContext);
         mTime.setLayoutParams(new ViewGroup.LayoutParams(dip2px(LEFT_TITLE_WIDTH), dip2px(WEEK_TITLE_HEIGHT)));
         mHorizontalWeekLayout.addView(mTime);
 
-        //绘制1~MAXNUM
+        // draw 1~ MAXNUM
         LinearLayout numberView = new LinearLayout(mContext);
         numberView.setLayoutParams(new ViewGroup.LayoutParams(dip2px(LEFT_TITLE_WIDTH), dip2px(MAX_NUM_IN_DAY * TIME_TABLE_HEIGHT) + MAX_NUM_IN_DAY * 2));
         numberView.setOrientation(VERTICAL);
@@ -205,7 +197,7 @@ public class MeetingSchedulerView extends LinearLayout {
         mVerticalWeekLaout.addView(numberView);
     }
 
-
+    // get the horizontal titles TextView for meeting timetable
     private TextView createNumberView(int j) {
         TextView number = new TextView(getContext());
         number.setLayoutParams(new ViewGroup.LayoutParams(dip2px(LEFT_TITLE_WIDTH), dip2px(TIME_TABLE_HEIGHT)));
@@ -222,11 +214,11 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 绘制空白
+     * draw blank
      *
-     * @param count 数量
-     * @param week  星期
-     * @param start 用着计算下标
+     * @param count counter
+     * @param week  week day
+     * @param start help to calculate index
      */
     private View addBlankView(int count, final int week, final int start) {
         LinearLayout blank = new LinearLayout(getContext());
@@ -237,7 +229,7 @@ public class MeetingSchedulerView extends LinearLayout {
             blank.addView(classView);
             blank.addView(getWeekHorizontalLine());
             final int num = i;
-            //这里可以处理空白处点击添加课表
+            // bond click listener to add a meeting
             classView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -269,36 +261,36 @@ public class MeetingSchedulerView extends LinearLayout {
                     return true;
                 }
             });
-
         }
         return blank;
     }
 
     /**
-     * 星期一到星期天的课表
+     * Meeting schedule from Monday to Sunday
      *
-     * @param weekList 每天的课程列表
-     * @param week     周
+     * @param weekList Daily meeting list
+     * @param week     week day
      */
     private LinearLayout createWeekTimeTableView(List<MeetingModel> weekList, int week) {
         LinearLayout weekTableView = new LinearLayout(getContext());
         weekTableView.setOrientation(VERTICAL);
         int size = weekList.size();
+        // draw all blanks if no data in list
         if (weekList.isEmpty()) {
             weekTableView.addView(addBlankView(MAX_NUM_IN_DAY + 1, week, 0));
         } else {
             for (int i = 0; i < size; i++) {
                 MeetingModel tableModel = weekList.get(i);
                 if (i == 0) {
-                    //添加的0到开始节数的空格
+                    // fill blanks from start to meeting
                     weekTableView.addView(addBlankView(tableModel.getStar_hour() - 7, week, 0));
                     weekTableView.addView(createClassView(tableModel));
                 } else if (weekList.get(i).getStar_hour() - 7 - (weekList.get(i - 1).getEnd_time() - 7) > 0) {
-                    //填充
+                    // fill colorful blank content for the meeting duration
                     weekTableView.addView(addBlankView(weekList.get(i).getStar_hour() - 7 - (weekList.get(i - 1).getEnd_time() - 7), week, weekList.get(i - 1).getEnd_time() - 7));
                     weekTableView.addView(createClassView(weekList.get(i)));
                 }
-                //绘制剩下的空白
+                // draw the remain blanks
                 if (i + 1 == size) {
                     weekTableView.addView(addBlankView(MAX_NUM_IN_DAY - (weekList.get(i).getEnd_time() - 7) + 1, week, weekList.get(i).getEnd_time() - 7));
                 }
@@ -308,9 +300,9 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 获取单个课表View 也可以自定义我这个
+     * Get a single class schedule view by diy style
      *
-     * @param model 数据类型
+     * @param model: data type as MeetingModel
      * @return
      */
     @SuppressWarnings("deprecation")
@@ -318,33 +310,42 @@ public class MeetingSchedulerView extends LinearLayout {
         LinearLayout mTimeTableView = new LinearLayout(getContext());
         mTimeTableView.setOrientation(VERTICAL);
         int num = (model.getEnd_time() - model.getStar_hour());
-        mTimeTableView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dip2px((num + 1) * TIME_TABLE_HEIGHT) + (num + 1) * TIME_TABLE_LINE_HEIGHT));
 
+        // init the showing style as timetable to visualize the meetings
+        mTimeTableView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                dip2px((num + 1) * TIME_TABLE_HEIGHT) + (num + 1) * TIME_TABLE_LINE_HEIGHT));
         TextView mTimeTableNameView = new TextView(getContext());
-        mTimeTableNameView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dip2px((num + 1) * TIME_TABLE_HEIGHT) + (num) * TIME_TABLE_LINE_HEIGHT));
-
+        mTimeTableNameView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                dip2px((num + 1) * TIME_TABLE_HEIGHT) + (num) * TIME_TABLE_LINE_HEIGHT));
         mTimeTableNameView.setTextColor(getContext().getResources().getColor(
                 android.R.color.white));
         mTimeTableNameView.setTextSize(15);
         mTimeTableNameView.setGravity(Gravity.CENTER);
         mTimeTableNameView.setText(model.getName() + "(" + model.getRoom() + ")");
 
+        // init the titles for weekday and horizontal lines
         mTimeTableView.addView(mTimeTableNameView);
         mTimeTableView.addView(getWeekHorizontalLine());
 
+        // init the background color for meetings
         mTimeTableView.setBackgroundDrawable(getContext().getResources()
                 .getDrawable(colors[getColorNum(model.getName())]));
+
+        // bond listener when single clicked
         mTimeTableView.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {    // toast the meeting information for short pressed
                 Toast.makeText(getContext(), model.getName() + " from " + model.getStart_time_str() + " at "
                         + model.getRoom() + "," + model.getVenue(), Toast.LENGTH_LONG).show();
             }
         });
+
+        // when long pressed, come into meeting info fragment and show detailed information
         mTimeTableView.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 MainActivity.setmTitleBarInactive();
+                // fill info fragment content by meeting object
                 MainActivity.meetingInfoFragment.setMeetingModel(model);
                 FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
                 transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
@@ -357,7 +358,7 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 转换dp
+     * transfer dip to pix
      *
      * @param dpValue
      * @return
@@ -367,6 +368,7 @@ public class MeetingSchedulerView extends LinearLayout {
         return (int) (dpValue * scale);
     }
 
+    // set timetable and refresh ui
     public void setTimeTable(List<MeetingModel> mlist) {
         this.mListTimeTable = mlist;
         for (MeetingModel meetingModel : mlist) {
@@ -381,7 +383,8 @@ public class MeetingSchedulerView extends LinearLayout {
     }
 
     /**
-     * 输入课表名循环判断是否数组存在该课表 如果存在输出true并退出循环 如果不存在则存入colorSt[20]数组
+     * Enter the curriculum name loop to determine whether the array exists in the curriculum.
+     * If it exists, output true and exit the loop. If not, store it in the colorSt [20] array
      *
      * @param name
      */
@@ -403,7 +406,7 @@ public class MeetingSchedulerView extends LinearLayout {
 
 
     /**
-     * 获取数组中的课程名
+     * get the name in colorStr array
      *
      * @param name
      * @return

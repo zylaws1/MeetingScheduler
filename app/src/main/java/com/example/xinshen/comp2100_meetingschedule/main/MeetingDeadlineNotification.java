@@ -10,20 +10,18 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-
 import androidx.annotation.RequiresApi;
-
 import com.example.xinshen.comp2100_meetingschedule.R;
 
+// Set deadline reminding notification for meeting
 public class MeetingDeadlineNotification extends Service {
     static Timer timer = null;
 
+    // clean all notification before if necessary
     public static void cleanAllNotification() {
         NotificationManager mn = (NotificationManager) MainActivity.getContext().getSystemService(NOTIFICATION_SERVICE);
         mn.cancelAll();
@@ -33,7 +31,7 @@ public class MeetingDeadlineNotification extends Service {
         }
     }
 
-    //添加通知
+    // add a new notication
     public static void addNotification(int delayTime, String tickerText, String contentTitle, String contentText) {
         Intent intent = new Intent(MainActivity.getContext(), MeetingDeadlineNotification.class);
         intent.putExtra("delayTime", delayTime);
@@ -45,17 +43,17 @@ public class MeetingDeadlineNotification extends Service {
 
 
     public void onCreate() {
-        Log.e("shenxin", "========addNotification create=====");
+        Log.e("shenxin", "on addNotification create");
     }
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    // command call back to add notification
     public int onStartCommand(final Intent intent, int flags, int startId) {
-        long period = 24 * 60 * 60 * 1000; //24小时一个周期
+        long period = 24 * 60 * 60 * 1000; // 24 hours for a period
         int delay = intent.getIntExtra("delayTime", 0);
         if (null == timer) {
             timer = new Timer();
@@ -64,28 +62,30 @@ public class MeetingDeadlineNotification extends Service {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Log.i("shenxin", "Build.VERSION.SDK: " + Build.VERSION.SDK_INT);
+                // check if the sdk version fit and able to do channel notification
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    Log.e("shenxin", "Build.VERSION.SDK: " + Build.VERSION.SDK_INT);
+                    return;
                 }
-                String id = "channel_meetScheduler";//channel的id
-                String description = "Meeting Scheduler Notification channel";//channel的描述信息
-                int importance = NotificationManager.IMPORTANCE_LOW;//channel的重要性
-                NotificationChannel channel = new NotificationChannel(id, description, importance);//生成channel
+                String id = "channel_meetScheduler";    //channel id
+                String description = "Meeting Scheduler Notification channel"; //channel description
+                int importance = NotificationManager.IMPORTANCE_LOW;    // channel importance
+                NotificationChannel channel = new NotificationChannel(id, description, importance); // create channel
                 channel.enableLights(true);
                 channel.enableVibration(true);
 
                 NotificationManager notificationManager = (NotificationManager) MainActivity.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.createNotificationChannel(channel);
+                notificationManager.createNotificationChannel(channel); // bond channel to notificationManager
 
                 Notification.Builder builder = new Notification.Builder(MainActivity.getContext());
-                Intent notificationIntent = new Intent(MainActivity.getContext(), MainActivity.class);//点击跳转位置
+                Intent notificationIntent = new Intent(MainActivity.getContext(), MainActivity.class); // jump position
 
                 PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.getContext(), 0, notificationIntent, 0);
                 builder.setContentIntent(contentIntent);
                 builder.setSmallIcon(R.drawable.icon);
-                builder.setTicker(intent.getStringExtra("tickerText")); //测试通知栏标题
-                builder.setContentText(intent.getStringExtra("contentText")); //下拉通知啦内容
-                builder.setContentTitle(intent.getStringExtra("contentTitle"));//下拉通知栏标题
+                builder.setTicker(intent.getStringExtra("tickerText")); // title
+                builder.setContentText(intent.getStringExtra("contentText")); // drop content
+                builder.setContentTitle(intent.getStringExtra("contentTitle"));// drop title
                 builder.setAutoCancel(true);
                 builder.setDefaults(Notification.DEFAULT_ALL);
                 notificationManager.notify(1, builder.build());
@@ -102,18 +102,27 @@ public class MeetingDeadlineNotification extends Service {
         super.onDestroy();
     }
 
+
+    // Register a notification in system actively
+    // delay : delay time for the notification in ms.
+    // title : notification title.
+    // content : notification content.
     public void startNoti(long delay, final String content, final String title) {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+                // Init a NotificationManager and clean the content;
                 NotificationManager mNotifyMgr = (NotificationManager) MainActivity.getContext().getSystemService(NOTIFICATION_SERVICE);
                 mNotifyMgr.cancelAll();
                 Notification.Builder mBuilder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    String id = "channel_1";
+                // Check if the sdk version able to do channel notification or use lower sdk method.
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // channel way
+                    // register and bond notification in channel
+                    String id = "channel_meetingscheduler";
                     NotificationChannel channel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_HIGH);
                     mNotifyMgr.createNotificationChannel(channel);
+                    // set the content for notification by meeting info
                     mBuilder = new Notification.Builder(MainActivity.getContext(), id)
                             .setCategory(Notification.CATEGORY_EVENT)
                             .setLargeIcon(BitmapFactory.decodeResource(MainActivity.mContext.getResources(), R.drawable.icon))
@@ -122,7 +131,8 @@ public class MeetingDeadlineNotification extends Service {
                             .setContentTitle(title)
                             .setContentText(content)
                             .setAutoCancel(true);
-                } else {
+                } else {     // old fashion way
+                    // set the content for notification by meeting info
                     mBuilder = new Notification.Builder(MainActivity.getContext())
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(title)
@@ -130,6 +140,6 @@ public class MeetingDeadlineNotification extends Service {
                 }
                 mNotifyMgr.notify(1, mBuilder.build());
             }
-        }, delay);
+        }, delay);  //delay time in ms in system to start notification
     }
 }

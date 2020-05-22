@@ -31,12 +31,14 @@ public class SetPreferTimeslotFragment extends Fragment {
 
     @Override
     public void onAttach(@NonNull Context context) {
+        // save the activity when first time attached
         super.onAttach(context);
         mContext = context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // bond the views and controls for the first time initialization
         if (rootview == null) {
             rootview = inflater.inflate(R.layout.fragment_set_own_timeslot_preference, null);
             edtTxt_pref1 = (EditText) rootview.findViewById(R.id.editText_pref_1);

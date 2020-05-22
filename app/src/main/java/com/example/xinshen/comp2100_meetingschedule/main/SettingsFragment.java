@@ -27,6 +27,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // bond the views and controls for initialization
         View view = inflater.inflate(R.layout.activity_setting, null);
         mFeedback = view.findViewById(R.id.layout_feedback);
         mQuickHelp = view.findViewById(R.id.layout_quick_help);

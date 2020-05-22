@@ -16,37 +16,18 @@ public class MeetingModel {
     public static int id_cnt = 0;
     private final static int DEFAULT_ICON = 700041;
     private int icon = DEFAULT_ICON;
-    private int id;
-    private int start_hour;
-    private int start_time_minute;
-    private int end_time;
-    private int day;
-    private String date_str;
-    private String start_time_str = "";
-    private String end_time_str = "";
-    private String name = "";
-    private String description = "";
-    private String room = "";
-    private String venue = "";
-
-
-    public void setDate_str(String date_str) {
-        this.date_str = date_str;
-    }
-
-
-    public int getStart_time_minute() {
-        return start_time_minute;
-    }
-
-    public void setStart_time_minute(int start_time_minute) {
-        this.start_time_minute = start_time_minute;
-    }
-
-
-    public String getDate_str() {
-        return date_str;
-    }
+    private int id; // meeting id
+    private int start_hour; // meeting start hour in integer
+    private int start_time_minute;  // meeting start minute in integer
+    private int end_time;   // meeting end hour in integer
+    private int day;       // meeting start weekday in int (1-7 from Monday to Sunday)
+    private String date_str;    // meeting start date in string
+    private String start_time_str = ""; // meeting start time in string
+    private String end_time_str = "";   // meeting end time in string
+    private String name = "";   // meeting name
+    private String description = "";    // meeting description
+    private String room = "";   // meeting room
+    private String venue = "";  // meeting happening place
 
     public MeetingModel() {
 
@@ -107,6 +88,23 @@ public class MeetingModel {
 //                + ", weeknum=" + venue + "]";
 //    }
 
+    public void setDate_str(String date_str) {
+        this.date_str = date_str;
+    }
+
+    public int getStart_time_minute() {
+        return start_time_minute;
+    }
+
+    public void setStart_time_minute(int start_time_minute) {
+        this.start_time_minute = start_time_minute;
+    }
+
+
+    public String getDate_str() {
+        return date_str;
+    }
+
     public int getId() {
         return id;
     }
@@ -120,7 +118,7 @@ public class MeetingModel {
     }
 
     public int getDay() {
-//        Log.i("sx", "getDay: " + day);
+//        Log.i("shenxin", "getDay: " + day);
         return day;
     }
 
@@ -193,18 +191,22 @@ public class MeetingModel {
         return icon;
     }
 
-
+    // get remain time in ms from now to meeting deadline, to set the deadline notification
+    // return: long : remain meeting reminding time from now to deadline
     @RequiresApi(api = Build.VERSION_CODES.N)
     public long getTimeRemain() {
         long res = -1;
         DateFormat df = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss");
+        // parse the meeting time to long type
         try {
             String time_str = date_str + "-" + start_time_str + ":00 ";
             Log.i("shenxin", "time_str: " + time_str);
+            // calculate the time difference from deadline to current system time
             Date d1 = df.parse(time_str);
             Date d2 = new Date(System.currentTimeMillis());
-            res = d1.getTime() - d2.getTime();//这样得到的差值是微秒级别
+            res = d1.getTime() - d2.getTime();  // get the ms remain time as return value
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return res;
     }

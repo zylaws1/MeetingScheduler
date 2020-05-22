@@ -45,6 +45,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // bond the views and controls for the initialization
         View view = inflater.inflate(R.layout.activity_personal_center, null);
         mInfoModification = view.findViewById(R.id.layout_info_modification);
         mMyMeeting = view.findViewById(R.id.layout_my_meeting);

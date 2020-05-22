@@ -67,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
     protected static MeetingInfoFragment meetingInfoFragment;
     protected static SetPreferTimeslotFragment setPreferTimeslotFragment;
     private OwnProfileFragment ownProfileFragment;
-    private EditOwnUserProfileFragment editOwnUserProfileFragment;
-    private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
     private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = false;
@@ -372,11 +370,6 @@ public class MainActivity extends AppCompatActivity {
     public void editClassProfileDescription(View v) {
         setmTitleBarStyle(false);
         replaceFragment(setPreferTimeslotFragment);
-    }
-
-    public void editUserProfileDescription(View v) {
-        setmTitleBarStyle(false);
-        replaceFragment(editOwnUserProfileFragment);
     }
 
     public void cancelAdd(View v) {

@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+// To get the user feedback
 public class FeedbackActivity extends AppCompatActivity {
 
     ActivityFeedbackBinding mBinding;
@@ -54,11 +56,12 @@ public class FeedbackActivity extends AppCompatActivity {
         initView();
     }
 
+    // Init the view by adding some demo feedback
     private void initView() {
         RecyclerView.LayoutManager manager=new LinearLayoutManager(FeedbackActivity.this);
         mBinding.rvFeedback.setLayoutManager(manager);
         for (int i = 0; i < 10; i++) {
-            Feedback feedback=new Feedback("xiaoming"+i,"这个软件太好用了");
+            Feedback feedback=new Feedback("xiaoming"+i,"This app is awesome!");
             list.add(feedback);
         }
         FeedbackAdapter adapter=new FeedbackAdapter(list);

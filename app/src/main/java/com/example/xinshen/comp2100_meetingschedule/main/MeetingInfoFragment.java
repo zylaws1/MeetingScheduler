@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 
+
+// Fragment to show detailed meeting information
 public class MeetingInfoFragment extends Fragment {
 
     private static final String TAG = "shenxin";
@@ -36,12 +38,14 @@ public class MeetingInfoFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        // save the activity when first time attached
         base_activity = getActivity();
         Log.i(TAG, "onAttach: context" + base_activity);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // bond the views and controls for the first time initialization
         if (root_view == null) {
             root_view = inflater.inflate(R.layout.activity_meeting_info, null);
             button_exit = (Button) root_view.findViewById(R.id.button_exit_info);
@@ -54,10 +58,12 @@ public class MeetingInfoFragment extends Fragment {
             meet_time = (TextView) root_view.findViewById(R.id.textView_time);
             meet_icon = (ImageView) root_view.findViewById(R.id.imageView_meeting_icon);
         }
+        // Fill the content according to the chosen way from coming fragment
         if (touched_id != -1)
             setMeetingInfo(touched_id);
         else
             setMeetingInfo(meeting_obj);
+        // Make a copy to mainactivity public param_model in order for quick share by token
         MainActivity.param_model.setName(meet_name.getText().toString());
         MainActivity.param_model.setRoom(meet_room.getText().toString());
         MainActivity.param_model.setDescription(meet_description.getText().toString());
@@ -75,17 +81,19 @@ public class MeetingInfoFragment extends Fragment {
         return root_view;
     }
 
+    // set filling method by user touched id from listview
     public void setTouched_id(int touched_id) {
         this.touched_id = touched_id;
     }
 
+    // fill the content meeting information by id
     public void setMeetingInfo(int i) {
         MainActivity m = (MainActivity) base_activity;
         if (base_activity == null) Log.i(TAG, "null base_activity");
         if (m.comingMeetingsFragment == null) Log.i(TAG, "null ComingMeetingsFragment");
         if (m.comingMeetingsFragment.meetings_list == null) Log.i(TAG, "null meetings_list");
         MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(i);
-//        if (obj == null) Log.i(TAG, "null obj");
+//      if (obj == null) Log.i(TAG, "null obj");
         meet_icon.setImageResource(obj.getIcon());
         meet_name.setText(obj.getName());
         meet_room.setText(obj.getRoom());
@@ -95,10 +103,12 @@ public class MeetingInfoFragment extends Fragment {
         meet_time.setText(obj.getStart_time_str());
     }
 
+    // set filling method by MeetingModel object parameter
     public void setMeetingModel(MeetingModel model) {
         this.meeting_obj = model;
     }
 
+    // fill the content meeting information by MeetingModel object
     public void setMeetingInfo(MeetingModel obj) {
         //Log.i(TAG, "setInfo obj name:" + obj.getName());
         meet_icon.setImageResource(obj.getIcon());

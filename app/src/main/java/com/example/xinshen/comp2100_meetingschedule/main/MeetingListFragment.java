@@ -6,42 +6,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.fragment.app.Fragment;
-
 import com.example.xinshen.comp2100_meetingschedule.R;
-
 import java.util.ArrayList;
 
 import static com.example.xinshen.comp2100_meetingschedule.main.MainActivity.SCREEN_HEIGHT;
 
 public class MeetingListFragment extends Fragment {
     private static final String TAG = "shenxin";
-    private MeetingsListview lv_coming_meetins;
+    private MeetingsListview lv_meetins;
     public ArrayList<MeetingModel> meetings_list;
     private ScrolledMeetingAdapter meetings_list_adapter;
     private LinearLayout mutil_del_meetings_controls;
     private LinearLayout add_meetings_controls;
 
-
+    // set the meetings list and refresh ui if loaded
     public void setMeetings_list(ArrayList<MeetingModel> meetings_list) {
         this.meetings_list = meetings_list;
         if (meetings_list_adapter != null)
             meetings_list_adapter.notifyDataSetChanged();
     }
 
+    // init coming meetings data from server or mocked local data
     public MeetingListFragment() {
         super();
         meetings_list = MainActivity.instance.getComing_meetings_data();
 //        meetings_list = get_mock_data();
     }
 
+    // init past meetings data from server or mocked local data
     MeetingListFragment(boolean isPast) {
         super();
         meetings_list = MainActivity.instance.getPast_meetings_data();
 //        meetings_list = get_mock_past_data();
     }
 
+    // init meetings list from specific data list for test
     MeetingListFragment(ArrayList<MeetingModel> data) {
         super();
         if (data.size() == 0) {
@@ -51,6 +51,7 @@ public class MeetingListFragment extends Fragment {
         }
     }
 
+    // return the MeetingModel object by meeting name
     public MeetingModel getModelByName(String name) {
         for (int i = 0; i < meetings_list.size(); i++) {
             if (meetings_list.get(i).getName().equals(name))
@@ -59,6 +60,7 @@ public class MeetingListFragment extends Fragment {
         return null;
     }
 
+    // get mocked  local data for test
     static public ArrayList<MeetingModel> get_mock_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "2100 group assigment",
@@ -82,6 +84,7 @@ public class MeetingListFragment extends Fragment {
         return data;
     }
 
+    // get mocked  local data for test
     ArrayList<MeetingModel> get_mock_past_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp2100 group formation",
@@ -93,77 +96,87 @@ public class MeetingListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
+        // bond the views and controls for the first time initialization
         View view = inflater.inflate(R.layout.fragment_meeting_lv, null);
-        lv_coming_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
-        if (meetings_list == null) {
-            Log.i(TAG, "MeetingListFragment onCreateView: meetings_list null");
+        lv_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
+        if (meetings_list == null) {    // reinitialise the meetings_list if the data come from server delayed
+            Log.w(TAG, "MeetingListFragment onCreateView: meetings_list null");
             meetings_list = new ArrayList<>();
         }
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
                 R.layout.scrolled_meetings_listview, meetings_list);
-        if (lv_coming_meetins == null)
-            Log.i(TAG, "MeetingListFragment onCreateView: lv_coming_meetins null");
-        if (meetings_list_adapter == null)
-            Log.i(TAG, "MeetingListFragment onCreateView: meetings_list_adapter null");
-        lv_coming_meetins.setAdapter(meetings_list_adapter);
-        lv_coming_meetins.getLayoutParams().height = (int) (SCREEN_HEIGHT * 0.8);
-        lv_coming_meetins.setOnDeleteListener(new MeetingsListview.OnEditListener() {
+        if (lv_meetins == null)  // reinitialise the lv_meetins if the data come from server delayed
+            Log.e(TAG, "MeetingListFragment onCreateView: lv_coming_meetins null");
+        if (meetings_list_adapter == null)  // reinitialise the meetings_list_adapter if the data come from server delayed
+            Log.e(TAG, "MeetingListFragment onCreateView: meetings_list_adapter null");
+        lv_meetins.setAdapter(meetings_list_adapter);
+        lv_meetins.getLayoutParams().height = (int) (SCREEN_HEIGHT * 0.8);
+        // bond listener for deleting and multi deleting
+        lv_meetins.setOnDeleteListener(new MeetingsListview.OnEditListener() {
             @Override
-            public void onDeletePressed(int index) {
+            public void onDeletePressed(int index) {    //  when delete button clicked, remove the chosen item
 //                Log.i("shenxin", "activity onEdit index:"+index);
                 meetings_list.remove(index);
-                lv_coming_meetins.items_view_ary.remove(index);
+                lv_meetins.items_view_ary.remove(index);
                 MeetingSchedulerFragment.rm_idx_ary.add(index);
+                meetings_list_adapter.notifyDataSetChanged();   // refresh the listview UI
+            }
+
+            @Override
+            public void onMultiDeleted(int[] indexs) {
+                //  when multi delete button clicked, do nothing until press delete all btn
                 meetings_list_adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onMutilEdit(int[] indexs) {
-                //meetings_list.remove(indexs[0]);
-                meetings_list_adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void show_delete_all_btn() {
+            public void show_delete_all_btn() {  // on long pressed show all checkboxes on right side for multi deleting
                 add_meetings_controls = (LinearLayout) getView().findViewById(R.id.add_meetings_controls);
                 mutil_del_meetings_controls = (LinearLayout) getView().findViewById(R.id.mutil_delete_meetings_controls);
+                // change the apply control in bottom
                 add_meetings_controls.setVisibility(View.GONE);
                 mutil_del_meetings_controls.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void hide_delete_all_btn() {
-                if (add_meetings_controls == null) {
+            public void hide_delete_all_btn() {  // when all checkboxes are showing then hide then if touch other places
+                if (add_meetings_controls == null) {        // deactivate the controls for deleting
                     add_meetings_controls = (LinearLayout) getView().findViewById(R.id.add_meetings_controls);
                     mutil_del_meetings_controls = (LinearLayout) getView().findViewById(R.id.mutil_delete_meetings_controls);
                 }
+                // change the apply control in bottom
                 add_meetings_controls.setVisibility(View.VISIBLE);
                 mutil_del_meetings_controls.setVisibility(View.GONE);
             }
         });
-        lv_coming_meetins.bondAdapter(meetings_list_adapter);
+        lv_meetins.bondAdapter(meetings_list_adapter);
         return view;
     }
 
+    // Delete all selected meetings from data list and refresh the list view
+    // return :Integer[] indexes have been deleted from data array
     public Integer[] deleteSelectedMeetings(View v) {
-        Log.i("shenxin", "delete btn: " + lv_coming_meetins.selecting_cbs.size());
-        lv_coming_meetins.isMutilDeleteShown = false;
-        for (int i = lv_coming_meetins.selecting_cbs.size() - 1; i >= 0; i--) {
-            int id = lv_coming_meetins.selecting_cbs.get(i);
+        Log.i("shenxin", "delete btn: " + lv_meetins.selecting_cbs.size());
+        lv_meetins.isMultiDeleteShown = false;
+        // iterate all indexes in array and remove meetings in reverse order
+        for (int i = lv_meetins.selecting_cbs.size() - 1; i >= 0; i--) {
+            int id = lv_meetins.selecting_cbs.get(i);
             if (id < meetings_list.size()) {
                 meetings_list.remove(id);
-                lv_coming_meetins.items_view_ary.remove(id);
+                lv_meetins.items_view_ary.remove(id);
             }
         }
+        // refresh ui list view
         meetings_list_adapter.notifyDataSetChanged();
+        // deactivate the controls for deleting
         if (add_meetings_controls == null) {
             add_meetings_controls = (LinearLayout) getView().findViewById(R.id.add_meetings_controls);
             mutil_del_meetings_controls = (LinearLayout) getView().findViewById(R.id.mutil_delete_meetings_controls);
         }
+        // change the apply control in bottom
         add_meetings_controls.setVisibility(View.VISIBLE);
         mutil_del_meetings_controls.setVisibility(View.GONE);
-        return lv_coming_meetins.selecting_cbs.toArray(new Integer[lv_coming_meetins.selecting_cbs.size()]);
+        // return the indexes have been deleted from data array in type Integer[]
+        return lv_meetins.selecting_cbs.toArray(new Integer[lv_meetins.selecting_cbs.size()]);
     }
 
 }

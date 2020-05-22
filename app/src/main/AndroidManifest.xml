@@ -3,8 +3,8 @@
     package="com.example.xinshen.comp2100_meetingschedule">
 
     <application
-        android:allowBackup="true"
         android:name=".MeetingApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/meetings_ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/meetings_ic_launcher_round"
@@ -34,36 +34,25 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".main.SearchActivity">
-        </activity>
-        <activity
-            android:name=".main.MeetingInfoActivity">
-        </activity>
-        <activity
-            android:name=".main.WelcomeActivity">
+        <activity android:name=".main.SearchActivity"></activity>
+        <activity android:name=".main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".main.FeedbackActivity">
-        </activity>
-        <activity
-            android:name=".main.AboutActivity">
-        </activity>
+        <activity android:name=".main.FeedbackActivity"></activity>
+        <activity android:name=".main.AboutActivity"></activity>
 
-        <activity
-            android:name=".main.QuickHelpActivity">
-        </activity>
+        <activity android:name=".main.QuickHelpActivity"></activity>
 
-        <activity
-            android:name=".ui.login.RegisterActivity">
-        </activity>
+        <activity android:name=".ui.login.RegisterActivity"></activity>
 
-        <service android:enabled="true" android:name=".main.MeetingDeadlineNotification" android:process="system"></service>
+        <service
+            android:name=".main.MeetingDeadlineNotification"
+            android:enabled="true"
+            android:process="system"></service>
     </application>
 
 </manifest>
