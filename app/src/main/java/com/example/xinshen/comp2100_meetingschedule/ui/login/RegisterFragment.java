@@ -1,12 +1,13 @@
 package com.example.xinshen.comp2100_meetingschedule.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,17 +22,21 @@ import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.hjq.bar.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-public class RegisterActivity extends AppCompatActivity {
-    LoginViewModel viewModel;
+public class RegisterFragment extends Fragment {
+    RegisterViewModel viewModel;
+    LoginViewModel loginViewModel;
     EditText etUserName, etPassword, etConfirmPassword, etAge, etPhone, etEmail;
     RadioGroup rgGender;
     Button btRegister;
@@ -39,31 +44,37 @@ public class RegisterActivity extends AppCompatActivity {
     TextView tvTopRight;
     ImageView ivBack;
     boolean isLogin = false;
+    String userName = null;
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        Intent intent = getIntent();
-        isLogin = intent.getBooleanExtra("isLogin", false);
-        String userName = null;
-        if (isLogin) {
-            userName = intent.getStringExtra("userName");
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.activity_register,null);
         viewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+                .get(RegisterViewModel.class);
+        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
-        etUserName=findViewById(R.id.et_register_username);
-        etPassword=findViewById(R.id.et_register_password);
-        etConfirmPassword=findViewById(R.id.et_confirm_password);
-        rgGender=findViewById(R.id.rg_gender);
-        etAge=findViewById(R.id.et_age);
-        etPhone=findViewById(R.id.et_phone);
-        etEmail=findViewById(R.id.et_email);
-        btRegister=findViewById(R.id.btn_register);
-        tvTopTitle = findViewById(R.id.top_title);
-        tvTopRight = findViewById(R.id.tv_right);
-        ivBack = findViewById(R.id.iv_back);
+        loginViewModel.getLoginResult();
+        loginViewModel.getLoginResult().observe(getActivity(), new Observer<LoginResult>() {
+            @Override
+            public void onChanged(LoginResult loginResult) {
+                if (loginResult.getSuccess() != null) {
+                    isLogin = true;
+                    userName = loginResult.getSuccess().getDisplayName();
+                }
+            }
+        });
+        etUserName=view.findViewById(R.id.et_register_username);
+        etPassword=view.findViewById(R.id.et_register_password);
+        etConfirmPassword=view.findViewById(R.id.et_confirm_password);
+        rgGender=view.findViewById(R.id.rg_gender);
+        etAge=view.findViewById(R.id.et_age);
+        etPhone=view.findViewById(R.id.et_phone);
+        etEmail=view.findViewById(R.id.et_email);
+        btRegister=view.findViewById(R.id.btn_register);
+        tvTopTitle = view.findViewById(R.id.top_title);
+        tvTopRight = view.findViewById(R.id.tv_right);
+        ivBack = view.findViewById(R.id.iv_back);
         if (isLogin) {
             UserInfo info = viewModel.query(userName);
             if (info != null) {
@@ -73,11 +84,11 @@ public class RegisterActivity extends AppCompatActivity {
                 tvTopRight.setVisibility(View.GONE);
                 tvTopTitle.setVisibility(View.VISIBLE);
                 ivBack.setVisibility(View.VISIBLE);
-                tvTopTitle.setText(getApplication().getString(R.string.user_info_modification));
+                tvTopTitle.setText(getResources().getString(R.string.user_info_modification));
                 ivBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        finish();
+                        getFragmentManager().popBackStack();
                     }
                 });
             }
@@ -87,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
             ivBack.setVisibility(View.GONE);
         }
 
-        viewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
+        viewModel.getLoginFormState().observe(getActivity(), new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
                 if (loginFormState == null) {
@@ -115,7 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+        viewModel.getLoginResult().observe(getActivity(), new Observer<LoginResult>() {
             @Override
             public void onChanged(@Nullable LoginResult loginResult) {
                 if (loginResult == null) {
@@ -136,10 +147,8 @@ public class RegisterActivity extends AppCompatActivity {
                     EventBus.getDefault().post(event);
 
                 }
-                setResult(Activity.RESULT_OK);
-
                 //Complete and destroy login activity once successful
-                finish();
+                getFragmentManager().popBackStack();
             }
         });
 
@@ -198,16 +207,17 @@ public class RegisterActivity extends AppCompatActivity {
                 if (isLogin) {
                     boolean result = viewModel.update(info);
                     if (result) {
-                        showToast(getApplication().getString(R.string.update_ok));
+                        showToast(getResources().getString(R.string.update_ok));
                     } else {
-                        showToast(getApplication().getString(R.string.update_error));
+                        showToast(getResources().getString(R.string.update_error));
                     }
-                    finish();
+                    getFragmentManager().popBackStack();
                 } else {
                     viewModel.regiester(info);
                 }
             }
         });
+        return view;
     }
 
     public void setEditTextEnable(UserInfo info, boolean isEnable) {
@@ -237,16 +247,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        SpManager.getInstance(getApplicationContext()).setUserName(model.getDisplayName(),true);
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        SpManager.getInstance(getContext()).setUserName(model.getDisplayName(),true);
+        Toast.makeText(getContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
     private void showFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 
     private void showToast(String info) {
-        Toast.makeText(getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -45,6 +45,7 @@
     <string name="quick_help">Quick help</string>
     <string name="about_meeting">About meeting</string>
     <string name="sign_out">Sign out</string>
+    <string name="login">Login</string>
 
     <string name="app_version">Meeting SchedulerV1.0</string>
     <string name="app_copyright">Copyright © 2020</string>

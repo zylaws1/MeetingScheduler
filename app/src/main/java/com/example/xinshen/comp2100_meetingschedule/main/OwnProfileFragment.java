@@ -11,13 +11,14 @@ import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
-import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginActivity;
-import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterActivity;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import com.example.xinshen.comp2100_meetingschedule.R;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
     RelativeLayout mMyTimeslotPreference;
     boolean isLogin;
     String userName;
+    LoginFragment loginFragment;
+    RegisterFragment registerFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +67,8 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
         mMyTimeslotPreference.setOnClickListener(this);
         mTvUser.setOnClickListener(this);
         mTvLogin.setOnClickListener(this);
+        loginFragment = new LoginFragment();
+        registerFragment = new RegisterFragment();
         userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         if (userName != null) {
             isLogin = true;
@@ -81,19 +86,21 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()) {
             case R.id.tv_login:
-                EventBus.getDefault().register(this);
-                intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                FragmentManager fraManager = getFragmentManager() ;
+                FragmentTransaction transaction = fraManager.beginTransaction();
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.main_linear, loginFragment);
+                transaction.commit();
                 break;
             case R.id.layout_info_modification:
                 if (isLogin) {
-                    intent = new Intent(getActivity(), RegisterActivity.class);
-                    intent.putExtra("isLogin", isLogin);
-                    intent.putExtra("userName", userName);
-                    startActivity(intent);
+                    FragmentManager fraManager1 = getFragmentManager() ;
+                    FragmentTransaction transaction1 = fraManager1.beginTransaction();
+                    transaction1.addToBackStack(null);
+                    transaction1.replace(R.id.main_linear, loginFragment);
+                    transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));
                 }
@@ -104,9 +111,9 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.layout_timeslot_preference:
                 MainActivity.setmTitleBarInactive();
-                FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
-                transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
-                transaction.commit();
+                FragmentTransaction transaction2 = MainActivity.mFraManager.beginTransaction();
+                transaction2.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
+                transaction2.commit();
                 break;
             default:
                 break;

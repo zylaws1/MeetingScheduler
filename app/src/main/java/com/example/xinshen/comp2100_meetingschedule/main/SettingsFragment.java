@@ -1,20 +1,15 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
@@ -24,6 +19,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mQuickHelp;
     RelativeLayout mAboutMeeting;
     RelativeLayout mSignOut;
+    private QuickHelpFragment quickHelpFragment;
+    private AboutFragment aboutFragment;
+    private FeedbackFragment feedbackFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,24 +35,35 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         mQuickHelp.setOnClickListener(this);
         mAboutMeeting.setOnClickListener(this);
         mSignOut.setOnClickListener(this);
+        quickHelpFragment = new QuickHelpFragment();
+        aboutFragment = new AboutFragment();
+        feedbackFragment = new FeedbackFragment();
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = null;
         switch (v.getId()) {
             case R.id.layout_about_meeting:
-                intent = new Intent(getActivity(), AboutActivity.class);
-                startActivity(intent);
+                FragmentManager fraManager = getFragmentManager() ;
+                FragmentTransaction transaction = fraManager.beginTransaction();
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.main_linear, aboutFragment);
+                transaction.commit();
                 break;
             case R.id.layout_feedback:
-                intent = new Intent(getActivity(), FeedbackActivity.class);
-                startActivity(intent);
+                FragmentManager fraManager1 = getFragmentManager() ;
+                FragmentTransaction transaction1 = fraManager1.beginTransaction();
+                transaction1.addToBackStack(null);
+                transaction1.replace(R.id.main_linear, feedbackFragment);
+                transaction1.commit();
                 break;
             case R.id.layout_quick_help:
-                intent = new Intent(getActivity(), QuickHelpActivity.class);
-                startActivity(intent);
+                FragmentManager fraManager2 = getFragmentManager() ;
+                FragmentTransaction transaction2 = fraManager2.beginTransaction();
+                transaction2.addToBackStack(null);
+                transaction2.replace(R.id.main_linear, quickHelpFragment);
+                transaction2.commit();
                 break;
             case R.id.layout_sign_out:
                 String userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
