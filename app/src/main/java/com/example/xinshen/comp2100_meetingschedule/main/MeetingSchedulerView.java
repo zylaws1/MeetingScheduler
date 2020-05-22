@@ -168,7 +168,7 @@ public class MeetingSchedulerView extends LinearLayout {
         Collections.sort(list, new Comparator<MeetingModel>() {
             @Override
             public int compare(MeetingModel o1, MeetingModel o2) {
-                return o1.getStar_time() - o2.getStar_time();
+                return o1.getStar_hour() - o2.getStar_hour();
             }
         });
 
@@ -261,7 +261,7 @@ public class MeetingSchedulerView extends LinearLayout {
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {//添加取消
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                   return;
+                                    return;
                                 }
                             })
                             .create();
@@ -291,16 +291,16 @@ public class MeetingSchedulerView extends LinearLayout {
                 MeetingModel tableModel = weekList.get(i);
                 if (i == 0) {
                     //添加的0到开始节数的空格
-                    weekTableView.addView(addBlankView(tableModel.getStar_time(), week, 0));
+                    weekTableView.addView(addBlankView(tableModel.getStar_hour() - 7, week, 0));
                     weekTableView.addView(createClassView(tableModel));
-                } else if (weekList.get(i).getStar_time() - weekList.get(i - 1).getEnd_time() > 0) {
+                } else if (weekList.get(i).getStar_hour() - 7 - (weekList.get(i - 1).getEnd_time() - 7) > 0) {
                     //填充
-                    weekTableView.addView(addBlankView(weekList.get(i).getStar_time() - weekList.get(i - 1).getEnd_time(), week, weekList.get(i - 1).getEnd_time()));
+                    weekTableView.addView(addBlankView(weekList.get(i).getStar_hour() - 7 - (weekList.get(i - 1).getEnd_time() - 7), week, weekList.get(i - 1).getEnd_time() - 7));
                     weekTableView.addView(createClassView(weekList.get(i)));
                 }
                 //绘制剩下的空白
                 if (i + 1 == size) {
-                    weekTableView.addView(addBlankView(MAX_NUM_IN_DAY - weekList.get(i).getEnd_time() + 1, week, weekList.get(i).getEnd_time()));
+                    weekTableView.addView(addBlankView(MAX_NUM_IN_DAY - (weekList.get(i).getEnd_time() - 7) + 1, week, weekList.get(i).getEnd_time() - 7));
                 }
             }
         }
@@ -317,7 +317,7 @@ public class MeetingSchedulerView extends LinearLayout {
     private View createClassView(final MeetingModel model) {
         LinearLayout mTimeTableView = new LinearLayout(getContext());
         mTimeTableView.setOrientation(VERTICAL);
-        int num = (model.getEnd_time() - model.getStar_time());
+        int num = (model.getEnd_time() - model.getStar_hour());
         mTimeTableView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dip2px((num + 1) * TIME_TABLE_HEIGHT) + (num + 1) * TIME_TABLE_LINE_HEIGHT));
 
         TextView mTimeTableNameView = new TextView(getContext());
@@ -338,7 +338,7 @@ public class MeetingSchedulerView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), model.getName() + " from " + model.getStart_time_str() + " at "
-                        +model.getRoom() + "," + model.getVenue(), Toast.LENGTH_LONG).show();
+                        + model.getRoom() + "," + model.getVenue(), Toast.LENGTH_LONG).show();
             }
         });
         mTimeTableView.setOnLongClickListener(new OnLongClickListener() {
@@ -376,7 +376,7 @@ public class MeetingSchedulerView extends LinearLayout {
         invalidate();
     }
 
-    public void refreshTable(){
+    public void refreshTable() {
         setTimeTable(mListTimeTable);
     }
 

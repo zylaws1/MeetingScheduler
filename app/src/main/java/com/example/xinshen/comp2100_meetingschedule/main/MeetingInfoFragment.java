@@ -66,7 +66,7 @@ public class MeetingInfoFragment extends Fragment {
         MainActivity.param_model.setStart_time_str(time_str);
         int hour = Integer.parseInt(time_str.substring(0, time_str.indexOf(":")));
         int minute = Integer.parseInt(time_str.substring(time_str.indexOf(":") + 1));
-        MainActivity.param_model.setStart_time_hour(hour);
+        MainActivity.param_model.setStart_hour(hour);
         MainActivity.param_model.setStart_time_minute(minute);
         MainActivity.param_model.setVenue(meet_venue.getText().toString());
         String date_str = meet_date.getText().toString();

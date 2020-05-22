@@ -16,21 +16,30 @@ import java.util.ArrayList;
 import static com.example.xinshen.comp2100_meetingschedule.main.MainActivity.SCREEN_HEIGHT;
 
 public class MeetingListFragment extends Fragment {
+    private static final String TAG = "shenxin";
     private MeetingsListview lv_coming_meetins;
     public ArrayList<MeetingModel> meetings_list;
-    public ScrolledMeetingAdapter meetings_list_adapter;
-
+    private ScrolledMeetingAdapter meetings_list_adapter;
     private LinearLayout mutil_del_meetings_controls;
     private LinearLayout add_meetings_controls;
 
-    public MeetingListFragment() {
-        super();
-        meetings_list = new ArrayList<>();
+
+    public void setMeetings_list(ArrayList<MeetingModel> meetings_list) {
+        this.meetings_list = meetings_list;
+        if (meetings_list_adapter != null)
+            meetings_list_adapter.notifyDataSetChanged();
     }
 
-    MeetingListFragment(int i) {
+    public MeetingListFragment() {
         super();
-        meetings_list = get_mock_data();
+        meetings_list = MainActivity.instance.getComing_meetings_data();
+//        meetings_list = get_mock_data();
+    }
+
+    MeetingListFragment(boolean isPast) {
+        super();
+        meetings_list = MainActivity.instance.getPast_meetings_data();
+//        meetings_list = get_mock_past_data();
     }
 
     MeetingListFragment(ArrayList<MeetingModel> data) {
@@ -87,8 +96,16 @@ public class MeetingListFragment extends Fragment {
 //        Log.i("shenxin", "ssxx2 meetingLv onCreateView");
         View view = inflater.inflate(R.layout.fragment_meeting_lv, null);
         lv_coming_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
+        if (meetings_list == null) {
+            Log.i(TAG, "MeetingListFragment onCreateView: meetings_list null");
+            meetings_list = new ArrayList<>();
+        }
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
                 R.layout.scrolled_meetings_listview, meetings_list);
+        if (lv_coming_meetins == null)
+            Log.i(TAG, "MeetingListFragment onCreateView: lv_coming_meetins null");
+        if (meetings_list_adapter == null)
+            Log.i(TAG, "MeetingListFragment onCreateView: meetings_list_adapter null");
         lv_coming_meetins.setAdapter(meetings_list_adapter);
         lv_coming_meetins.getLayoutParams().height = (int) (SCREEN_HEIGHT * 0.8);
         lv_coming_meetins.setOnDeleteListener(new MeetingsListview.OnEditListener() {

@@ -15,15 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
-//import android.support.design.widget.BottomNavigationView;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentTransaction;
-//import android.support.v7.app.AlertDialog;
-//import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -46,11 +38,19 @@ import androidx.multidex.MultiDex;
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.style.TitleBarLightStyle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,16 +60,6 @@ public class MainActivity extends AppCompatActivity {
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
     private static TitleBar mTitleBar;
-
-    public MeetingListFragment getComingMeetingsFragment() {
-        return comingMeetingsFragment;
-    }
-
-    //    private ImageView bgImgView;
-//  private Cursor cursor;
-//    private DatabaseHelper mDbHelper;
-//    public ContextManager mCtxManager;
-//    private TableLayout mCategoryTable;
     protected MeetingListFragment comingMeetingsFragment;
     private MeetingListFragment pastMeetingsFragment;
     private SettingsFragment settingsFragment;
@@ -80,27 +70,33 @@ public class MainActivity extends AppCompatActivity {
     private EditOwnUserProfileFragment editOwnUserProfileFragment;
     private RadioGroup main_radiogroup;
     private FragmentTransaction transaction;
-    protected static FragmentManager mFraManager;
     private MeetingSchedulerFragment mScheduleFragment;
-    private boolean chosen_coming_meetings = true;
+    private boolean chosen_coming_meetings = false;
     private OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private static int titile_bar_color;
+    protected static FragmentManager mFraManager;
+    protected static MeetingModel param_model = new MeetingModel();
+    protected static MainActivity instance = null;
     protected static Context mContext;
-    MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
-    public static MeetingModel param_model = new MeetingModel();
-    public static MainActivity instance = null;
-//    private boolean first_loaded = true;
-//    private int postTarget = 0;
-//    private static final int SELECT_PIC_BY_PICK_PHOTO = 2;
-//    private Button postStatusSaveBtn;
-//    private AlertDialog selfdialog;
-//    private String usernamestr;
-//    private String passwordstr;
-//    private ProgressDialog progressdialog;
-//    public static boolean hasLogged = false;
-//    private Thread mDbReadInThread;
-//    private Thread mLoginStatusThread;
+
+    private MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private ArrayList<MeetingModel> coming_meetings_data;
+    private ArrayList<MeetingModel> past_meetings_data;
+
+
+    public ArrayList<MeetingModel> getComing_meetings_data() {
+        return coming_meetings_data;
+    }
+
+    public ArrayList<MeetingModel> getPast_meetings_data() {
+        return past_meetings_data;
+    }
+
+    public MeetingListFragment getComingMeetingsFragment() {
+        return comingMeetingsFragment;
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -139,40 +135,6 @@ public class MainActivity extends AppCompatActivity {
     public static Context getContext() {
         return mContext;
     }
-//
-//    private void showPostDialog() {
-//        AlertDialog.Builder postBuilder = new AlertDialog.Builder(this);
-//        postBuilder.setTitle(R.string.new_post_question);
-//        postBuilder.setIcon(android.R.drawable.ic_media_play);
-//        postBuilder.setSingleChoiceItems(
-//                new String[]{"Image", "Video", "Status", "Album"}, 0,
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        postTarget = which;
-//                        //System.out.println("target = " + postTarget);
-//                    }
-//                });
-//        postBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int i) {
-//                dialog.dismiss();
-//            }
-//        });
-//        postBuilder.setPositiveButton("Post", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int i) {
-//                //System.out.println("zyl postTarget = " + postTarget);
-//                if (postTarget == 0 || postTarget == 1 || postTarget == 3) {
-//                    pickPhoto();
-//                } else {
-//                    postStatus();
-//                }
-//            }
-//        });
-//        AlertDialog dialog = postBuilder.create();
-//        dialog.show();
-//    }
-//
 
     private void getDevicedInfo() {
         DisplayMetrics dMetrics = new DisplayMetrics();
@@ -188,41 +150,46 @@ public class MainActivity extends AppCompatActivity {
         getDevicedInfo();
         mContext = getApplicationContext();
         instance = this;
-//        mCtxManager = ContextManager.getInstance();
-//        //Create public class single instance in context and save them in ContextManager
-//        mCtxManager.createInstances(getApplicationContext());
-//        //mCtxManager.initInstances(getApplicationContext());
-//        mDbHelper = mCtxManager.getDbHelper();
-//        mDbReadInThread = new Thread(new Runnable() {is
-//            @Override
-//            public void run() {
-//                // Power.get_zysj_gpio_value(4);
-//                mCtxManager.readRegisteredDatas();
-//            }
-//        });
-//
-//        mLoginStatusThread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(2100);
-//                    if (!hasLogged) {
-//                        Log.d(TAG, "ready to loop uiThread");
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                logOnEvent(getCurrentFocus());
-//                            }
-//                        });
-//                    }
-//                } catch (Exception e) {
-//                    e.getStackTrace();
-//                }
-//            }
-//        });
-//        mDbReadInThread.start();
-//        mLoginStatusThread.start();
         initViews();
+//        FirebaseApp.initializeApp(this);
+        ValueEventListener dataListener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the meetings data
+//                Log.i(TAG, "server data str:" + str);
+                Object size_coming = dataSnapshot.child("size_coming").getValue();
+                if (size_coming == null) return;
+                int size_come = Integer.parseInt(size_coming.toString());
+                Object size_past = dataSnapshot.child("size_past").getValue();
+                if (size_past == null) return;
+                int size_past_int = Integer.parseInt(size_past.toString());
+                coming_meetings_data = new ArrayList<>();
+                past_meetings_data = new ArrayList<>();
+                MeetingModel meet;
+                for (int i = 0; i < size_come; i++) {
+                    meet = dataSnapshot.child("coming_" + i).getValue(MeetingModel.class);
+                    coming_meetings_data.add(meet);
+                }
+                for (int i = 0; i < size_past_int; i++) {
+                    meet = dataSnapshot.child("past_" + i).getValue(MeetingModel.class);
+                    past_meetings_data.add(meet);
+                }
+                Log.i(TAG, "onDataChange past_meetings_data.size():" + past_meetings_data.size());
+                Log.i(TAG, "onDataChange: recieve data at:" + System.currentTimeMillis());
+                comingMeetingsFragment.setMeetings_list(coming_meetings_data);
+                pastMeetingsFragment.setMeetings_list(past_meetings_data);
+                mTitleBar.getRightView().performClick();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mDatabase.addValueEventListener(dataListener);
     }
 
 
@@ -283,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        initFragment();
         botm_navigation = (BottomNavigationView) findViewById(R.id.navigation);
         botm_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         botm_navigation.setAlpha(1f);
@@ -297,7 +263,6 @@ public class MainActivity extends AppCompatActivity {
             public void onLeftClick(View v) {
                 setActiveCategory(true);
                 replaceMeetingsFragment(true);
-
                 chosen_coming_meetings = true;
             }
 
@@ -314,11 +279,12 @@ public class MainActivity extends AppCompatActivity {
                 setActiveCategory(false);
             }
         };
-        //mCategoryTable = (TableLayout) findViewById(R.id.selector_category_table);
         initFragment();
+        //mCategoryTable = (TableLayout) findViewById(R.id.selector_category_table);
         setmTitleBarStyle(true);
         titile_bar_color = getResources().getColor(R.color.colorBottomNavigation);
         botm_navigation.setSelectedItemId(R.id.navigation_meeting_lists);
+
     }
 
     void setmTitleBarStyle(boolean isHomepage) {
@@ -367,82 +333,6 @@ public class MainActivity extends AppCompatActivity {
             mTitleBar.setRightSize(1, 25);
             mTitleBar.setRightColor(Color.LTGRAY);
         }
-    }
-
-    private void logOnEvent(View view) {
-//        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-//        view = inflater.inflate(R.layout.login, null);
-//
-//        final EditText username = (EditText) view.findViewById(R.id.txt_username);
-//        final EditText password = (EditText) view.findViewById(R.id.txt_password);
-//        username.setText("username");
-//        password.setText("password");
-//        AlertDialog.Builder ad = new AlertDialog.Builder(MainActivity.this);
-//        ad.setView(view);
-//        ad.setTitle("Lon in");
-//        selfdialog = ad.create();
-//        selfdialog.setButton(DialogInterface.BUTTON_POSITIVE, "Log in", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                usernamestr = username.getText().toString();
-//                passwordstr = password.getText().toString();
-//                //mock logging in
-//                progressdialog = ProgressDialog.show(MainActivity.this, "please waiting...", "Logging in...");
-//                refreshHandler.sleep(999);
-//                //dialog.cancel();
-//            }
-//        });
-//        selfdialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                selfdialog.cancel();
-//            }
-//        });
-//        selfdialog.show();
-    }
-
-    private RefreshHandler refreshHandler = new RefreshHandler();
-
-    //handler
-    class RefreshHandler extends Handler {
-
-        @Override
-        public void handleMessage(Message msg) {
-//            Log.d(TAG, "handleMessage: " + msg.what);
-//            try {
-//                // String host ="/anndroiduser.do?user=login";
-//
-//                // Bundle flag = UserDataServiceHelper.login(uri, usernamestr, passwordstr);
-//
-//                if (usernamestr.equals("username") && passwordstr.equals("password")) {
-//                    Toast.makeText(MainActivity.this, "Log in successful", Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                    // intent.putExtras(flag);
-//                    MainActivity.this.startActivity(intent);
-//                    hasLogged = true;
-//                } else {
-//                    Toast.makeText(MainActivity.this, "Log in fails: wrong password", Toast.LENGTH_SHORT).show();
-//                    //view.findViewById(R.id.txt_loginerror).setVisibility(View.VISIBLE);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                progressdialog.dismiss();
-//            }
-        }
-
-        public void sleep(long delayMillis) {
-            this.removeMessages(0);
-            sendMessageDelayed(obtainMessage(0), delayMillis);
-        }
-
-    }
-
-    public void savePostStatus(View v) {
-        //first_loaded = true;
-        Toast.makeText(MainActivity.this, "Status saved!", Toast.LENGTH_SHORT).show();
-        setmTitleBarStyle(false);
-        replaceFragment(comingMeetingsFragment);
     }
 
     public void saveEditOwnUserDescription(View v) {
@@ -540,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
         String time_str = param_model.getStart_time_str();
         int date = param_model.getDay();
         if (date == 0) date = 7;
-        int hour = param_model.getStar_time();
+        int hour = param_model.getStar_hour();
         ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         // 创建普通字符型ClipData
         ClipData mClipData = ClipData.newPlainText("token", "&_meetS:" + name + "," + room + ","
@@ -564,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
             //此处是TEXT文本信息
             if (item.getText() != null) {
                 final String str = item.getText().toString();
-                Log.i(TAG, "getClipTxt: " + str);
+//                Log.i(TAG, "getClipTxt: " + str);
                 if (str.length() > 8 && str.substring(0, 8).equals("&_meetS:")) {
                     final AlertDialog alert_add = new AlertDialog.Builder(MainActivity.this)
                             .setTitle("Add a new meeting with shared token?")
@@ -595,20 +485,37 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    public void chooseDate(View v) {
-//        addNewMeetingFragment.showPicker(this, v);
-//    }
-//
-//    public void chooseTime(View v) {
-//        addNewMeetingFragment.showPicker(this, v);
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveMeetingsOnServer();
+    }
 
+    private void saveMeetingsOnServer() {
+        int size_coming_meets = comingMeetingsFragment.meetings_list.size();
+        int size_past_meets = pastMeetingsFragment.meetings_list.size();
+        Log.i(TAG, "saveMeetingsOnServer: " + size_coming_meets);
+        mDatabase.child("size_coming").setValue(size_coming_meets);
+        mDatabase.child("size_past").setValue(size_past_meets);
+        for (int i = 0; i < size_coming_meets; i++) {
+            mDatabase.child("coming_" + i).setValue(comingMeetingsFragment.meetings_list.get(i));
+        }
+        for (int i = 0; i < size_past_meets; i++) {
+            mDatabase.child("past_" + i).setValue(pastMeetingsFragment.meetings_list.get(i));
+        }
+        mDatabase.child("get_data").setValue("");
+    }
 
-    //
+    private ArrayList<MeetingModel> load_data_from_firebase() {
+        ArrayList<MeetingModel> data = new ArrayList<>();
+        mDatabase.child("get_data").setValue(Math.random());
+        return data;
+    }
+
     private void initFragment() {
-
-        comingMeetingsFragment = new MeetingListFragment(0);
-        pastMeetingsFragment = new MeetingListFragment(new ArrayList<MeetingModel>());
+        load_data_from_firebase();
+        comingMeetingsFragment = new MeetingListFragment();
+        pastMeetingsFragment = new MeetingListFragment(true);
         settingsFragment = new SettingsFragment();
         ownProfileFragment = new OwnProfileFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "405443563254",
+    "firebase_url": "https://comp2100-meetingscheduler.firebaseio.com",
+    "project_id": "comp2100-meetingscheduler",
+    "storage_bucket": "comp2100-meetingscheduler.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:405443563254:android:1106ab4e95b0d32faea6d7",
+        "android_client_info": {
+          "package_name": "com.example.xinshen.comp2100_meetingschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "405443563254-5533cv8dt0ctsnh8tu17n45sbqqlbtkr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUZ3i4FcCV5HRfUMtBzaq33qLTVDEp29A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "405443563254-5533cv8dt0ctsnh8tu17n45sbqqlbtkr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

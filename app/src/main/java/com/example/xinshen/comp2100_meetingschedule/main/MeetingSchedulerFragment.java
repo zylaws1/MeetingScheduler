@@ -37,6 +37,10 @@ public class MeetingSchedulerFragment extends Fragment {
 
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_sheduler, null);
+            mList.clear();
+            if (meetings_list == null) {
+                meetings_list = MainActivity.instance.comingMeetingsFragment.meetings_list;
+            }
             mList.addAll(meetings_list);
             mTimaTableView = (MeetingSchedulerView) rootView.findViewById(R.id.scheduler_timetable_ly);
         }
