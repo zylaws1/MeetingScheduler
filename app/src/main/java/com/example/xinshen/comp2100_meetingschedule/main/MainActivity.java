@@ -486,9 +486,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        saveMeetingsOnServer();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveMeetingsOnServer();
     }
 
     private void saveMeetingsOnServer() {
