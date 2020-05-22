@@ -22,10 +22,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
+/**
+ * Meeting ListView for homepage display
+ * Implements OnGestureListener so tha can detect gesture such as fling to delete, long press to multi delete.
+ * @author Xin Shen, Shaocong Lang
+ */
 public class MeetingsListview extends ListView implements OnGestureListener, View.OnTouchListener {
 
     private static final String TAG = "shenxin";
+    private GestureDetector gestureDetector;
+    private OnEditListener mEditListener;      // edit listener
+    private LongOnClickCallback callback;
+    private View deleteButton;     // delete  button view
+    private View multiDeleteCbs;     // multi delete checkboxes view
+    private ViewGroup itemLayout;   // item to be changed, ViewGroup object
+    public ArrayList<ViewGroup> items_view_ary = new ArrayList<>();
+    private int selectedId;   //chosen item
+    private boolean isDeleteShown;   // is delete button shown flag
+    public boolean isMultiDeleteShown;   // is multi delete button shown flag
+    public HashMap<ViewGroup, View> all_meeting_items = new HashMap<>(); //all meeting items list
+    public ArrayList<Integer> selecting_cbs = new ArrayList<>(); //all meeting items list
 
     public interface LongOnClickCallback {
         public void onLongOnClick();
@@ -33,7 +49,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         public void onClick();
     }
 
-    public interface OnEditListener {       // callback to activity for edit
+    public interface OnEditListener {       // callback to activity for deleting
         void onDeletePressed(int index);
 
         void onMultiDeleted(int[] indexs);
@@ -42,30 +58,6 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
         void hide_delete_all_btn();
     }
-
-    private GestureDetector gestureDetector;
-
-    private OnEditListener mEditListener;      // edit listener
-
-    private LongOnClickCallback callback;
-
-    private View deleteButton;     // delete  button view
-
-    private View multiDeleteCbs;     // multi delete checkboxes view
-
-    private ViewGroup itemLayout;   // item to be changed, ViewGroup object
-
-    public ArrayList<ViewGroup> items_view_ary = new ArrayList<>();
-
-    private int selectedId;   //chosen item
-
-    private boolean isDeleteShown;   // is delete button shown flag
-
-    public boolean isMultiDeleteShown;   // is multi delete button shown flag
-
-    public HashMap<ViewGroup, View> all_meeting_items = new HashMap<>(); //all meeting items list
-
-    public ArrayList<Integer> selecting_cbs = new ArrayList<>(); //all meeting items list
 
     public void setCallback(LongOnClickCallback callback) {
         this.callback = callback;
@@ -102,7 +94,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     public MeetingsListview(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Log.i(TAG, "MeetingsListview:2 ");
+        Log.i(TAG, "MeetingsListview: 3 params ");
         init();
     }
 
@@ -126,9 +118,11 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         return false;
     }
 
+    //set listener when single fling gesture
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         if (getChildCount() == 0) return false;
+        // show single delete button on right for fling gesture
         if (!isMultiDeleteShown && !isDeleteShown && Math.abs(velocityX) > Math.abs(velocityY)) {
             deleteButton = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_delete_btn, null);
             deleteButton.setOnClickListener(new OnClickListener() {
@@ -141,14 +135,17 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
                 }
             });
             itemLayout = (ViewGroup) getChildAt(selectedId - getFirstVisiblePosition());
+            // create delete button view
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT
             );
             params.setMargins(20, 45, 3, 45);
+            // add button view at selected line
             itemLayout.addView(deleteButton, params);
             isDeleteShown = true;
         } else {
+            // remove delete button if touch other place
 //            Log.i("shenxin", "onFling: else");
             if (isDeleteShown)
                 itemLayout.removeView(deleteButton);
@@ -157,9 +154,12 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         return false;
     }
 
+    // show multi deleting checkboxes when long pressed meeting item
     @Override
     public void onLongPress(MotionEvent event) {
+        // return if no meeting items in list
         if (getChildCount() == 0) return;
+        // create a add multi delete checkboxes for all meeting items on normal state
         if (!isMultiDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
@@ -169,11 +169,13 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
                     LayoutParams.MATCH_PARENT
             );
             params.setMargins(20, 45, 3, 45);
+            // loop for init and displaying all the checkboxes
             for (int i = 0; i < child_cnt; i++) {
                 itemLayout = (ViewGroup) getChildAt(i);
                 View multiDeleteCbs = LayoutInflater.from(getContext()).inflate(R.layout.meetings_listview_multi_delete_cb, null);
                 selectedId = i;
                 multiDeleteCbs.setOnClickListener(new OnClickListener() {
+                    //save the index for all selected meeting item for deleting later
                     @Override
                     public void onClick(View view) {
                         if (!selecting_cbs.contains(selectedId))
@@ -183,9 +185,11 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
                 itemLayout.addView(multiDeleteCbs, params);
                 all_meeting_items.put(itemLayout, multiDeleteCbs);
             }
+            // change the main bottom button to deleting mode
             mEditListener.show_delete_all_btn();
             isMultiDeleteShown = true;
         } else {
+            // remove all the deleting checkboxes if already in deleting mode
 //            Log.i("shenxin", "onLongPress: else");
             for (Map.Entry<ViewGroup, View> e : all_meeting_items.entrySet()) {
                 e.getKey().removeView(e.getValue());
@@ -206,16 +210,19 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     }
 
+    //
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
 //        Log.i("shenxin", "onSingleTapUp x y: " + e.getX() + " " + e.getY());
 //        Log.i("shenxin", "onSingleTapUp: " + MainActivity.SCREEN_WIDTH);
         int touched_id = pointToPosition((int) e.getX(), (int) e.getY());
         if (getChildCount() == 0) return false;
+        // remove the single delete button when single tap on single deleting mode
         if (isDeleteShown && selectedId != touched_id) {
             itemLayout.removeView(deleteButton);
             isDeleteShown = false;
         } else if (isMultiDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
+            // remove all delete checkbox views when single tap on multi deleting mode
             for (Map.Entry<ViewGroup, View> ent : all_meeting_items.entrySet()) {
                 ent.getKey().removeView(ent.getValue());
             }
@@ -223,6 +230,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             isMultiDeleteShown = false;
         } else if (!isMultiDeleteShown && !isDeleteShown) {
             Log.i(TAG, "apply onTouch ");
+            // normal mode: transact to meeting detailed fragment for selected meeting item
             MainActivity.setmTitleBarInactive();
             MainActivity.meetingInfoFragment.setTouched_id(touched_id);
             FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
@@ -231,5 +239,4 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         }
         return false;
     }
-
 }

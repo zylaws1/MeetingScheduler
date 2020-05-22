@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Meeting timetable view
- * @author shenxin
+ * @author Xin Shen, Shaocong Lang
  */
 public class MeetingSchedulerView extends LinearLayout {
     /**

@@ -20,12 +20,18 @@ import com.example.xinshen.comp2100_meetingschedule.R;
 
 import java.util.List;
 
+/**
+ * Scroller for meeting ListView
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class ScrolledMeetingAdapter extends ArrayAdapter {
 
     public ScrolledMeetingAdapter(Context context, int resource, List<MeetingModel> objects) {
         super(context, resource, objects);
     }
 
+    // Init the meeting item with parameters
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -49,6 +55,7 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
         return view;
     }
 
+    // Crop the meeting icon to have a round corner
     public static Bitmap getCircleBitmapByShader(Bitmap bitmap, int outWidth, int outHeight, float boarder) {
         int radius;
         int width = bitmap.getWidth();

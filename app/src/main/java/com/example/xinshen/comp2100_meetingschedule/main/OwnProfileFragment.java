@@ -33,6 +33,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * User own profile and login/register fragment
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class OwnProfileFragment extends Fragment implements View.OnClickListener {
     TextView mTvUser;
     TextView mTvLogin;

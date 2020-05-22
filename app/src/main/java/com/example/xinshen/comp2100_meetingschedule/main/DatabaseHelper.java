@@ -6,6 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ *  SQLite Dbhelper for local saving, most functions
+ *   are replaced by Google Firebase online server.
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Meetings_info.db";
 
@@ -18,20 +24,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String USER_COL6 = "email";
     private static final String USER_COL7 = "password";
 
-    private static final String LESSON_TABLE = "LessonTable";
-    private static final String LESSON_COL1 = "lessonID";
-    private static final String LESSON_COL2 = "lessonName";
-    private static final String LESSON_COL3 = "lessonTime";
-    private static final String LESSON_COL4 = "description";
+    private static final String MEETING_TABLE = "MeetingTable";
+    private static final String MEETING_COL1 = "meetingID";
+    private static final String MEETING_COL2 = "meetingName";
+    private static final String MEETING_COL3 = "meetingTime";
+    private static final String MEETING_COL4 = "description";
 
-    private static final String LESSON_OWNER_TABLE = "LessonOwnerTable";
-    private static final String LESSON_OWNER_COL1 = "lessonID";
-    private static final String LESSON_OWNER_COL2 = "userID";
+    private static final String MEETING_OWNER_TABLE = "MeetingOwnerTable";
+    private static final String MEETING_OWNER_COL1 = "meetingID";
+    private static final String MEETING_OWNER_COL2 = "userID";
 
-    private static final String LESSON_STUDENT_TABLE = "LessonStudentTable";
-    private static final String LESSON_STUDENT_COL1 = "lessonID";
-    private static final String LESSON_STUDENT_COL2 = "studentID";
-    private static final String LESSON_STUDENT_COL3 = "score";
+    private static final String MEETING_STUDENT_TABLE = "MeetingStudentTable";
+    private static final String MEETING_STUDENT_COL1 = "meetingID";
+    private static final String MEETING_STUDENT_COL2 = "studentID";
+    private static final String MEETING_STUDENT_COL3 = "score";
 
     private static final String PUBLISH_TABLE = "PublishTable";
     private static final String PUBLISH_COL1 = "publishID";
@@ -56,31 +62,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + USER_COL6 + " CHAR(50) NOT NULL UNIQUE) ";
         db.execSQL(createUserTable);
 
-        String createLessonTable = "CREATE TABLE " + LESSON_TABLE + " ( "
-                + LESSON_COL1 + " CHAR(50) PRIMARY KEY NOT NULL, "
-                + LESSON_COL2 + " CHAR(50) NOT NULL, "
-                + LESSON_COL3 + " CHAR(100) NOT NULL, "
-                + LESSON_COL4 + " TEXT NOT NULL) ";
-        db.execSQL(createLessonTable);
+        String createMeetingTable = "CREATE TABLE " + MEETING_TABLE + " ( "
+                + MEETING_COL1 + " CHAR(50) PRIMARY KEY NOT NULL, "
+                + MEETING_COL2 + " CHAR(50) NOT NULL, "
+                + MEETING_COL3 + " CHAR(100) NOT NULL, "
+                + MEETING_COL4 + " TEXT NOT NULL) ";
+        db.execSQL(createMeetingTable);
 
-        String createLessonOwnerTable = "CREATE TABLE " + LESSON_OWNER_TABLE + " ( "
-                + LESSON_OWNER_COL1 + " INTEGER NOT NULL, "
-                + LESSON_OWNER_COL2 + " INTEGER NOT NULL,"
-                + "PRIMARY KEY(" + LESSON_OWNER_COL1 + "," + LESSON_OWNER_COL2 + "),"
-                + "FOREIGN KEY(" + LESSON_OWNER_COL2 + ") REFERENCES " + USER_TABLE + "(" + USER_COL1 + "),"
-                + "FOREIGN KEY(" + LESSON_OWNER_COL1 + ") REFERENCES " + LESSON_TABLE + "(" + LESSON_COL1 + ")"
+        String createMeetingOwnerTable = "CREATE TABLE " + MEETING_OWNER_TABLE + " ( "
+                + MEETING_OWNER_COL1 + " INTEGER NOT NULL, "
+                + MEETING_OWNER_COL2 + " INTEGER NOT NULL,"
+                + "PRIMARY KEY(" + MEETING_OWNER_COL1 + "," + MEETING_OWNER_COL2 + "),"
+                + "FOREIGN KEY(" + MEETING_OWNER_COL2 + ") REFERENCES " + USER_TABLE + "(" + USER_COL1 + "),"
+                + "FOREIGN KEY(" + MEETING_OWNER_COL1 + ") REFERENCES " + MEETING_TABLE + "(" + MEETING_COL1 + ")"
                 + ")";
-        db.execSQL(createLessonOwnerTable);
+        db.execSQL(createMeetingOwnerTable);
 
-        String createLessonStuTable = "CREATE TABLE " + LESSON_STUDENT_TABLE + " ( "
-                + LESSON_STUDENT_COL1 + " CHAR(50) NOT NULL, "
-                + LESSON_STUDENT_COL2 + " INTEGER NOT NULL, "
-                + LESSON_STUDENT_COL3 + " INTEGER , "
-                + "PRIMARY KEY(" + LESSON_STUDENT_COL1 + "," + LESSON_STUDENT_COL2 + "),"
-                + "FOREIGN KEY(" + LESSON_STUDENT_COL2 + ") REFERENCES " + USER_TABLE + "(" + USER_COL1 + "),"
-                + "FOREIGN KEY(" + LESSON_STUDENT_COL1 + ") REFERENCES " + LESSON_TABLE + "(" + LESSON_COL1 + ")"
+        String createMeetingStuTable = "CREATE TABLE " + MEETING_STUDENT_TABLE + " ( "
+                + MEETING_STUDENT_COL1 + " CHAR(50) NOT NULL, "
+                + MEETING_STUDENT_COL2 + " INTEGER NOT NULL, "
+                + MEETING_STUDENT_COL3 + " INTEGER , "
+                + "PRIMARY KEY(" + MEETING_STUDENT_COL1 + "," + MEETING_STUDENT_COL2 + "),"
+                + "FOREIGN KEY(" + MEETING_STUDENT_COL2 + ") REFERENCES " + USER_TABLE + "(" + USER_COL1 + "),"
+                + "FOREIGN KEY(" + MEETING_STUDENT_COL1 + ") REFERENCES " + MEETING_TABLE + "(" + MEETING_COL1 + ")"
                 + ")";
-        db.execSQL(createLessonStuTable);
+        db.execSQL(createMeetingStuTable);
 
         String createPublishTable = "CREATE TABLE " + PUBLISH_TABLE + " ( "
                 + PUBLISH_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
@@ -96,9 +102,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + LESSON_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + LESSON_OWNER_TABLE);
-        db.execSQL("DROP TABLE IF EXISTS " + LESSON_STUDENT_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MEETING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MEETING_OWNER_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + MEETING_STUDENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + PUBLISH_TABLE);
         onCreate(db);
 
@@ -122,14 +128,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean selectLesson(int stuID, String lessonID) {
+    public boolean selectMeeting(int stuID, String meetingID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(LESSON_STUDENT_COL1, lessonID);
-        contentValues.put(LESSON_STUDENT_COL2, stuID);
+        contentValues.put(MEETING_STUDENT_COL1, meetingID);
+        contentValues.put(MEETING_STUDENT_COL2, stuID);
 
 
-        long result = db.insert(LESSON_STUDENT_TABLE, null, contentValues);
+        long result = db.insert(MEETING_STUDENT_TABLE, null, contentValues);
         if (result == -1) {
             return false;
         } else {
@@ -137,11 +143,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void setScore(int stuID, String lessonID, int score) {
+    public void setScore(int stuID, String meetingID, int score) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        String sql = "UPDATE lessonstudenttable SET score =? WHERE lessonID = ? and studentID = ?";
-        db.rawQuery(sql, new String[]{String.valueOf(score), lessonID, String.valueOf(stuID)});
+        String sql = "UPDATE meetingstudenttable SET score =? WHERE meetingID = ? and studentID = ?";
+        db.rawQuery(sql, new String[]{String.valueOf(score), meetingID, String.valueOf(stuID)});
     }
 
 
@@ -170,20 +176,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getLessonTable(int stuID) {
+    public Cursor getMeetingTable(int stuID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("select lessonTable.lessonID, lessonTable.lessonName, lessonTable.lessonTime, lessonTable.description\n" +
-                "    from lessonTable, lessonstudenttable\n" +
-                "    where lessonstudenttable.studentID = " +
-                stuID + " and lessonstudenttable.lessonID = lessonTable.lessonID;", null);
+        Cursor data = db.rawQuery("select meetingTable.meetingID, meetingTable.meetingName, meetingTable.meetingTime, meetingTable.description\n" +
+                "    from meetingTable, meetingstudenttable\n" +
+                "    where meetingstudenttable.studentID = " +
+                stuID + " and meetingstudenttable.meetingID = meetingTable.meetingID;", null);
         return data;
     }
 
-    public Cursor searchLessonByKeyword(String keyword) {
+    public Cursor searchMeetingByKeyword(String keyword) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "select * from lessontable " +
-                "where lessonid like '%" + keyword + "%' " +
-                "or lessonname like '%" + keyword + "%' " +
+        String sql = "select * from meetingtable " +
+                "where meetingid like '%" + keyword + "%' " +
+                "or meetingname like '%" + keyword + "%' " +
                 "or description like '%" + keyword + "%';";
         Cursor data = db.rawQuery(sql, null);
         return data;
@@ -192,28 +198,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * user for the
      *
-     * @return all data of specific lesson
+     * @return all data of specific meeting
      */
-    public Cursor searchLessonByID(String lessonID) {
+    public Cursor searchMeetingByID(String meetingID) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + LESSON_TABLE + " where lessonid =?", new String[]{lessonID});
+        Cursor data = db.rawQuery("SELECT * FROM " + MEETING_TABLE + " where meetingid =?", new String[]{meetingID});
         return data;
     }
 
-    /**
-     * @return all the publish from the newest to oldest
-     */
-    public Cursor getPublish() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM " + PUBLISH_TABLE + " order by time desc", null);
-        return data;
-    }
 
     public int deleteAll(String table_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         int deleted_num = db.delete(table_name, null, null);
         return deleted_num;//return deleted number of datas
     }
-
 
 }

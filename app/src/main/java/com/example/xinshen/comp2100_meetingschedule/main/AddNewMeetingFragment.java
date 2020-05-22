@@ -31,7 +31,7 @@ import java.util.Locale;
 /**
  * Add new meeting fragment
  *
- * @author shenxin
+ * @author Xin Shen, Shaocong Lang
  */
 public class AddNewMeetingFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "shenxin";

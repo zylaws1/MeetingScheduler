@@ -20,6 +20,11 @@ import com.example.xinshen.comp2100_meetingschedule.R;
 
 import java.util.regex.Pattern;
 
+/**
+ * Set preference time slot fragment for quick add meeting
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class SetPreferTimeslotFragment extends Fragment {
 
     private EditText edtTxt_pref1;
@@ -48,11 +53,13 @@ public class SetPreferTimeslotFragment extends Fragment {
             btnSavePref.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // use regular expression to check if the input preference time is valid
                     Pattern p = Pattern.compile("(\\s)*\\d{1,2}(\\s)*[:|：](\\s)*\\d{1,2}(\\s)*");
                     String str[] = new String[3];
                     str[0] = edtTxt_pref1.getText().toString();
                     str[1] = edtTxt_pref2.getText().toString();
                     str[2] = edtTxt_pref3.getText().toString();
+                    // check three preference time validation
                     for (int i = 0; i < 3; i++) {
 //                        Log.i("shenxin", "set pref str:" + str[i]);
                         if (p.matcher(str[i]).matches()) {
@@ -61,12 +68,13 @@ public class SetPreferTimeslotFragment extends Fragment {
                             int hour = Integer.parseInt(hour_str.trim().replaceAll(" ", ""));
                             int minute = Integer.parseInt(minute_str.trim().replaceAll(" ", ""));
                             Log.i("shenxin", "set pref hour and min:" + hour + " || " + minute);
+                            // Set the preference time slot in adding fragment if valid
                             if (0 <= hour && hour < 25 && 0 <= minute && minute < 61) {
                                 AddNewMeetingFragment.spinnerItems[i] = hour + ":" + minute;
-                            } else {
+                            } else {     // do not add and toast if input time value not valid
                                 Toast.makeText(mContext, "bad time!", Toast.LENGTH_LONG);
                             }
-                        } else {
+                        } else {     // do not add and toast if input expression not valid
                             Toast.makeText(mContext, "invalid time preference", Toast.LENGTH_LONG);
                         }
                     }
@@ -75,7 +83,7 @@ public class SetPreferTimeslotFragment extends Fragment {
         }
         return rootview;
     }
-//
+//   local test
 //    public static void main(String[] args) {
 //        String regex = "\\d{1,2}[:]\\d{1,2}";
 //        System.out.println(regex.matches("12:00"));

@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * Introduce the basic information about the meeting scheduler app.
  * Also provide a quick help
  *
- * @author shenxin
+ * @author Xin Shen, Shaocong Lang
  */
 public class AboutActivity extends AppCompatActivity {
     TextView tvTopTitle;
