@@ -15,6 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+/**
+ * Introduce the basic information about the meeting scheduler app.
+ * Also provide a quick help
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class AboutFragment extends Fragment {
     TextView tvTopTitle;
     TextView tvTopRight;
@@ -29,10 +35,12 @@ public class AboutFragment extends Fragment {
         ivBack = view.findViewById(R.id.iv_back);
         tvTopRight.setVisibility(View.GONE);
         tvTopTitle.setText(getResources().getString(R.string.about_meeting));
+        MainActivity.setHideTitleBar();
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
+                MainActivity.setShowTitleBar();
             }
         });
         return view;

@@ -304,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Change the "Coming" and "Past" title style by mode
     void setmTitleBarStyle(boolean isHomepage) {
+        mTitleBar.setVisibility(View.VISIBLE);
         if (isHomepage) {
             mTitleBar.setAlpha(0.94f);
             String space_str = "           ";
@@ -328,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Tool method for other activities to deactivate title bar
     static void setmTitleBarInactive() {
+        mTitleBar.setVisibility(View.VISIBLE);
         mTitleBar.setAlpha(1f);
         mTitleBar.setLeftTitle("");
         mTitleBar.setRightTitle("");
@@ -336,6 +338,15 @@ public class MainActivity extends AppCompatActivity {
         mTitleBar.setTitleColor(Color.MAGENTA);
     }
 
+    // Tool method for other activities to deactivate title bar
+    public static void setHideTitleBar() {
+        mTitleBar.setVisibility(View.GONE);
+    }
+
+    // Tool method for other activities to deactivate title bar
+    public static void setShowTitleBar() {
+        mTitleBar.setVisibility(View.VISIBLE);
+    }
 
     // change tag style with active category
     void setActiveCategory(Boolean isLeft) {

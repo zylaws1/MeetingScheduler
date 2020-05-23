@@ -69,7 +69,7 @@
     <string name="submit">Submit</string>
 
     <string name="login_value">Sign in/Register</string>
-    <string name="register_value">REGISTER</string>
+    <string name="register_value">Register</string>
     <string name="my_meeting">My meeting</string>
     <string name="my_notes">My notes</string>
     <string name="my_timeslot_preference">My timeslot preference</string>

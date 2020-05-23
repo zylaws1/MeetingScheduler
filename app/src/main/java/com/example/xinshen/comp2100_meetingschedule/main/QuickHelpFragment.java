@@ -29,10 +29,12 @@ public class QuickHelpFragment extends Fragment {
         ivBack = view.findViewById(R.id.iv_back);
         tvTopRight.setVisibility(View.GONE);
         tvTopTitle.setText(getResources().getString(R.string.quick_help));
+        MainActivity.setHideTitleBar();
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
+                MainActivity.setShowTitleBar();
             }
         });
         return view;

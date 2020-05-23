@@ -22,6 +22,7 @@ import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
+import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hjq.bar.TitleBar;
 
@@ -75,6 +76,7 @@ public class RegisterFragment extends Fragment {
         tvTopTitle = view.findViewById(R.id.top_title);
         tvTopRight = view.findViewById(R.id.tv_right);
         ivBack = view.findViewById(R.id.iv_back);
+        MainActivity.setHideTitleBar();
         if (isLogin) {
             UserInfo info = viewModel.query(userName);
             if (info != null) {
@@ -94,8 +96,15 @@ public class RegisterFragment extends Fragment {
             }
         } else {
             tvTopRight.setVisibility(View.GONE);
-            tvTopTitle.setVisibility(View.GONE);
-            ivBack.setVisibility(View.GONE);
+            tvTopTitle.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.VISIBLE);
+            tvTopTitle.setText(getResources().getString(R.string.register_value));
+            ivBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getFragmentManager().popBackStack();
+                }
+            });
         }
 
         viewModel.getLoginFormState().observe(getActivity(), new Observer<LoginFormState>() {
@@ -149,6 +158,7 @@ public class RegisterFragment extends Fragment {
                 }
                 //Complete and destroy login activity once successful
                 getFragmentManager().popBackStack();
+                MainActivity.setShowTitleBar();
             }
         });
 

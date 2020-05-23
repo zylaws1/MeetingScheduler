@@ -70,6 +70,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
         loginFragment = new LoginFragment();
         registerFragment = new RegisterFragment();
         userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+        MainActivity.setShowTitleBar();
         if (userName != null) {
             isLogin = true;
             mTvUser.setVisibility(View.VISIBLE);

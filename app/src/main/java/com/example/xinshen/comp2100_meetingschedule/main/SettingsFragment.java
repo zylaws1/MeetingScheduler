@@ -43,6 +43,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        String userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         switch (v.getId()) {
             case R.id.layout_about_meeting:
                 FragmentManager fraManager = getFragmentManager() ;
@@ -52,11 +53,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 transaction.commit();
                 break;
             case R.id.layout_feedback:
-                FragmentManager fraManager1 = getFragmentManager() ;
-                FragmentTransaction transaction1 = fraManager1.beginTransaction();
-                transaction1.addToBackStack(null);
-                transaction1.replace(R.id.main_linear, feedbackFragment);
-                transaction1.commit();
+                if (userName != null) {
+                    FragmentManager fraManager1 = getFragmentManager();
+                    FragmentTransaction transaction1 = fraManager1.beginTransaction();
+                    transaction1.addToBackStack(null);
+                    transaction1.replace(R.id.main_linear, feedbackFragment);
+                    transaction1.commit();
+                } else {
+                    showToast(getString(R.string.no_login));
+                }
                 break;
             case R.id.layout_quick_help:
                 FragmentManager fraManager2 = getFragmentManager() ;
@@ -66,7 +71,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 transaction2.commit();
                 break;
             case R.id.layout_sign_out:
-                String userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
                 if (userName != null) {
                     SpManager.getInstance(getActivity().getApplicationContext()).setUserName(null, true);
                     showToast(getString(R.string.sign_out_success));

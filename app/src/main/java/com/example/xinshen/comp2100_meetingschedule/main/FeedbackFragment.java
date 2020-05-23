@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.adapter.FeedbackAdapter;
 import com.example.xinshen.comp2100_meetingschedule.data.model.Feedback;
+import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.databinding.ActivityFeedbackBinding;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hjq.bar.TitleBar;
@@ -37,30 +38,27 @@ public class FeedbackFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_feedback, null);
-        mBinding = DataBindingUtil.setContentView(getActivity(), R.layout.activity_feedback);
-        mTvRight = view.findViewById(R.id.tv_right);
-        mTvTitle = view.findViewById(R.id.top_title);
-        ivBack = view.findViewById(R.id.iv_back);
-        mEtFeedback = view.findViewById(R.id.et_feedback);
-        mTvRight.setVisibility(View.VISIBLE);
-        mTvTitle.setText(R.string.feedback);
-        ivBack.setOnClickListener(new View.OnClickListener() {
+        mBinding = ActivityFeedbackBinding.inflate(inflater);
+//        mBinding =  DataBindingUtil.inflate(inflater, R.layout.activity_feedback,container,false);
+        mBinding.fbRight.setVisibility(View.VISIBLE);
+        mBinding.fbTitle.setText(R.string.feedback);
+        MainActivity.setHideTitleBar();
+        mBinding.fbBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
             }
         });
-        mTvRight.setOnClickListener(new View.OnClickListener() {
+        mBinding.fbRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Feedback feedback = new Feedback("ah", mEtFeedback.getText().toString());
+                String userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+                Feedback feedback = new Feedback(userName + ":", mBinding.etFeedback.getText().toString());
                 list.add(feedback);
             }
         });
         initView();
-
-        return view;
+        return mBinding.getRoot();
     }
 
     // Init the view by adding some demo feedback

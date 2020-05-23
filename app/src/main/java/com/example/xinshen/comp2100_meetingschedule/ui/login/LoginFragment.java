@@ -31,6 +31,7 @@ import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
+import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hjq.bar.TitleBar;
 
@@ -63,10 +64,12 @@ public class LoginFragment extends Fragment {
         ivBack = view.findViewById(R.id.iv_back);
         tvTopRight.setVisibility(View.GONE);
         tvTopTitle.setText(getResources().getString(R.string.login));
+        MainActivity.setHideTitleBar();
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
+                MainActivity.setShowTitleBar();
             }
         });
 
