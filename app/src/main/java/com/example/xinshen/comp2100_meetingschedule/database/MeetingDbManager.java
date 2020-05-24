@@ -66,11 +66,11 @@ public class MeetingDbManager {
                 info.setGender(cursor.getInt(cursor.getColumnIndex("gender")));
                 info.setPhone(cursor.getString(cursor.getColumnIndex("phone")));
                 info.setEmail(cursor.getString(cursor.getColumnIndex("email")));
-                Log.d("abao:","name=="+info.getDisplayName());
-                Log.d("abao:","password=="+info.getPassword());
-                Log.d("abao:","age=="+info.getAge());
-                Log.d("abao:","phone=="+info.getPhone());
-                Log.d("abao:","email=="+info.getEmail());
+                Log.d("shenxin:","name=="+info.getDisplayName());
+                Log.d("shenxin:","password=="+info.getPassword());
+                Log.d("shenxin:","age=="+info.getAge());
+                Log.d("shenxin:","phone=="+info.getPhone());
+                Log.d("shenxin:","email=="+info.getEmail());
             }
             return info;
         } catch (Exception e) {

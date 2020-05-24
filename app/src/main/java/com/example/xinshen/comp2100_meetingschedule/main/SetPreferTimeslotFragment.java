@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +61,7 @@ public class SetPreferTimeslotFragment extends Fragment {
                     str[1] = edtTxt_pref2.getText().toString();
                     str[2] = edtTxt_pref3.getText().toString();
                     // check three preference time validation
+                    boolean allValid = true;
                     for (int i = 0; i < 3; i++) {
 //                        Log.i("shenxin", "set pref str:" + str[i]);
                         if (p.matcher(str[i]).matches()) {
@@ -72,11 +74,20 @@ public class SetPreferTimeslotFragment extends Fragment {
                             if (0 <= hour && hour < 25 && 0 <= minute && minute < 61) {
                                 AddNewMeetingFragment.spinnerItems[i] = hour + ":" + minute;
                             } else {     // do not add and toast if input time value not valid
+                                allValid = false;
                                 Toast.makeText(mContext, "bad time!", Toast.LENGTH_LONG);
                             }
                         } else {     // do not add and toast if input expression not valid
+                            allValid = false;
                             Toast.makeText(mContext, "invalid time preference", Toast.LENGTH_LONG);
                         }
+                    }
+                    // Toast if all times are valid
+                    if (allValid){
+                        Toast.makeText(mContext, "preference time changed!", Toast.LENGTH_LONG);
+                        FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                        transaction.replace(R.id.main_linear, MainActivity.instance.getOwnProfileFragment());
+                        transaction.commit();
                     }
                 }
             });

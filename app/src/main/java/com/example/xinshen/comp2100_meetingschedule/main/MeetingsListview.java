@@ -163,7 +163,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (!isMultiDeleteShown && !isDeleteShown) {
             selecting_cbs.clear();
             int child_cnt = getChildCount();
-//            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMultiDeleteShown + " " + isDeleteShown);
+            Log.i("shenxin", "onLongPress:child count " + getChildCount() + " " + isMultiDeleteShown + " " + isDeleteShown);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LayoutParams.WRAP_CONTENT,
                     LayoutParams.MATCH_PARENT

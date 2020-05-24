@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import androidx.fragment.app.Fragment;
+
 import com.example.xinshen.comp2100_meetingschedule.R;
+
 import java.util.ArrayList;
 
 import static com.example.xinshen.comp2100_meetingschedule.main.MainActivity.SCREEN_HEIGHT;
@@ -19,12 +22,18 @@ public class MeetingListFragment extends Fragment {
     private ScrolledMeetingAdapter meetings_list_adapter;
     private LinearLayout mutil_del_meetings_controls;
     private LinearLayout add_meetings_controls;
+    private View root_view;
 
     // set the meetings list and refresh ui if loaded
     public void setMeetings_list(ArrayList<MeetingModel> meetings_list) {
-        this.meetings_list = meetings_list;
+        if (this.meetings_list == null)
+            this.meetings_list = new ArrayList<>();
+        this.meetings_list.clear();
+        this.meetings_list.addAll(meetings_list);
         if (meetings_list_adapter != null)
             meetings_list_adapter.notifyDataSetChanged();
+        if (lv_meetins != null)
+            lv_meetins.bondAdapter(meetings_list_adapter);
     }
 
     // init coming meetings data from server or mocked local data
@@ -97,8 +106,9 @@ public class MeetingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // bond the views and controls for the first time initialization
-        View view = inflater.inflate(R.layout.fragment_meeting_lv, null);
-        lv_meetins = (MeetingsListview) view.findViewById(R.id.scroll_coming_meetingLv);
+//        if (root_view == null) {
+        root_view = inflater.inflate(R.layout.fragment_meeting_lv, null);
+        lv_meetins = (MeetingsListview) root_view.findViewById(R.id.scroll_coming_meetingLv);
         if (meetings_list == null) {    // reinitialise the meetings_list if the data come from server delayed
             Log.w(TAG, "MeetingListFragment onCreateView: meetings_list null");
             meetings_list = new ArrayList<>();
@@ -149,7 +159,8 @@ public class MeetingListFragment extends Fragment {
             }
         });
         lv_meetins.bondAdapter(meetings_list_adapter);
-        return view;
+//        }
+        return root_view;
     }
 
     // Delete all selected meetings from data list and refresh the list view
@@ -177,6 +188,10 @@ public class MeetingListFragment extends Fragment {
         mutil_del_meetings_controls.setVisibility(View.GONE);
         // return the indexes have been deleted from data array in type Integer[]
         return lv_meetins.selecting_cbs.toArray(new Integer[lv_meetins.selecting_cbs.size()]);
+    }
+
+    public ScrolledMeetingAdapter getMeetings_list_adapter() {
+        return meetings_list_adapter;
     }
 
 }

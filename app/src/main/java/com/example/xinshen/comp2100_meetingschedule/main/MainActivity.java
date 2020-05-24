@@ -78,11 +78,10 @@ public class MainActivity extends AppCompatActivity {
     private static int titile_bar_color;
     private MeetingListFragment pastMeetingsFragment;
     private SettingsFragment settingsFragment;
-
     private OwnProfileFragment ownProfileFragment;
     private FragmentTransaction transaction;
     private MeetingSchedulerFragment mScheduleFragment;
-    private boolean chosen_coming_meetings = false;
+    private boolean chosen_coming_meetings = true;
     private OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
@@ -185,8 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "onDataChange: recieve data at:" + System.currentTimeMillis());
                 comingMeetingsFragment.setMeetings_list(coming_meetings_data);
                 pastMeetingsFragment.setMeetings_list(past_meetings_data);
+                comingMeetingsFragment.getMeetings_list_adapter().notifyDataSetChanged();
                 // perform click to synchronize the view content;
-                mTitleBar.getRightView().performClick();
+                //mTitleBar.getRightView().performClick();
             }
 
             @Override
@@ -232,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
             transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
             transaction.commit();
         }
+        Log.i(TAG, "onResume: " + System.currentTimeMillis());
+        comingMeetingsFragment.getMeetings_list_adapter().notifyDataSetChanged();
     }
 
     // Tool method for scaling icon
@@ -524,6 +526,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Save the meetings data on server
     private void saveMeetingsOnServer() {
+
         int size_coming_meets = comingMeetingsFragment.meetings_list.size();
         int size_past_meets = pastMeetingsFragment.meetings_list.size();
         Log.i(TAG, "saveMeetingsOnServer: " + size_coming_meets);
@@ -536,6 +539,7 @@ public class MainActivity extends AppCompatActivity {
             mDatabase.child("past_" + i).setValue(pastMeetingsFragment.meetings_list.get(i));
         }
         mDatabase.child("get_data").setValue("");
+        Log.i(TAG, "saved Meetings OnServer");
     }
 
     // Randomly update a node to trigger the callback to get data from server
@@ -582,6 +586,10 @@ public class MainActivity extends AppCompatActivity {
         else
             transaction.replace(R.id.main_linear, pastMeetingsFragment);
         transaction.commit();
+    }
+
+    public OwnProfileFragment getOwnProfileFragment() {
+        return ownProfileFragment;
     }
 
 }

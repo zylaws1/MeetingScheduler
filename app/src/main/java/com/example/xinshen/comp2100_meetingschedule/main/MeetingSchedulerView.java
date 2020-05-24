@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 //import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import java.util.List;
 
 /**
  * Meeting timetable view
+ *
  * @author Xin Shen, Shaocong Lang
  */
 public class MeetingSchedulerView extends LinearLayout {
@@ -143,7 +145,7 @@ public class MeetingSchedulerView extends LinearLayout {
 
     /**
      * Traverse the timetable of week days
-     *  and reorder the meetings data for display
+     * and reorder the meetings data for display
      *
      * @param week week days
      */
@@ -372,6 +374,7 @@ public class MeetingSchedulerView extends LinearLayout {
     public void setTimeTable(List<MeetingModel> mlist) {
         this.mListTimeTable = mlist;
         for (MeetingModel meetingModel : mlist) {
+            Log.i("shenxin", "setTimeTable: " + meetingModel.getName() + " at:" + meetingModel.getStar_hour());
             addTimeName(meetingModel.getName());
         }
         initView();
