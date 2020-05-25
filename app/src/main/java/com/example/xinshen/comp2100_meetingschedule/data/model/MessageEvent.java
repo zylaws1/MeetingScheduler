@@ -1,5 +1,10 @@
 package com.example.xinshen.comp2100_meetingschedule.data.model;
 
+/**
+ * Message event class
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class MessageEvent {
     public MessageEvent(){
 

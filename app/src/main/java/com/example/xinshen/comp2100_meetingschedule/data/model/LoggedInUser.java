@@ -2,6 +2,8 @@ package com.example.xinshen.comp2100_meetingschedule.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class LoggedInUser {
 

@@ -26,6 +26,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Provide users with fragment that can write feedback
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class FeedbackFragment extends Fragment {
 
     ActivityFeedbackBinding mBinding;
@@ -33,7 +38,7 @@ public class FeedbackFragment extends Fragment {
     TextView mTvTitle;
     EditText mEtFeedback;
     ImageView ivBack;
-    List<Feedback> list=new ArrayList<>();
+    List<Feedback> list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -47,6 +52,7 @@ public class FeedbackFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
+                MainActivity.setShowTitleBar();
             }
         });
         mBinding.fbRight.setOnClickListener(new View.OnClickListener() {

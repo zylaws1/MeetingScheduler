@@ -11,6 +11,8 @@ import com.example.xinshen.comp2100_meetingschedule.data.Result;
 
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.R;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
+
 
 public class LoginViewModel extends ViewModel {
 
@@ -26,21 +28,24 @@ public class LoginViewModel extends ViewModel {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    public LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
 
-    public void login(String username, String password) {
+    public void login(String username, final String password) {
         // can be launched in a separate asynchronous job
 
-        Result<UserInfo> result = loginRepository.login(username, password);
+        loginRepository.login(username, new UserInfoCallback() {
 
-        if (result instanceof Result.Success) {
-            UserInfo data = ((Result.Success<UserInfo>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+            @Override
+            public void callback(UserInfo userInfo) {
+                if (userInfo != null && userInfo.getPassword() != null && userInfo.getPassword().equals(password)) {
+                    loginResult.setValue(new LoginResult(new LoggedInUserView(userInfo.getDisplayName())));
+                } else {
+                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                }
+            }
+        });
     }
 
     public void loginDataChanged(String username, String password) {

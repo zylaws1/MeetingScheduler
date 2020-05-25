@@ -37,6 +37,11 @@ import com.hjq.bar.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
+/**
+ * Users can log in on this fragment
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;

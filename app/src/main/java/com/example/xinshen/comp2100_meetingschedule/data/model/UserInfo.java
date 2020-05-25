@@ -1,7 +1,9 @@
 package com.example.xinshen.comp2100_meetingschedule.data.model;
 
 /**
- * Data class that captures user information for logged in users retrieved from LoginRepository
+ * User information class
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class UserInfo {
     private String userId;

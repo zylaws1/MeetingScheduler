@@ -23,6 +23,7 @@ import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.hjq.bar.TitleBar;
 
@@ -35,6 +36,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+/**
+ * Users can register information on this fragment
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class RegisterFragment extends Fragment {
     RegisterViewModel viewModel;
     LoginViewModel loginViewModel;
@@ -44,7 +50,6 @@ public class RegisterFragment extends Fragment {
     TextView tvTopTitle;
     TextView tvTopRight;
     ImageView ivBack;
-    boolean isLogin = false;
     String userName = null;
 
     @Nullable
@@ -53,18 +58,6 @@ public class RegisterFragment extends Fragment {
         View view=inflater.inflate(R.layout.activity_register,null);
         viewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(RegisterViewModel.class);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
-        loginViewModel.getLoginResult();
-        loginViewModel.getLoginResult().observe(getActivity(), new Observer<LoginResult>() {
-            @Override
-            public void onChanged(LoginResult loginResult) {
-                if (loginResult.getSuccess() != null) {
-                    isLogin = true;
-                    userName = loginResult.getSuccess().getDisplayName();
-                }
-            }
-        });
         etUserName=view.findViewById(R.id.et_register_username);
         etPassword=view.findViewById(R.id.et_register_password);
         etConfirmPassword=view.findViewById(R.id.et_confirm_password);
@@ -77,23 +70,28 @@ public class RegisterFragment extends Fragment {
         tvTopRight = view.findViewById(R.id.tv_right);
         ivBack = view.findViewById(R.id.iv_back);
         MainActivity.setHideTitleBar();
-        if (isLogin) {
-            UserInfo info = viewModel.query(userName);
-            if (info != null) {
-                setEditTextEnable(info, true);
-                btRegister.setText(R.string.user_info_modification);
-                btRegister.setEnabled(true);
-                tvTopRight.setVisibility(View.GONE);
-                tvTopTitle.setVisibility(View.VISIBLE);
-                ivBack.setVisibility(View.VISIBLE);
-                tvTopTitle.setText(getResources().getString(R.string.user_info_modification));
-                ivBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getFragmentManager().popBackStack();
+        userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
+        if (userName != null) {
+            viewModel.query(userName, new UserInfoCallback() {
+                @Override
+                public void callback(UserInfo userInfo) {
+                    if (userInfo != null) {
+                        setEditTextEnable(userInfo, true);
+                        btRegister.setText(R.string.user_info_modification);
+                        btRegister.setEnabled(true);
+                        tvTopRight.setVisibility(View.GONE);
+                        tvTopTitle.setVisibility(View.VISIBLE);
+                        ivBack.setVisibility(View.VISIBLE);
+                        tvTopTitle.setText(getResources().getString(R.string.user_info_modification));
+                        ivBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getFragmentManager().popBackStack();
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
         } else {
             tvTopRight.setVisibility(View.GONE);
             tvTopTitle.setVisibility(View.VISIBLE);
@@ -185,17 +183,6 @@ public class RegisterFragment extends Fragment {
         etConfirmPassword.addTextChangedListener(afterTextChangedListener);
         etAge.addTextChangedListener(afterTextChangedListener);
         etPhone.addTextChangedListener(afterTextChangedListener);
-        etEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.login(etUserName.getText().toString(),
-                            etPassword.getText().toString());
-                }
-                return false;
-            }
-        });
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,7 +201,7 @@ public class RegisterFragment extends Fragment {
                 info.setAge(Integer.valueOf(etAge.getText().toString().trim()));
                 info.setPhone(etPhone.getText().toString().trim());
                 info.setEmail(etEmail.getText().toString().trim());
-                if (isLogin) {
+                if (userName != null) {
                     boolean result = viewModel.update(info);
                     if (result) {
                         showToast(getResources().getString(R.string.update_ok));

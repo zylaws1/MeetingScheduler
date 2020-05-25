@@ -100,7 +100,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                     FragmentManager fraManager1 = getFragmentManager() ;
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
-                    transaction1.replace(R.id.main_linear, loginFragment);
+                    transaction1.replace(R.id.main_linear, registerFragment);
                     transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));

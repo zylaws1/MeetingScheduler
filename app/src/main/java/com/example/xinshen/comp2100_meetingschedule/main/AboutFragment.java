@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 /**
  * Introduce the basic information about the meeting scheduler app.
- * Also provide a quick help
  *
  * @author Xin Shen, Shaocong Lang
  */

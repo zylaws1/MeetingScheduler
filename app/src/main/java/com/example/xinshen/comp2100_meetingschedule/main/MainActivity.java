@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction transaction;
     private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = false;
-    private OnTitleBarListener mTitleListener;
+    private static OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Change the "Coming" and "Past" title style by mode
-    void setmTitleBarStyle(boolean isHomepage) {
+    static void setmTitleBarStyle(boolean isHomepage) {
         mTitleBar.setVisibility(View.VISIBLE);
         if (isHomepage) {
             mTitleBar.setAlpha(0.94f);
@@ -346,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
     // Tool method for other activities to deactivate title bar
     public static void setShowTitleBar() {
         mTitleBar.setVisibility(View.VISIBLE);
+        setmTitleBarStyle(false);
     }
 
     // change tag style with active category

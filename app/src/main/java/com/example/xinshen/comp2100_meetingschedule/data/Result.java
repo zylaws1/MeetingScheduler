@@ -2,6 +2,8 @@ package com.example.xinshen.comp2100_meetingschedule.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class Result<T> {
     public final static int LOGIN_ERROR = 0;
