@@ -15,18 +15,9 @@ import java.util.Map;
  * @author Xin Shen, Shaocong Lang
  */
 public class LoginDataSource {
-    private UserInfo mUserInfo = null;
 
     public LoginDataSource(){
-        MeetingDbManager.getInstance().setUserInfoCallback(userInfoCallback);
     }
-
-    UserInfoCallback userInfoCallback = new UserInfoCallback() {
-        @Override
-        public void callback(UserInfo userInfo) {
-            mUserInfo = userInfo;
-        }
-    };
 
     public void login(String username, UserInfoCallback callback) {
         MeetingDbManager.getInstance().queryUserInfoFromFirebase(username, callback);

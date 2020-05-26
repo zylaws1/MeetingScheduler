@@ -64,9 +64,7 @@ public class MeetingDbManager {
 
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
-            mUserInfoCallback.callback(userInfo);
-            Log.w(TAG, "loadPost:onDataChange");
+            Log.w(TAG, "loadPost:onChildAdded");
         }
 
         @Override
@@ -76,26 +74,19 @@ public class MeetingDbManager {
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+            Log.w(TAG, "loadPost:onChildRemoved");
         }
 
         @Override
         public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            UserInfo userInfo = dataSnapshot.getValue(UserInfo.class);
-            mUserInfoCallback.callback(userInfo);
-            Log.w(TAG, "loadPost:onChildChanged");
+            Log.w(TAG, "loadPost:onChildMoved");
         }
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+            Log.w(TAG, "loadPost:onCancelled");
         }
     };
-
-    public void setUserInfoCallback(UserInfoCallback callback) {
-        this.mUserInfoCallback = callback;
-    }
-
 
     //insert user info in firebase
     public boolean insertUserInfoInFirebase(UserInfo userInfo) {
@@ -224,18 +215,18 @@ public class MeetingDbManager {
 //        }
 //    }
 
-    public boolean updateUserPassword(String password) {
-        try {
-            ContentValues values = new ContentValues();
-            values.put("password", password);
-            String whereClause = "name=?";
-            String[] whereArgs = {String.valueOf(1)};
-            dB.update(SqliteDatabaseHelper.TABLE_NAME_USER, values, whereClause, whereArgs);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean updateUserPassword(String password) {
+//        try {
+//            ContentValues values = new ContentValues();
+//            values.put("password", password);
+//            String whereClause = "name=?";
+//            String[] whereArgs = {String.valueOf(1)};
+//            dB.update(SqliteDatabaseHelper.TABLE_NAME_USER, values, whereClause, whereArgs);
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
 
 }
