@@ -8,9 +8,7 @@ import android.util.Log;
 
 import com.example.xinshen.comp2100_meetingschedule.MeetingApplication;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
-import com.example.xinshen.comp2100_meetingschedule.main.MeetingModel;
 import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,9 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,14 +30,12 @@ public class MeetingDbManager {
     private static final String TAG = "shenxin";
     private static volatile MeetingDbManager instance;
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    private HashMap<String, UserInfo> map = new HashMap<>();
 
     public static String DB_NAME = "person.db";
     public static String FDB_NAME = "user_info";
     public static String TEST_NAME = "userTest";
     public static String ADMIN_NAME = "admin";
     SQLiteDatabase dB;
-    private UserInfoCallback mUserInfoCallback;
 
     private MeetingDbManager() {
         SqliteDatabaseHelper helper = new SqliteDatabaseHelper(MeetingApplication.mContext, DB_NAME, null, 1);

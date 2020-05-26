@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "shenxin";
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
+    private static final String MEETING_TABLE_NAME = "meeting_info";
 
     protected static AddNewMeetingFragment addNewMeetingFragment;
     protected static MeetingInfoFragment meetingInfoFragment;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private static OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(MEETING_TABLE_NAME);
     private ArrayList<MeetingModel> coming_meetings_data;
     private ArrayList<MeetingModel> past_meetings_data;
 

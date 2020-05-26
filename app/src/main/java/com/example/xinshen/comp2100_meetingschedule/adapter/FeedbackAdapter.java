@@ -23,8 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.FeedbackHolder> {
     List<Feedback> mList = null;
 
-    public FeedbackAdapter(List<Feedback> list) {
-        mList = list;
+    public FeedbackAdapter() {
+    }
+
+    public void setList(List<Feedback> list){
+        this.mList=list;
     }
 
     @NonNull

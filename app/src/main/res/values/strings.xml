@@ -18,9 +18,11 @@
     <string name="update_error">update error</string>
     <string name="update_ok">update success</string>
     <string name="sign_out_success">sign out success</string>
+    <string name="feedback_success">feedback success</string>
+    <string name="feedback_null">please write feedback first</string>
     <string name="has_signed_out">has signed out</string>
     <string name="register_info_null">Register info null</string>
-    <string name="no_login">Please log in first</string>
+    <string name="no_login">please log in first</string>
     <string name="blank"> </string>
 
     <string name="title_profile">Profile</string>

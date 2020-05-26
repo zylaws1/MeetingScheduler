@@ -82,7 +82,7 @@ public class RegisterFragment extends Fragment {
                         tvTopRight.setVisibility(View.GONE);
                         tvTopTitle.setVisibility(View.VISIBLE);
                         ivBack.setVisibility(View.VISIBLE);
-                        tvTopTitle.setText(getResources().getString(R.string.user_info_modification));
+                        tvTopTitle.setText(getActivity().getString(R.string.user_info_modification));
                         ivBack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
