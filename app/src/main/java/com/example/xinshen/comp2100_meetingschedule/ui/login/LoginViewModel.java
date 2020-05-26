@@ -13,7 +13,11 @@ import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 
-
+/**
+ * Login view model to wrap login information view
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();

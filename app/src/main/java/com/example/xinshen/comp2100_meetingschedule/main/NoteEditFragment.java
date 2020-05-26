@@ -40,14 +40,14 @@ public class NoteEditFragment extends Fragment {
                     final String title = titleEditText.getText().toString();
                     final String content = contentEditText.getText().toString();
 
-                    //判断标题和内容是否为空，不为空才能保存
+                    // check whether the title and content are empty
                     if ("".equals(title) || "".equals(content)) {
                         Toast.makeText(MainActivity.mContext, "Title or content cannot be empty",
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
 
-                    //提示保存
+                    // Saving tips
                     new AlertDialog.Builder(getContext())
                             .setTitle("Tips")
                             .setMessage("Do you want to save note?")
@@ -60,12 +60,12 @@ public class NoteEditFragment extends Fragment {
                                             values.put("title", title);
                                             values.put("content", content);
 
-                                            //如果noteId不为空那么就是更新操作，为空就是添加操作
+                                            // If noteId is not empty, then it is an update operation, and empty is an add operation
                                             if (null == noteId || "".equals(noteId))
                                                 NoteDBManager.addNote(values);
                                             else
                                                 NoteDBManager.updateNoteById(Integer.valueOf(noteId), values);
-                                            //结束当前activity
+                                            // finish fragment
                                             getActivity().onBackPressed();
                                             Toast.makeText(MainActivity.mContext, "Save successfully! ",
                                                     Toast.LENGTH_LONG).show();
@@ -80,19 +80,19 @@ public class NoteEditFragment extends Fragment {
     }
 
     /**
-     * 初始化编辑页面的值（如果进入该页面时存在一个id的话），比如标题，内容。
+     * Initialize the value of the edit page
+     * (if there is an id when entering the page), such as the title and content.
      */
     private void initNoteEditValue() {
-        // 从Intent中获取id的值
+        // get id from intent
         long id = MainActivity.instance.getIntent().getLongExtra("id", -1L);
-        // 如果有传入id那么id！=-1
         if (id != -1L) {
-            // 使用noteId保存id
+            // use noteId as id
             noteId = String.valueOf(id);
-            // 查询该id的笔记
+            // find note by id
             Cursor cursor = NoteDBManager.queryNoteById((int) id);
             if (cursor.moveToFirst()) {
-                // 将内容提取出来
+                // get content values
                 titleEditText.setText(cursor.getString(1));
                 contentEditText.setText(cursor.getString(2));
             }

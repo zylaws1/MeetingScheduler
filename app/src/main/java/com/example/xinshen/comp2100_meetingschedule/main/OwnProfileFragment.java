@@ -1,13 +1,6 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import com.example.xinshen.comp2100_meetingschedule.MeetingApplication;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
@@ -17,25 +10,16 @@ import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User own profile and login/register fragment
@@ -90,6 +74,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        // add listener to each functional link by id.
         FragmentTransaction transaction;
         switch (v.getId()) {
             case R.id.tv_login:
@@ -139,6 +124,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
+        // Monitor the log in status
         if (event.getLoginState() == Result.LOGIN_OK) {
             mTvUser.setVisibility(View.VISIBLE);
             mTvUser.setText(event.getMessage());

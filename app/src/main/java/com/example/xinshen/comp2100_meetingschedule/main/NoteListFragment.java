@@ -27,7 +27,6 @@ import com.example.xinshen.comp2100_meetingschedule.database.NoteDBManager;
  * @author Xin Shen, Shaocong Lang
  */
 public class NoteListFragment extends Fragment {
-    // regex ((?!(\*|//)).)+[\u4e00-\u9fa5]
     private Cursor listItemCursor = null;
     View view;
 
@@ -35,7 +34,7 @@ public class NoteListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notes_listview, null);
 
-        // 设置添加笔记按钮事件，切换activity
+        // Set add note button event, switch fragment
         view.findViewById(R.id.addNote).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -47,7 +46,7 @@ public class NoteListFragment extends Fragment {
                     }
                 });
 
-        // 查询所有笔记，并将笔记展示出来
+        // Query all notes and display in list view
         listItemCursor = NoteDBManager.queryAll();
         Log.i("shenxin", "listItemCursor: " + listItemCursor.getCount());
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(),
@@ -62,10 +61,10 @@ public class NoteListFragment extends Fragment {
     }
 
     /**
-     * 初始化笔记列表的长按和点击事件
+     * Long press and click events to initialize the note list
      */
     private void initListNoteListener() {
-        // 长按删除
+        // delete when long press
         ((ListView) view.findViewById(R.id.listNote))
                 .setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
@@ -80,7 +79,7 @@ public class NoteListFragment extends Fragment {
                                             @Override
                                             public void onClick(DialogInterface arg0, int arg1) {
                                                 NoteDBManager.deleteNoteById((int) id);
-                                                //删除后刷新列表
+                                                // refresh list view after deletion
                                                 MainActivity.instance.onResume();
                                                 Toast.makeText(
                                                         MainActivity.instance,
@@ -93,7 +92,7 @@ public class NoteListFragment extends Fragment {
                     }
                 });
 
-        //点击进行修改操作
+        //Click to edit note
         ((ListView) view.findViewById(R.id.listNote))
                 .setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -101,7 +100,7 @@ public class NoteListFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent in = new Intent();
                         in.setClassName(view.getContext(), "cn.lger.notebook.NoteEditActivity");
-                        // 将id数据放置到Intent，切换视图后可以将数据传递过去
+                        // Put the id in Intent, pass the data after switching the fragment
                         in.putExtra("id", id);
                         startActivity(in);
                     }
@@ -115,13 +114,10 @@ public class NoteListFragment extends Fragment {
 //        return true;
 //    }
 
-    /**
-     * 当从另一个视图进入该视图会调用该方法
-     */
     @Override
     public void onResume() {
         super.onResume();
-        // 要求刷新主页列表笔记
+        // Refresh home page list notes
         if (listItemCursor != null) {
             listItemCursor.requery();
         }

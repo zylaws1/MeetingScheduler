@@ -590,6 +590,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    // private variables getters and setters:
     public OwnProfileFragment getOwnProfileFragment() {
         return ownProfileFragment;
     }

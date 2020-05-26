@@ -16,6 +16,12 @@ import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/**
+ * Register view model ,to wrap register view
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class RegisterViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();

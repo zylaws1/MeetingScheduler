@@ -2,6 +2,8 @@ package com.example.xinshen.comp2100_meetingschedule.ui.login;
 
 /**
  * Class exposing authenticated user details to the UI.
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 class LoggedInUserView {
     private String displayName;

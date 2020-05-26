@@ -1,7 +1,7 @@
 package com.example.xinshen.comp2100_meetingschedule.data.model;
 
 /**
- * User feedback class for upload
+ * User feedback class for upload feedback data to server
  *
  * @author Xin Shen, Shaocong Lang
  */

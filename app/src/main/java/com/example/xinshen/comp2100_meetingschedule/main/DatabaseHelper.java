@@ -113,20 +113,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * @return
      */
-    public boolean addPublish(Publish publish) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PUBLISH_COL2, publish.getUserID());
-        contentValues.put(PUBLISH_COL3, publish.getDate().toString());
-        contentValues.put(PUBLISH_COL4, publish.getContent());
-
-        long result = db.insert(PUBLISH_TABLE, null, contentValues);
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+//    public boolean addPublish(Publish publish) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(PUBLISH_COL2, publish.getUserID());
+//        contentValues.put(PUBLISH_COL3, publish.getDate().toString());
+//        contentValues.put(PUBLISH_COL4, publish.getContent());
+//
+//        long result = db.insert(PUBLISH_TABLE, null, contentValues);
+//        if (result == -1) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+//    }
 
     public boolean selectMeeting(int stuID, String meetingID) {
         SQLiteDatabase db = this.getWritableDatabase();

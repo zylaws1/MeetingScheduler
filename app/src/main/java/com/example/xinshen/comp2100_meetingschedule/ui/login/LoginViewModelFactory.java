@@ -10,6 +10,8 @@ import com.example.xinshen.comp2100_meetingschedule.data.LoginRepository;
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class LoginViewModelFactory implements ViewModelProvider.Factory {
 

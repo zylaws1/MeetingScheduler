@@ -16,8 +16,8 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Feedback adapter class
- *
+ * Feedback adapter class.
+ * To synchronize feedback data with google firebase server.
  * @author Xin Shen, Shaocong Lang
  */
 public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.FeedbackHolder> {

@@ -28,6 +28,7 @@ public class AboutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // bond the views and controls for the  initialization
         View view=inflater.inflate(R.layout.activity_about,null);
         tvTopTitle = view.findViewById(R.id.top_title);
         tvTopRight = view.findViewById(R.id.tv_right);

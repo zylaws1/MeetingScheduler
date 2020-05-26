@@ -18,6 +18,7 @@ public class CheckActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.check_information);
+        // bond the views and controls for the first time initialization
         back = findViewById(R.id.backtoset);
         back.setOnClickListener(new Buttonlistener());
         preferences = this.getSharedPreferences("Setting", 0);
@@ -32,6 +33,7 @@ public class CheckActivity extends Activity {
 
     }
 
+    // bond check button listener
     private class Buttonlistener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
