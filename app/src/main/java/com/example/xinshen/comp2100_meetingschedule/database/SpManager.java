@@ -5,6 +5,11 @@ import android.content.SharedPreferences;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 
+/**
+ * SharedPreferences management class, providing operations on the SharedPreferences
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class SpManager {
     private static volatile SpManager instance;
     private Context sPContext;

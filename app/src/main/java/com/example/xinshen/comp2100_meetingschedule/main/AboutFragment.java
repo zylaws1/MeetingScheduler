@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 /**
  * Introduce the basic information about the meeting scheduler app.
- * Also provide a quick help
  *
  * @author Xin Shen, Shaocong Lang
  */
@@ -40,7 +39,7 @@ public class AboutFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
-                MainActivity.setShowTitleBar();
+                MainActivity.instance.setShowTitleBar();
             }
         });
         return view;

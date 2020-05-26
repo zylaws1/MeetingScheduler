@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     protected static SetPreferTimeslotFragment setPreferTimeslotFragment;
     protected static FragmentManager mFraManager;
     protected static MeetingModel param_model = new MeetingModel();
-    protected static MainActivity instance = null;
+    public static MainActivity instance = null;
     protected static Context mContext;
     protected MeetingListFragment comingMeetingsFragment;
 
@@ -346,8 +346,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tool method for other activities to deactivate title bar
-    public static void setShowTitleBar() {
+    public void setShowTitleBar() {
         mTitleBar.setVisibility(View.VISIBLE);
+        setmTitleBarStyle(false);
     }
 
     // change tag style with active category

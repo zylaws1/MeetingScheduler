@@ -14,6 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 
+/**
+ * The main fragment of settings, through which you can jump to other setting fragment
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class SettingsFragment extends Fragment implements View.OnClickListener {
     RelativeLayout mFeedback;
     RelativeLayout mQuickHelp;

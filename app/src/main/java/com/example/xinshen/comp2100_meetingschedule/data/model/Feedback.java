@@ -3,6 +3,11 @@ package com.example.xinshen.comp2100_meetingschedule.data.model;
 
 import androidx.databinding.ObservableField;
 
+/**
+ * User feedback class
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class Feedback {
     ObservableField<String> userName = new ObservableField<>();
     ObservableField<String> feedback = new ObservableField<>();

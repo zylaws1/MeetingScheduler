@@ -3,6 +3,7 @@ package com.example.xinshen.comp2100_meetingschedule.data;
 import com.example.xinshen.comp2100_meetingschedule.MeetingApplication;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.database.MeetingDbManager;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,43 +11,37 @@ import java.util.Map;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class LoginDataSource {
-    public Result<UserInfo> login(String username, String password) {
-        UserInfo info = MeetingDbManager.getInstance().queryUserInfo(username);
-        if (info != null && info.getPassword() != null && info.getPassword().equals(password)) {
-            return new Result.Success<>(info);
-        } else {
-            return new Result.Error(new IOException("Error logging in"));
-        }
+
+    public LoginDataSource(){
     }
 
-    public int register(UserInfo info) {
-        if (info == null) {
-            return Result.REGISTER_INFO_NULL;
-        }
-        UserInfo userInfo = MeetingDbManager.getInstance().queryUserInfo(info.getDisplayName());
-        if (userInfo != null) {
-            return Result.REGISTER_HAS_REGISTERED;
-        } else {
-            MeetingDbManager.getInstance().insertUserInfo(info);
-            return Result.REGISTER_OK;
-        }
+    public void login(String username, UserInfoCallback callback) {
+        MeetingDbManager.getInstance().queryUserInfoFromFirebase(username, callback);
     }
 
-    public UserInfo query(String name) {
+    //user information register
+    public void register(UserInfo info, UserInfoCallback callback) {
+        MeetingDbManager.getInstance().queryUserInfoFromFirebase(info.getDisplayName(),callback);
+    }
+
+    //user information query
+    public void query(String name, UserInfoCallback callback) {
         if (name == null) {
-            return null;
+            return;
         }
-        UserInfo userInfo = MeetingDbManager.getInstance().queryUserInfo(name);
-        return userInfo;
+        MeetingDbManager.getInstance().queryUserInfoFromFirebase(name, callback);
     }
 
+    //user information update
     public boolean update(UserInfo info) {
         if (info == null) {
             return false;
         }
-        return MeetingDbManager.getInstance().updateUserInfo(info);
+        return MeetingDbManager.getInstance().updateUserInfoFromFirebase(info);
     }
 
     public void logout() {

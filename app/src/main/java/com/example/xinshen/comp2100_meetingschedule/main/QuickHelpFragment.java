@@ -34,7 +34,7 @@ public class QuickHelpFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
-                MainActivity.setShowTitleBar();
+                MainActivity.instance.setShowTitleBar();
             }
         });
         return view;

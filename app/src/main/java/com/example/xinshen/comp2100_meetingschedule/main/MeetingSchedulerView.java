@@ -376,9 +376,9 @@ public class MeetingSchedulerView extends LinearLayout {
         for (MeetingModel meetingModel : mlist) {
             Log.i("shenxin", "setTimeTable: " + meetingModel.getName() + " at:" + meetingModel.getStar_hour());
             addTimeName(meetingModel.getName());
+            initView();
+            invalidate();
         }
-        initView();
-        invalidate();
     }
 
     public void refreshTable() {

@@ -15,6 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Feedback adapter class
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.FeedbackHolder> {
     List<Feedback> mList = null;
 

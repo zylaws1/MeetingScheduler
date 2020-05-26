@@ -10,7 +10,7 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_confirm_password">Confirm password is not equal with password</string>
-    <string name="phone_digit_count_error">Phone number must be 11 digits</string>
+    <string name="phone_digit_count_error">Phone number must be 10 digits</string>
     <string name="phone_number_format_error">Phone number format error</string>
     <string name="age_range_or_format_error">age range or format error</string>
     <string name="register_has_registered">Has registered</string>

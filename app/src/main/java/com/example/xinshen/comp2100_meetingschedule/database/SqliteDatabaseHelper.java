@@ -6,6 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Database help class, create and update database
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class SqliteDatabaseHelper extends SQLiteOpenHelper {
     public static int DB_VERSION = 1;
     public static String TABLE_NAME_USER = "userInfo";

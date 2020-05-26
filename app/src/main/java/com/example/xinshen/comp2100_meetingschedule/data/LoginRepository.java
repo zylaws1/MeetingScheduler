@@ -1,10 +1,13 @@
 package com.example.xinshen.comp2100_meetingschedule.data;
 
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 
 /**
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
+ *
+ * @author Xin Shen, Shaocong Lang
  */
 public class LoginRepository {
 
@@ -44,21 +47,17 @@ public class LoginRepository {
     }
 
 
-    public Result<UserInfo> login(String username, String password) {
+    public void login(String username, UserInfoCallback callback) {
         // handle login
-        Result<UserInfo> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<UserInfo>) result).getData());
-        }
-        return result;
+        dataSource.login(username, callback);
     }
 
-    public int register(UserInfo info) {
-        return dataSource.register(info);
+    public void register(UserInfo info, UserInfoCallback callback) {
+        dataSource.register(info, callback);
     }
 
-    public UserInfo query(String name) {
-        return dataSource.query(name);
+    public void query(String name, UserInfoCallback callback) {
+        dataSource.query(name, callback);
     }
 
     public boolean update(UserInfo info) {

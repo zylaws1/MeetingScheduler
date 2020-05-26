@@ -11,6 +11,8 @@ import com.example.xinshen.comp2100_meetingschedule.data.Result;
 
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
 import com.example.xinshen.comp2100_meetingschedule.R;
+import com.example.xinshen.comp2100_meetingschedule.database.MeetingDbManager;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,35 +34,30 @@ public class RegisterViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-
-        Result<UserInfo> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            UserInfo data = ((Result.Success<UserInfo>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
+    public void regiester(final UserInfo info) {
+        if (info == null) {
+            loginResult.setValue(new LoginResult(R.string.register_info_null));
+            return;
         }
+        loginRepository.register(info, new UserInfoCallback() {
+            @Override
+            public void callback(UserInfo userInfo) {
+                if (userInfo != null) {
+                    loginResult.setValue(new LoginResult(R.string.register_has_registered));
+                } else {
+                    boolean result = MeetingDbManager.getInstance().insertUserInfoInFirebase(info);
+                    if (result) {
+                        loginResult.setValue(new LoginResult(new LoggedInUserView(info.getDisplayName())));
+                    } else {
+                        loginResult.setValue(new LoginResult(R.string.register_error));
+                    }
+                }
+            }
+        });
     }
 
-
-    public void regiester(UserInfo info) {
-        int result = loginRepository.register(info);
-        if (result == Result.REGISTER_OK) {
-            loginResult.setValue(new LoginResult(new LoggedInUserView(info.getDisplayName())));
-        } else if (result == Result.REGISTER_HAS_REGISTERED) {
-            loginResult.setValue(new LoginResult(R.string.register_has_registered));
-        } else if (result == Result.REGISTER_INFO_NULL) {
-            loginResult.setValue(new LoginResult(R.string.register_has_registered));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.register_error));
-        }
-    }
-
-    public UserInfo query(String name) {
-        return loginRepository.query(name);
+    public void query(String name, UserInfoCallback callback) {
+        loginRepository.query(name, callback);
     }
 
     public boolean update(UserInfo info) {
@@ -133,7 +130,7 @@ public class RegisterViewModel extends ViewModel {
     private int checkPhoneValid(String phoneNumber) {
         String regExp = "^((13[0-9])|(14[5,7,9])|(15[0-3,5-9])|(166)|(17[3,5,6,7,8])" +
                 "|(18[0-9])|(19[8,9]))\\d{8}$";
-        if (phoneNumber.length() != 11) {
+        if (phoneNumber.length() != 10) {
             return R.string.phone_digit_count_error;
         } else {
             Pattern p = Pattern.compile(regExp);

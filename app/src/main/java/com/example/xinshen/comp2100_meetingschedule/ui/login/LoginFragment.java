@@ -37,6 +37,11 @@ import com.hjq.bar.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
+/**
+ * Users can log in on this fragment
+ *
+ * @author Xin Shen, Shaocong Lang
+ */
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
@@ -69,7 +74,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getFragmentManager().popBackStack();
-                MainActivity.setShowTitleBar();
+                MainActivity.instance.setShowTitleBar();
             }
         });
 
