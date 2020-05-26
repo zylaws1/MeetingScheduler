@@ -243,7 +243,8 @@ public class MeetingSchedulerView extends LinearLayout {
                 public boolean onLongClick(View v) {
                     AlertDialog alert_add = new AlertDialog.Builder(getContext())
                             .setTitle("Add a new meeting?")
-                            .setPositiveButton("Add", new DialogInterface.OnClickListener() {//添加"Yes"按钮
+                            // add "Add" button
+                            .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
@@ -251,8 +252,8 @@ public class MeetingSchedulerView extends LinearLayout {
                                     transaction.commit();
                                 }
                             })
-
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {//添加取消
+                            // add cancel button
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     return;

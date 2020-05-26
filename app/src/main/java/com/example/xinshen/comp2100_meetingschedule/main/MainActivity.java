@@ -20,7 +20,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,19 +37,16 @@ import androidx.multidex.MultiDex;
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.style.TitleBarLightStyle;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private MeetingListFragment pastMeetingsFragment;
     private SettingsFragment settingsFragment;
     private OwnProfileFragment ownProfileFragment;
+    private NoteListFragment noteListFragment;
+    private NoteEditFragment noteEditFragment;
     private FragmentTransaction transaction;
     private MeetingSchedulerFragment mScheduleFragment;
     private boolean chosen_coming_meetings = true;
@@ -557,6 +555,8 @@ public class MainActivity extends AppCompatActivity {
         pastMeetingsFragment = new MeetingListFragment(true);
         settingsFragment = new SettingsFragment();
         ownProfileFragment = new OwnProfileFragment();
+        noteListFragment = new NoteListFragment();
+        noteEditFragment = new NoteEditFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();
         mScheduleFragment = new MeetingSchedulerFragment(comingMeetingsFragment.meetings_list);
         meetingInfoFragment = new MeetingInfoFragment();
@@ -591,6 +591,18 @@ public class MainActivity extends AppCompatActivity {
 
     public OwnProfileFragment getOwnProfileFragment() {
         return ownProfileFragment;
+    }
+
+    public BottomNavigationView getBotm_navigation() {
+        return botm_navigation;
+    }
+
+    public NoteListFragment getNoteListFragment() {
+        return noteListFragment;
+    }
+
+    public NoteEditFragment getNoteEditFragment() {
+        return noteEditFragment;
     }
 
 }

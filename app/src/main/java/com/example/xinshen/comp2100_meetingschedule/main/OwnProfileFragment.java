@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import com.example.xinshen.comp2100_meetingschedule.MeetingApplication;
@@ -12,11 +13,13 @@ import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
 
 import android.view.LayoutInflater;
@@ -58,7 +61,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
         mInfoModification = view.findViewById(R.id.layout_info_modification);
         mMyMeeting = view.findViewById(R.id.layout_my_meeting);
         mMyNotes = view.findViewById(R.id.layout_my_notes);
-        mMyTimeslotPreference= view.findViewById(R.id.layout_timeslot_preference);
+        mMyTimeslotPreference = view.findViewById(R.id.layout_timeslot_preference);
         mTvUser = view.findViewById(R.id.tv_user);
         mTvLogin = view.findViewById(R.id.tv_login);
         mInfoModification.setOnClickListener(this);
@@ -87,17 +90,18 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        FragmentTransaction transaction;
         switch (v.getId()) {
             case R.id.tv_login:
-                FragmentManager fraManager = getFragmentManager() ;
-                FragmentTransaction transaction = fraManager.beginTransaction();
+                FragmentManager fraManager = getFragmentManager();
+                transaction = fraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, loginFragment);
                 transaction.commit();
                 break;
             case R.id.layout_info_modification:
                 if (isLogin) {
-                    FragmentManager fraManager1 = getFragmentManager() ;
+                    FragmentManager fraManager1 = getFragmentManager();
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
                     transaction1.replace(R.id.main_linear, registerFragment);
@@ -107,14 +111,26 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 }
                 break;
             case R.id.layout_my_meeting:
+                FragmentManager fraManager1 = getFragmentManager();
+                transaction = fraManager1.beginTransaction();
+                transaction.replace(R.id.main_linear, MainActivity.instance.getComingMeetingsFragment());
+                MainActivity.instance.setmTitleBarStyle(true);
+                MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+                transaction.commit();
                 break;
             case R.id.layout_my_notes:
+                transaction = MainActivity.mFraManager.beginTransaction();
+                transaction.addToBackStack(null);
+                transaction.replace(R.id.main_linear, MainActivity.instance.getNoteListFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             case R.id.layout_timeslot_preference:
                 MainActivity.setmTitleBarInactive();
-                FragmentTransaction transaction2 = MainActivity.mFraManager.beginTransaction();
-                transaction2.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
-                transaction2.commit();
+                transaction = MainActivity.mFraManager.beginTransaction();
+                transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
                 break;
             default:
                 break;
