@@ -10,16 +10,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="40dp"
         android:gravity="center"
         android:text="Add  note"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note_linearlayout"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
+        android:id="@+id/note_linearlayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

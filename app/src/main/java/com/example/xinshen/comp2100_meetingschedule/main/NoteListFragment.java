@@ -80,12 +80,9 @@ public class NoteListFragment extends Fragment {
                                             public void onClick(DialogInterface arg0, int arg1) {
                                                 NoteDBManager.deleteNoteById((int) id);
                                                 // refresh list view after deletion
-                                                MainActivity.instance.onResume();
-                                                Toast.makeText(
-                                                        MainActivity.instance,
-                                                        "note deleted!",
-                                                        Toast.LENGTH_LONG)
-                                                        .show();
+                                                onResume();
+                                                Toast.makeText(MainActivity.instance,
+                                                        "note deleted!", Toast.LENGTH_LONG).show();
                                             }
                                         }).setNegativeButton("Cancel", null).show();
                         return true;
@@ -98,11 +95,14 @@ public class NoteListFragment extends Fragment {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent in = new Intent();
-                        in.setClassName(view.getContext(), "cn.lger.notebook.NoteEditActivity");
-                        // Put the id in Intent, pass the data after switching the fragment
-                        in.putExtra("id", id);
-                        startActivity(in);
+                        // Put the id in bundle, pass the data after switching the fragment
+                        FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                        transaction.replace(R.id.main_linear, MainActivity.instance.getNoteEditFragment());
+                        transaction.addToBackStack(null);
+                        Bundle bundle = new Bundle();
+                        bundle.putLong("id", id);
+                        MainActivity.instance.getNoteEditFragment().setArguments(bundle);
+                        transaction.commit();
                     }
                 });
 

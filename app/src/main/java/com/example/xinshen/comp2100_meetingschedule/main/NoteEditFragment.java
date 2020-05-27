@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +55,7 @@ public class NoteEditFragment extends Fragment {
                             .setPositiveButton("Yes!",
                                     new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(DialogInterface arg0,
-                                                            int arg1) {
+                                        public void onClick(DialogInterface arg0, int arg1) {
                                             ContentValues values = new ContentValues();
                                             values.put("title", title);
                                             values.put("content", content);
@@ -75,6 +75,31 @@ public class NoteEditFragment extends Fragment {
 
                 }
             });
+
+            root_view.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+                    Log.i("shenxin", "cancel clicked  ");
+                    // finish fragment on cancel edit
+                    getActivity().onBackPressed();
+                }
+            });
+
+
+        }
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            Long id = bundle.getLong("id");
+            Log.i("shenxin", "get bundle note id:" + id);
+            if (id != null) {
+                Cursor cur = NoteDBManager.queryNoteById(id.intValue());
+                if (cur.moveToFirst()) {
+                    // get content values
+                    titleEditText.setText(cur.getString(1));
+                    contentEditText.setText(cur.getString(2));
+                }
+            }
+            bundle.clear();
         }
         return root_view;
     }
