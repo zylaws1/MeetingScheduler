@@ -12,8 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.hjq.bar.TitleBar;
@@ -44,7 +42,7 @@ public class SearchActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_slide);
         setContentView(R.layout.activity_search);
         meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
-        search = findViewById(R.id.editText2);
+        search = findViewById(R.id.editText_search);
         mTitleBar = findViewById(R.id.title_bar);
         button = findViewById(R.id.button);
         button.setOnClickListener(new Buttonlistener());

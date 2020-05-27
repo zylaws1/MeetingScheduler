@@ -37,6 +37,7 @@ import androidx.multidex.MultiDex;
 import com.example.xinshen.comp2100_meetingschedule.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,10 +85,9 @@ public class MainActivity extends AppCompatActivity {
     private OnTitleBarListener mTitleListener;
     private BottomNavigationView botm_navigation;
     private MeetingDeadlineNotification m_notification = new MeetingDeadlineNotification();
-    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(MEETING_TABLE_NAME);
+    private DatabaseReference mDatabase = null;
     private ArrayList<MeetingModel> coming_meetings_data;
     private ArrayList<MeetingModel> past_meetings_data;
-
 
     public ArrayList<MeetingModel> getComing_meetings_data() {
         return coming_meetings_data;
@@ -152,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
         getDevicedInfo();
         mContext = getApplicationContext();
         instance = this;
+        FirebaseApp.initializeApp(this);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(MEETING_TABLE_NAME);
         initViews();
-//        FirebaseApp.initializeApp(this);
         ValueEventListener dataListener = new ValueEventListener() {
             // Add callback listener to get meetings data from google firebase.
             @Override

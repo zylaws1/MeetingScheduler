@@ -61,8 +61,10 @@ public class MeetingInfoFragment extends Fragment {
         // Fill the content according to the chosen way from coming fragment
         if (touched_id != -1)
             setMeetingInfo(touched_id);
-        else
+        else if (meeting_obj != null)
             setMeetingInfo(meeting_obj);
+        else
+            return root_view;
         // Make a copy to mainactivity public param_model in order for quick share by token
         MainActivity.param_model.setName(meet_name.getText().toString());
         MainActivity.param_model.setRoom(meet_room.getText().toString());
