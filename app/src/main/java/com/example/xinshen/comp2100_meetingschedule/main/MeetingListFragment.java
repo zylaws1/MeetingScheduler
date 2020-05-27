@@ -194,4 +194,7 @@ public class MeetingListFragment extends Fragment {
         return meetings_list_adapter;
     }
 
+    public MeetingsListview getLv_meetins() {
+        return lv_meetins;
+    }
 }

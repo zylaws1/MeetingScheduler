@@ -2,7 +2,9 @@ package com.example.xinshen.comp2100_meetingschedule;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +20,10 @@ import androidx.fragment.app.testing.FragmentScenario;
 import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingInfoFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingListFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.MeetingModel;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingsListview;
+import com.example.xinshen.comp2100_meetingschedule.main.ScrolledMeetingAdapter;
 import com.example.xinshen.comp2100_meetingschedule.main.SearchActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.WelcomeActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.AboutFragment;
@@ -38,6 +42,9 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowToast;
 import org.robolectric.util.FragmentTestUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -50,6 +57,17 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class MainactivityTest {
     public static final String TAG = "sx test";
+
+    // Simulate a single click event
+    private void simulateClick(View view, float x, float y) {
+        long time = SystemClock.uptimeMillis();
+
+        MotionEvent downEvent = MotionEvent.obtain(time, time, MotionEvent.ACTION_DOWN, x, y, 0);
+        time += 500;
+        MotionEvent upEvent = MotionEvent.obtain(time, time, MotionEvent.ACTION_UP, x, y, 0);
+        view.onTouchEvent(downEvent);
+        view.onTouchEvent(upEvent);
+    }
 
     // test add work flow function
     @Test
@@ -135,6 +153,30 @@ public class MainactivityTest {
                 assertNotNull(meeting_item);
                 assertTrue(meeting_item.isClickable());
                 meeting_item.performClick();
+                ScrolledMeetingAdapter meetings_list_adapter =
+                        new ScrolledMeetingAdapter(fragment.getContext(),
+                        R.layout.scrolled_meetings_listview, MeetingListFragment.get_mock_data());
+                fragment.getLv_meetins().setAdapter(meetings_list_adapter);
+                fragment.getLv_meetins().bondAdapter(meetings_list_adapter);
+                MeetingsListview meetingsListview = fragment.getLv_meetins();
+                assertNotNull(meetingsListview);
+                meetingsListview.performClick();
+                meetingsListview.performLongClick();
+                meetingsListview.dispatchNestedFling(20, 0, true);
+                assertEquals(0, meetingsListview.getChildCount());
+                simulateClick(fragment.getView(), 50, 20);
+                long time = SystemClock.uptimeMillis();
+                meetingsListview.onSingleTapUp(MotionEvent.obtain(time, time+50,
+                        MotionEvent.ACTION_DOWN, 50, 0, 0));
+                meetingsListview.onFling(
+                        MotionEvent.obtain(time, time+50,
+                                MotionEvent.ACTION_DOWN, 50, 0, 0),
+                        MotionEvent.obtain(time, time+50,
+                                MotionEvent.ACTION_UP, 80, 0, 0),
+                        50, 0
+                );
+                meetingsListview.onLongPress(MotionEvent.obtain(time, time + 500,
+                        MotionEvent.ACTION_DOWN, 50, 0, 0));
             }
         });
         assertEquals(ori_size,
@@ -229,9 +271,13 @@ public class MainactivityTest {
                 assertTrue(scrollview.isFocusable());
                 assertEquals(View.VISIBLE, scrollview.getVisibility());
                 assertEquals(MeetingSchedulerView.class, scrollview.getChildAt(0).getClass());
-                MeetingSchedulerView meetingSchedulerView =(MeetingSchedulerView)scrollview.getChildAt(0);
+                MeetingSchedulerView meetingSchedulerView = (MeetingSchedulerView) scrollview.getChildAt(0);
                 assertEquals(View.VISIBLE, meetingSchedulerView.getVisibility());
                 meetingSchedulerView.setTimeTable(null);
+                meetingSchedulerView.refreshTable();
+                List<MeetingModel> mListTimeTable = new ArrayList<>();
+                mListTimeTable.addAll(MeetingListFragment.get_mock_data());
+                meetingSchedulerView.setTimeTable(mListTimeTable);
                 meetingSchedulerView.refreshTable();
             }
         });
