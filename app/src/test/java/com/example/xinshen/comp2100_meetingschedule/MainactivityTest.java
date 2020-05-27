@@ -12,19 +12,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.testing.FragmentScenario;
 
 import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
+import com.example.xinshen.comp2100_meetingschedule.main.MeetingDeadlineNotification;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingInfoFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingListFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingModel;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingsListview;
+import com.example.xinshen.comp2100_meetingschedule.main.OwnProfileFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.QuickHelpFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.ScrolledMeetingAdapter;
 import com.example.xinshen.comp2100_meetingschedule.main.SearchActivity;
+import com.example.xinshen.comp2100_meetingschedule.main.SetPreferTimeslotFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.WelcomeActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.AboutFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.FeedbackFragment;
@@ -46,6 +51,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -160,6 +166,9 @@ public class MainactivityTest {
                 fragment.getLv_meetins().bondAdapter(meetings_list_adapter);
                 MeetingsListview meetingsListview = fragment.getLv_meetins();
                 assertNotNull(meetingsListview);
+                meetingsListview.setAdapter(meetings_list_adapter);
+                meetingsListview.bondAdapter(meetings_list_adapter);
+//                meetingsListview.addView(new 0,);
                 meetingsListview.performClick();
                 meetingsListview.performLongClick();
                 meetingsListview.dispatchNestedFling(20, 0, true);
@@ -309,6 +318,72 @@ public class MainactivityTest {
                 layout_sign_out.performClick();
             }
         });
+    }
+
+    // test controller life circle in QuickHelpFragment
+    @Test
+    public void controllersQuickHelpFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<QuickHelpFragment> fragment =
+                FragmentScenario.launch(QuickHelpFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<QuickHelpFragment>() {
+            @Override
+            public void perform(@NonNull QuickHelpFragment fragment) {
+                Object back_obj = fragment.getView().findViewById(R.id.iv_back);
+                assertEquals(ImageView.class, back_obj.getClass());
+                ImageView back_img = (ImageView) back_obj;
+                back_img.performClick();
+            }
+        });
+    }
+
+    // test controller life circle in OwnProfileFragment
+    @Test
+    public void controllersOwnProfileFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<OwnProfileFragment> fragment =
+                FragmentScenario.launch(OwnProfileFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<OwnProfileFragment>() {
+            @Override
+            public void perform(@NonNull OwnProfileFragment fragment) {
+                Object obj_login = fragment.getView().findViewById(R.id.tv_login);
+                assertEquals(TextView.class, obj_login.getClass());
+                TextView tv_login = (TextView) obj_login;
+                assertTrue(tv_login.isClickable());
+            }
+        });
+    }
+
+    // test controller life circle in SetPreferTimeslotFragment
+    @Test
+    public void controllersSetPreferTimeslotFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<SetPreferTimeslotFragment> fragment =
+                FragmentScenario.launch(SetPreferTimeslotFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<SetPreferTimeslotFragment>() {
+            @Override
+            public void perform(@NonNull SetPreferTimeslotFragment fragment) {
+                Button btn_save_pref = fragment.getView().findViewById(R.id.btn_save_pref);
+                assertTrue(btn_save_pref.isClickable());
+                btn_save_pref.performClick();
+            }
+        });
+    }
+
+    // test controller life circle in SetPreferTimeslotFragment
+    @Test
+    public void meetingDeadLineNotification() {
+        MeetingDeadlineNotification meetingDNotification =new MeetingDeadlineNotification();
+        meetingDNotification.cleanAllNotification();
+        meetingDNotification.addNotification(200,
+                "test ticket", "test title","test ticket");
+        meetingDNotification.startNoti(6000,"test content","test title");
     }
 
     @Test
