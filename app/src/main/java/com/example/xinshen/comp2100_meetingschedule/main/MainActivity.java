@@ -560,7 +560,8 @@ public class MainActivity extends AppCompatActivity {
         noteListFragment = new NoteListFragment();
         noteEditFragment = new NoteEditFragment();
         addNewMeetingFragment = new AddNewMeetingFragment();
-        mScheduleFragment = new MeetingSchedulerFragment(comingMeetingsFragment.meetings_list);
+        mScheduleFragment = new MeetingSchedulerFragment();
+        mScheduleFragment.setMeetings_list(comingMeetingsFragment.meetings_list);
         meetingInfoFragment = new MeetingInfoFragment();
         setPreferTimeslotFragment = new SetPreferTimeslotFragment();
         setDefaultFragment();

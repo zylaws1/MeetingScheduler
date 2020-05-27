@@ -22,11 +22,20 @@ public class MeetingSchedulerFragment extends Fragment {
     public ArrayList<MeetingModel> mList = new ArrayList<MeetingModel>();   // meetings data array for visualisation
     public static ArrayList<Integer> rm_idx_ary = new ArrayList<>();    //an array to save removed item in case the view has not been created
     private View rootView;
-    private List<MeetingModel> meetings_list;
 
-    MeetingSchedulerFragment(List<MeetingModel> meetings_list) {
+    public void setMeetings_list(List<MeetingModel> meetings_list) {
         this.meetings_list = meetings_list;
     }
+
+    private List<MeetingModel> meetings_list;
+
+//    MeetingSchedulerFragment(){
+//        super();
+//    }
+//
+//    MeetingSchedulerFragment(List<MeetingModel> meetings_list) {
+//        this.meetings_list = meetings_list;
+//    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -43,7 +52,7 @@ public class MeetingSchedulerFragment extends Fragment {
             if (meetings_list == null)
                 meetings_list = MainActivity.instance.comingMeetingsFragment.meetings_list;
             mList.addAll(meetings_list);
-            mTimaTableView = (MeetingSchedulerView) rootView.findViewById(R.id.scheduler_timetable_ly);
+            mTimaTableView = (MeetingSchedulerView) rootView.findViewById(R.id.scheduler_timetable_Lv);
         }
         return rootView;
     }

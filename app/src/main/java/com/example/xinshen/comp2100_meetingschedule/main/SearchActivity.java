@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 /**
  * Search activity for quick finding
- *  a specific meeting by keywords.
+ * a specific meeting by keywords.
  *
  * @author Xin Shen, Shaocong Lang
  */
@@ -32,6 +32,11 @@ public class SearchActivity extends AppCompatActivity {
     public EditText search;
     private Button button;
     private Button button_go;
+
+    public ArrayList<String> getList() {
+        return list;
+    }
+
     ArrayList<String> list = new ArrayList<>();
     ArrayList<MeetingModel> meeting_model_list = new ArrayList<>();
 
@@ -41,7 +46,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_slide);
         setContentView(R.layout.activity_search);
-        meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+        if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
+            meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
         search = findViewById(R.id.editText_search);
         mTitleBar = findViewById(R.id.title_bar);
         button = findViewById(R.id.button);

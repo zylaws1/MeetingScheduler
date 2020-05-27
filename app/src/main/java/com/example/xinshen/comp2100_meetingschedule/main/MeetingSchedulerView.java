@@ -373,6 +373,7 @@ public class MeetingSchedulerView extends LinearLayout {
 
     // set timetable and refresh ui
     public void setTimeTable(List<MeetingModel> mlist) {
+        if (mlist == null) return;
         this.mListTimeTable = mlist;
         for (MeetingModel meetingModel : mlist) {
             Log.i("shenxin", "setTimeTable: " + meetingModel.getName() + " at:" + meetingModel.getStar_hour());

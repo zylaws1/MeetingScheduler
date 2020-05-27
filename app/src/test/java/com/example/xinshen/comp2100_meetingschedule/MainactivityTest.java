@@ -3,9 +3,13 @@ package com.example.xinshen.comp2100_meetingschedule;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,6 +22,10 @@ import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerFragmen
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingsListview;
 import com.example.xinshen.comp2100_meetingschedule.main.SearchActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.WelcomeActivity;
+import com.example.xinshen.comp2100_meetingschedule.main.AboutFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.FeedbackFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerView;
+import com.example.xinshen.comp2100_meetingschedule.main.SettingsFragment;
 
 import org.apache.tools.ant.Main;
 import org.junit.Rule;
@@ -58,6 +66,8 @@ public class MainactivityTest {
                 activity.getComingMeetingsFragment().meetings_list.size());
 
         activity.findViewById(R.id.add_meetings_controls).performClick();
+        activity.findViewById(R.id.btn_Date).performClick();
+        activity.findViewById(R.id.btn_Time).performClick();
         activity.findViewById(R.id.btn_cancel_add).performClick();
 
         assertEquals(ori_size,
@@ -73,7 +83,8 @@ public class MainactivityTest {
         activity.findViewById(R.id.navigation_search).performClick();
 
         Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
-        assertEquals(SearchActivity.class, actual);
+        Intent expected = new Intent(activity, SearchActivity.class);
+        assertEquals(expected.getClass(), actual.getClass());
     }
 
     // test search activity
@@ -84,8 +95,10 @@ public class MainactivityTest {
         SearchActivity activity = mainController.create().start().resume().get();
         EditText input = activity.findViewById(R.id.editText_search);
         input.setText("");
+        Button goBtn = activity.findViewById(R.id.button_go);
+
         Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
-        assertEquals(SearchActivity.class, actual);
+        assertEquals(0, activity.getList().size());
     }
 
     // test work flow function in listview
@@ -160,6 +173,96 @@ public class MainactivityTest {
         Intent actual = shadowOf(RuntimeEnvironment.application).getNextStartedActivity();
         if (actual != null)
             assertEquals(expectedIntent.getComponent(), actual.getComponent());
+    }
+
+    // test controller life circle in AboutFragment
+    @Test
+    public void controllersFromAboutFragment() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<AboutFragment> fragment =
+                FragmentScenario.launch(AboutFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<AboutFragment>() {
+            @Override
+            public void perform(@NonNull AboutFragment fragment) {
+                //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                Object back_obj = fragment.getView().findViewById(R.id.iv_back);
+                assertEquals(ImageView.class, back_obj.getClass());
+                ImageView back_img = (ImageView) back_obj;
+                back_img.performClick();
+            }
+        });
+    }
+
+    // test controller life circle in Feedback fragment
+    @Test
+    public void controllersFromFeedbackFragment() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<FeedbackFragment> fragment =
+                FragmentScenario.launch(FeedbackFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<FeedbackFragment>() {
+            @Override
+            public void perform(@NonNull FeedbackFragment fragment) {
+                //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                assertEquals(ImageView.class, fragment.getView().findViewById(R.id.fb_back).getClass());
+                ImageView back_obj = fragment.getView().findViewById(R.id.fb_back);
+                assertTrue(back_obj.isClickable());
+            }
+        });
+    }
+
+    // test controller life circle in MeetingSchedulerView
+    @Test
+    public void controllersFromMeetingSchedulerView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<MeetingSchedulerFragment> fragment =
+                FragmentScenario.launch(MeetingSchedulerFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<MeetingSchedulerFragment>() {
+            @Override
+            public void perform(@NonNull MeetingSchedulerFragment fragment) {
+                ScrollView scrollview = fragment.getView().findViewById(R.id.s_scrollview);
+                assertTrue(scrollview.isFocusable());
+                assertEquals(View.VISIBLE, scrollview.getVisibility());
+                assertEquals(MeetingSchedulerView.class, scrollview.getChildAt(0).getClass());
+                MeetingSchedulerView meetingSchedulerView =(MeetingSchedulerView)scrollview.getChildAt(0);
+                assertEquals(View.VISIBLE, meetingSchedulerView.getVisibility());
+                meetingSchedulerView.setTimeTable(null);
+                meetingSchedulerView.refreshTable();
+            }
+        });
+    }
+
+    // test controller life circle in SettingFragment
+    @Test
+    public void controllersFromSettingFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<SettingsFragment> fragment =
+                FragmentScenario.launch(SettingsFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<SettingsFragment>() {
+            @Override
+            public void perform(@NonNull SettingsFragment fragment) {
+                //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                RelativeLayout feedback = fragment.getView().findViewById(R.id.layout_feedback);
+                RelativeLayout qucik_help = fragment.getView().findViewById(R.id.layout_quick_help);
+                RelativeLayout about_meeting = fragment.getView().findViewById(R.id.layout_about_meeting);
+                RelativeLayout layout_sign_out = fragment.getView().findViewById(R.id.layout_sign_out);
+                assertTrue(feedback.isClickable());
+                assertTrue(qucik_help.isClickable());
+                assertTrue(about_meeting.isClickable());
+                assertTrue(layout_sign_out.isClickable());
+                feedback.performClick();
+//                qucik_help.performClick();
+//                about_meeting.performClick();
+                layout_sign_out.performClick();
+            }
+        });
     }
 
     @Test

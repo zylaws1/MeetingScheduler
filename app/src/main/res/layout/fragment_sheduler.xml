@@ -12,7 +12,7 @@
         android:fillViewport="false">
 
         <com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerView
-            android:id="@+id/scheduler_timetable_ly"
+            android:id="@+id/scheduler_timetable_Lv"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
