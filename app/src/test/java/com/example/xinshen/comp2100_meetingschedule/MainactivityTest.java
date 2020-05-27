@@ -1,5 +1,7 @@
 package com.example.xinshen.comp2100_meetingschedule;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -25,6 +27,8 @@ import com.example.xinshen.comp2100_meetingschedule.main.MeetingListFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingModel;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingsListview;
+import com.example.xinshen.comp2100_meetingschedule.main.NoteEditFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.NoteListFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.OwnProfileFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.QuickHelpFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.ScrolledMeetingAdapter;
@@ -161,7 +165,7 @@ public class MainactivityTest {
                 meeting_item.performClick();
                 ScrolledMeetingAdapter meetings_list_adapter =
                         new ScrolledMeetingAdapter(fragment.getContext(),
-                        R.layout.scrolled_meetings_listview, MeetingListFragment.get_mock_data());
+                                R.layout.scrolled_meetings_listview, MeetingListFragment.get_mock_data());
                 fragment.getLv_meetins().setAdapter(meetings_list_adapter);
                 fragment.getLv_meetins().bondAdapter(meetings_list_adapter);
                 MeetingsListview meetingsListview = fragment.getLv_meetins();
@@ -175,12 +179,12 @@ public class MainactivityTest {
                 assertEquals(0, meetingsListview.getChildCount());
                 simulateClick(fragment.getView(), 50, 20);
                 long time = SystemClock.uptimeMillis();
-                meetingsListview.onSingleTapUp(MotionEvent.obtain(time, time+50,
+                meetingsListview.onSingleTapUp(MotionEvent.obtain(time, time + 50,
                         MotionEvent.ACTION_DOWN, 50, 0, 0));
                 meetingsListview.onFling(
-                        MotionEvent.obtain(time, time+50,
+                        MotionEvent.obtain(time, time + 50,
                                 MotionEvent.ACTION_DOWN, 50, 0, 0),
-                        MotionEvent.obtain(time, time+50,
+                        MotionEvent.obtain(time, time + 50,
                                 MotionEvent.ACTION_UP, 80, 0, 0),
                         50, 0
                 );
@@ -363,7 +367,6 @@ public class MainactivityTest {
     public void controllersSetPreferTimeslotFragmentView() {
         ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
         final MainActivity activity = mainController.create().start().resume().get();
-        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
         FragmentScenario<SetPreferTimeslotFragment> fragment =
                 FragmentScenario.launch(SetPreferTimeslotFragment.class);
         fragment.onFragment(new FragmentScenario.FragmentAction<SetPreferTimeslotFragment>() {
@@ -376,14 +379,56 @@ public class MainactivityTest {
         });
     }
 
+    // test controller life circle in NoteListFragment
+    @Test
+    public void controllersFromNoteListFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        FragmentScenario<NoteListFragment> fragment =
+                FragmentScenario.launch(NoteListFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<NoteListFragment>() {
+            @Override
+            public void perform(@NonNull NoteListFragment fragment) {
+                Button add_noteBtn = fragment.getView().findViewById(R.id.addNote);
+                assertTrue(add_noteBtn.isClickable());
+                add_noteBtn.performClick();
+            }
+        });
+    }
+
+    // test controller life circle in NoteEditFragment
+    @Test
+    public void controllersFromNoteEditFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        FragmentScenario<NoteEditFragment> fragment =
+                FragmentScenario.launch(NoteEditFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<NoteEditFragment>() {
+            @Override
+            public void perform(@NonNull NoteEditFragment fragment) {
+                Button save_noteBtn = fragment.getView().findViewById(R.id.save);
+                assertTrue(save_noteBtn.isClickable());
+                save_noteBtn.performClick();
+                Button cancel_noteBtn = fragment.getView().findViewById(R.id.cancel);
+                assertTrue(cancel_noteBtn.isClickable());
+                cancel_noteBtn.performClick();
+            }
+        });
+    }
+
     // test controller life circle in SetPreferTimeslotFragment
     @Test
     public void meetingDeadLineNotification() {
-        MeetingDeadlineNotification meetingDNotification =new MeetingDeadlineNotification();
-        meetingDNotification.cleanAllNotification();
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        MeetingDeadlineNotification meetingDNotification = new MeetingDeadlineNotification();
         meetingDNotification.addNotification(200,
-                "test ticket", "test title","test ticket");
-        meetingDNotification.startNoti(6000,"test content","test title");
+                "test ticket", "test title", "test ticket");
+        meetingDNotification.startNoti(6000, "test content", "test title");
+        NotificationManager notificationManager = (NotificationManager)
+                activity.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        meetingDNotification.cleanAllNotification();
+        assertEquals(0, notificationManager.getActiveNotifications().length);
     }
 
     @Test
