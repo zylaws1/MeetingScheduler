@@ -1,8 +1,10 @@
 package com.example.xinshen.comp2100_meetingschedule;
 
+import android.app.Instrumentation;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,7 +22,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.testing.FragmentScenario;
+import androidx.test.InstrumentationRegistry;
 
+import com.example.xinshen.comp2100_meetingschedule.data.model.Feedback;
+import com.example.xinshen.comp2100_meetingschedule.data.model.FeedbackBean;
+import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
+import com.example.xinshen.comp2100_meetingschedule.database.MeetingSQLiteOpenHelper;
+import com.example.xinshen.comp2100_meetingschedule.database.NoteDBManager;
 import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingDeadlineNotification;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingInfoFragment;
@@ -39,6 +48,10 @@ import com.example.xinshen.comp2100_meetingschedule.main.AboutFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.FeedbackFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerView;
 import com.example.xinshen.comp2100_meetingschedule.main.SettingsFragment;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterViewModel;
+import com.google.firebase.FirebaseApp;
 
 import org.apache.tools.ant.Main;
 import org.junit.Rule;
@@ -53,6 +66,7 @@ import org.robolectric.util.FragmentTestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -253,6 +267,8 @@ public class MainactivityTest {
     // test controller life circle in Feedback fragment
     @Test
     public void controllersFromFeedbackFragment() {
+        Context context= InstrumentationRegistry.getContext();
+        FirebaseApp.initializeApp(context);
         ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
         final MainActivity activity = mainController.create().start().resume().get();
         activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
@@ -262,9 +278,19 @@ public class MainactivityTest {
             @Override
             public void perform(@NonNull FeedbackFragment fragment) {
                 //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                FeedbackFragment.beanList.clear();
+                FeedbackFragment.userName = "1111";
                 assertEquals(ImageView.class, fragment.getView().findViewById(R.id.fb_back).getClass());
                 ImageView back_obj = fragment.getView().findViewById(R.id.fb_back);
                 assertTrue(back_obj.isClickable());
+                EditText editText = fragment.getView().findViewById(R.id.et_feedback);
+                editText.setText("哈哈");
+                TextView textView = fragment.getView().findViewById(R.id.fb_right);
+                assertEquals("Submit", textView.getText().toString());
+                textView.performClick();
+                FeedbackBean bean = FeedbackFragment.beanList.get(0);
+                assertEquals("1111", bean.getName());
+                assertEquals("哈哈", bean.getFeedback());
             }
         });
     }
@@ -384,11 +410,13 @@ public class MainactivityTest {
     public void controllersFromNoteListFragmentView() {
         ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
         final MainActivity activity = mainController.create().start().resume().get();
+        NoteDBManager.DB_PATH=new Random().nextInt(1000) + ".db";
         FragmentScenario<NoteListFragment> fragment =
                 FragmentScenario.launch(NoteListFragment.class);
         fragment.onFragment(new FragmentScenario.FragmentAction<NoteListFragment>() {
             @Override
             public void perform(@NonNull NoteListFragment fragment) {
+                NoteDBManager.getInstance(RuntimeEnvironment.application);
                 Button add_noteBtn = fragment.getView().findViewById(R.id.addNote);
                 assertTrue(add_noteBtn.isClickable());
                 add_noteBtn.performClick();
@@ -431,9 +459,155 @@ public class MainactivityTest {
         assertEquals(0, notificationManager.getActiveNotifications().length);
     }
 
+    // test controller life circle in LoginFragment
+    @Test
+    public void controllersFromLoginFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<LoginFragment> fragment =
+                FragmentScenario.launch(LoginFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<LoginFragment>() {
+            @Override
+            public void perform(@NonNull LoginFragment fragment) {
+                //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                final EditText usernameEditText = fragment.getView().findViewById(R.id.username);
+                final EditText passwordEditText = fragment.getView().findViewById(R.id.password);
+                final TextView registerTextView = fragment.getView().findViewById(R.id.tv_register);
+                final Button loginButton = fragment.getView().findViewById(R.id.login);
+                assertTrue(usernameEditText.isEnabled());
+                assertTrue(passwordEditText.isEnabled());
+                assertTrue(registerTextView.isClickable());
+                assertTrue(loginButton.isClickable());
+                usernameEditText.setText("1111");
+                passwordEditText.setText("11");
+//                registerTextView.performClick();
+                loginButton.performClick();
+                CharSequence error = passwordEditText.getError();
+                assertEquals("Password must be >5 characters", error);
+
+                usernameEditText.setText("");
+                passwordEditText.setText("111111");
+                CharSequence userNameError = usernameEditText.getError();
+                assertEquals("Not a valid username", userNameError);
+
+                usernameEditText.setText("e@1212");
+                passwordEditText.setText("111111");
+                CharSequence userNameError1 = usernameEditText.getError();
+                assertEquals("Not a valid username", userNameError1);
+
+                Object back_obj = fragment.getView().findViewById(R.id.iv_back);
+                assertEquals(ImageView.class, back_obj.getClass());
+                ImageView back_img = (ImageView) back_obj;
+                back_img.performClick();
+
+            }
+        });
+    }
+
+    // test controller life circle in RegisterFragment
+    @Test
+    public void controllersFromRegisterFragmentView() {
+        ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
+        final MainActivity activity = mainController.create().start().resume().get();
+        activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
+        FragmentScenario<RegisterFragment> fragment =
+                FragmentScenario.launch(RegisterFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<RegisterFragment>() {
+            @Override
+            public void perform(@NonNull RegisterFragment fragment) {
+                //fragment.getView().findViewById(R.id.scroll_courses_list_names).performClick();
+                EditText etUserName=fragment.getView().findViewById(R.id.et_register_username);
+                EditText etPassword=fragment.getView().findViewById(R.id.et_register_password);
+                EditText etConfirmPassword=fragment.getView().findViewById(R.id.et_confirm_password);
+                RadioGroup rgGender=fragment.getView().findViewById(R.id.rg_gender);
+                EditText etAge=fragment.getView().findViewById(R.id.et_age);
+                EditText etPhone=fragment.getView().findViewById(R.id.et_phone);
+                EditText etEmail=fragment.getView().findViewById(R.id.et_email);
+                Button btRegister=fragment.getView().findViewById(R.id.btn_register);
+                assertTrue(etUserName.isEnabled());
+                assertTrue(etPassword.isEnabled());
+                assertTrue(etConfirmPassword.isEnabled());
+                assertTrue(rgGender.isEnabled());
+                assertTrue(etAge.isEnabled());
+                assertTrue(etPhone.isEnabled());
+                assertTrue(etEmail.isEnabled());
+                assertTrue(btRegister.isClickable());
+                assertEquals("Register", btRegister.getText().toString());
+
+                etUserName.setText("");
+                CharSequence userNameError = etUserName.getError();
+                assertEquals("Not a valid username", userNameError);
+
+                etUserName.setText("e@1212");
+                CharSequence userNameError1 = etUserName.getError();
+                assertEquals("Not a valid username", userNameError1);
+
+                etUserName.setText("1111");
+                etPassword.setText("11");
+                CharSequence passwordError = etPassword.getError();
+                assertEquals("Password must be >5 characters", passwordError);
+
+                etPassword.setText("1111111");
+                etConfirmPassword.setText("111");
+                CharSequence confirmPasswordError = etConfirmPassword.getError();
+                assertEquals("Confirm password is not equal with password", confirmPasswordError);
+
+                etConfirmPassword.setText("1111111");
+                etAge.setText("300");
+                CharSequence ageError = etAge.getError();
+                assertEquals("age range or format error", ageError);
+
+                etAge.setText("19");
+                etPhone.setText("10001");
+                CharSequence phoneError = etPhone.getError();
+                assertEquals("Phone number format error", phoneError);
+
+                etPhone.setText("13297463212");
+                etEmail.setText("111002");
+                CharSequence emailError = etEmail.getError();
+                assertEquals("Not a valid email", emailError);
+
+                etEmail.setText("3412455432@gmail.com");
+                assertTrue(btRegister.isClickable());
+                btRegister.performClick();
+
+                UserInfo userInfo=new UserInfo();
+                userInfo.setDisplayName("1111");
+                userInfo.setPassword("1111111");
+                userInfo.setAge(19);
+                userInfo.setPhone("13297463212");
+                userInfo.setEmail("3412455432@gmail.com");
+                fragment.setEditTextEnable(userInfo,true);
+
+                Object back_obj = fragment.getView().findViewById(R.id.iv_back);
+                assertEquals(ImageView.class, back_obj.getClass());
+                ImageView back_img = (ImageView) back_obj;
+                back_img.performClick();
+
+            }
+        });
+
+        FragmentScenario<RegisterFragment> fragment1 =
+                FragmentScenario.launch(RegisterFragment.class);
+        fragment.onFragment(new FragmentScenario.FragmentAction<RegisterFragment>() {
+            @Override
+            public void perform(@NonNull RegisterFragment fragment) {
+                fragment.userName = "1111";
+            }
+        });
+    }
+
     @Test
     public void addition_isCorrect() { //base test for environment
         Log.i(TAG, "======== test start ======== ");
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void testPhoneValid() { //base test for phone valid
+        RegisterViewModel viewModel = new RegisterViewModel();
+        int result = viewModel.checkPhoneValid("13297463212");
+        assertEquals(0, result);
     }
 }

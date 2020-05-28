@@ -27,6 +27,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private QuickHelpFragment quickHelpFragment;
     private AboutFragment aboutFragment;
     private FeedbackFragment feedbackFragment;
+    public static String userName = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,12 +44,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         quickHelpFragment = new QuickHelpFragment();
         aboutFragment = new AboutFragment();
         feedbackFragment = new FeedbackFragment();
+        userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        String userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();
         switch (v.getId()) {
             case R.id.layout_about_meeting:
                 FragmentManager fraManager = getFragmentManager() ;

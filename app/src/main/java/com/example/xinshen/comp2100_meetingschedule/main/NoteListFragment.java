@@ -47,7 +47,7 @@ public class NoteListFragment extends Fragment {
                 });
 
         // Query all notes and display in list view
-        listItemCursor = NoteDBManager.queryAll();
+        listItemCursor = NoteDBManager.getInstance(getActivity().getApplicationContext()).queryAll();
         Log.i("shenxin", "listItemCursor: " + listItemCursor.getCount());
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(),
                 R.layout.note_item, listItemCursor, new String[]{"_id",
@@ -78,7 +78,7 @@ public class NoteListFragment extends Fragment {
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface arg0, int arg1) {
-                                                NoteDBManager.deleteNoteById((int) id);
+                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).deleteNoteById((int) id);
                                                 // refresh list view after deletion
                                                 onResume();
                                                 Toast.makeText(MainActivity.instance,

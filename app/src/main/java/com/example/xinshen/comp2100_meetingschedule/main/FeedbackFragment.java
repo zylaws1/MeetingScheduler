@@ -41,9 +41,9 @@ public class FeedbackFragment extends Fragment {
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(FBFD_NAME);
     ActivityFeedbackBinding mBinding;
     List<Feedback> list = new ArrayList<>();
-    List<FeedbackBean> beanList = new ArrayList<>();
+    public static List<FeedbackBean> beanList = new ArrayList<>();
     FeedbackAdapter mAdapter;
-    String userName;
+    public static String userName;
 
     @Nullable
     @Override
@@ -74,6 +74,7 @@ public class FeedbackFragment extends Fragment {
                     FeedbackBean bean = new FeedbackBean();
                     bean.setName(userName);
                     bean.setFeedback(feedbackValue);
+                    beanList.add(bean);
                     mDatabase.child(bean.getName()).setValue(bean);
                 }
             }

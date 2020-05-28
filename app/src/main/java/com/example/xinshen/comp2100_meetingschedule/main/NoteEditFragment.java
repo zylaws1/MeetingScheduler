@@ -62,9 +62,9 @@ public class NoteEditFragment extends Fragment {
 
                                             // If noteId is not empty, then it is an update operation, and empty is an add operation
                                             if (null == noteId || "".equals(noteId))
-                                                NoteDBManager.addNote(values);
+                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).addNote(values);
                                             else
-                                                NoteDBManager.updateNoteById(Integer.valueOf(noteId), values);
+                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).updateNoteById(Integer.valueOf(noteId), values);
                                             // finish fragment
                                             getActivity().onBackPressed();
                                             Toast.makeText(MainActivity.mContext, "Save successfully! ",
@@ -92,7 +92,7 @@ public class NoteEditFragment extends Fragment {
             Long id = bundle.getLong("id");
             Log.i("shenxin", "get bundle note id:" + id);
             if (id != null) {
-                Cursor cur = NoteDBManager.queryNoteById(id.intValue());
+                Cursor cur = NoteDBManager.getInstance(getActivity().getApplicationContext()).queryNoteById(id.intValue());
                 if (cur.moveToFirst()) {
                     // get content values
                     titleEditText.setText(cur.getString(1));
@@ -115,7 +115,7 @@ public class NoteEditFragment extends Fragment {
             // use noteId as id
             noteId = String.valueOf(id);
             // find note by id
-            Cursor cursor = NoteDBManager.queryNoteById((int) id);
+            Cursor cursor = NoteDBManager.getInstance(getActivity().getApplicationContext()).queryNoteById((int) id);
             if (cursor.moveToFirst()) {
                 // get content values
                 titleEditText.setText(cursor.getString(1));

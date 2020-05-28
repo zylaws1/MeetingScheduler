@@ -28,6 +28,10 @@ public class RegisterViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
 
+    public RegisterViewModel() {
+
+    }
+
     RegisterViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
     }
@@ -70,21 +74,13 @@ public class RegisterViewModel extends ViewModel {
         return loginRepository.update(info);
     }
 
-    public void loginDataChanged(String username, String password) {
-        if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
-        } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
-        } else {
-            loginFormState.setValue(new LoginFormState(true));
-        }
-    }
-
     public void registerDataChanged(String username, String password, String confirmPassword, String age, String phone, String email) {
         int phoneResult = checkPhoneValid(phone);
         int userAge = -1;
         try {
-            userAge = Integer.valueOf(age);
+            if (age != null && !age.equals("")) {
+                userAge = Integer.valueOf(age);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,10 +90,10 @@ public class RegisterViewModel extends ViewModel {
             loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
         } else if (!confirmPassword.equals(password)) {
             loginFormState.setValue(new LoginFormState(null, null, R.string.invalid_confirm_password, null, null, null));
-        } else if (phoneResult != 0) {
-            loginFormState.setValue(new LoginFormState(null, null, null, null, phoneResult, null));
         } else if (userAge <= 0 || userAge > 150) {
             loginFormState.setValue(new LoginFormState(null, null, null, R.string.age_range_or_format_error, null, null));
+        } else if (phoneResult != 0) {
+            loginFormState.setValue(new LoginFormState(null, null, null, null, phoneResult, null));
         } else if (!isEmailValid(email)) {
             loginFormState.setValue(new LoginFormState(null, null, null, null, null, R.string.invalid_email));
         } else {
@@ -133,20 +129,18 @@ public class RegisterViewModel extends ViewModel {
         return password != null && password.trim().length() > 5;
     }
 
-    private int checkPhoneValid(String phoneNumber) {
-        String regExp = "^((13[0-9])|(14[5,7,9])|(15[0-3,5-9])|(166)|(17[3,5,6,7,8])" +
-                "|(18[0-9])|(19[8,9]))\\d{8}$";
-        if (phoneNumber.length() != 10) {
-            return R.string.phone_digit_count_error;
+    public int checkPhoneValid(String phoneNumber) {
+        if (phoneNumber == null || "".equals(phoneNumber)) {
+            return R.string.phone_number_format_error;
+        }
+        String regex = "^1[3|4|5|8][0-9]\\d{8}$";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(phoneNumber);
+        boolean isMatch = m.matches();
+        if (isMatch) {
+            return 0;
         } else {
-            Pattern p = Pattern.compile(regExp);
-            Matcher m = p.matcher(phoneNumber);
-            boolean isMatch = m.matches();
-            if (isMatch) {
-                return 0;
-            } else {
-                return R.string.phone_number_format_error;
-            }
+            return R.string.phone_number_format_error;
         }
     }
 }

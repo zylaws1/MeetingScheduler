@@ -43,14 +43,13 @@ import androidx.lifecycle.ViewModelProviders;
  */
 public class RegisterFragment extends Fragment {
     RegisterViewModel viewModel;
-    LoginViewModel loginViewModel;
     EditText etUserName, etPassword, etConfirmPassword, etAge, etPhone, etEmail;
     RadioGroup rgGender;
     Button btRegister;
     TextView tvTopTitle;
     TextView tvTopRight;
     ImageView ivBack;
-    String userName = null;
+    public String userName = null;
 
     @Nullable
     @Override
