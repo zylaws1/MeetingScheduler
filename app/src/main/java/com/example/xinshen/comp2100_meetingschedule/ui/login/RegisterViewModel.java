@@ -133,10 +133,16 @@ public class RegisterViewModel extends ViewModel {
         if (phoneNumber == null || "".equals(phoneNumber)) {
             return R.string.phone_number_format_error;
         }
-        String regex = "^1[3|4|5|8][0-9]\\d{8}$";
+        String regex = "^0[3|4|5|8][0-9]\\d{8}$";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(phoneNumber);
         boolean isMatch = m.matches();
+        for (int i = 0; i < phoneNumber.length(); i++) {
+            if (!Character.isDigit(phoneNumber.charAt(i)))
+                return R.string.phone_number_format_error;
+        }
+        if (9 > phoneNumber.length() || phoneNumber.length() > 10)
+            return R.string.phone_number_format_error;
         if (isMatch) {
             return 0;
         } else {

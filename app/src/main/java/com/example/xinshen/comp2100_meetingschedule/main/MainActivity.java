@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected static MeetingInfoFragment meetingInfoFragment;
     protected static SetPreferTimeslotFragment setPreferTimeslotFragment;
     protected static FragmentManager mFraManager;
-    protected static MeetingModel param_model = new MeetingModel();
+    protected static MeetingModel param_model;// = new MeetingModel();
     public static MainActivity instance = null;
     protected static Context mContext;
     protected MeetingListFragment comingMeetingsFragment;
@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
                     meet = dataSnapshot.child("past_" + i).getValue(MeetingModel.class);
                     past_meetings_data.add(meet);
                 }
-                Log.i(TAG, "onDataChange past_meetings_data.size():" + past_meetings_data.size());
+                Log.i(TAG, "onDataChange coming data.size():" + coming_meetings_data.size());
+                Log.i(TAG, "onDataChange past data.size():" + past_meetings_data.size());
                 Log.i(TAG, "onDataChange: recieve data at:" + System.currentTimeMillis());
                 comingMeetingsFragment.setMeetings_list(coming_meetings_data);
                 pastMeetingsFragment.setMeetings_list(past_meetings_data);
@@ -231,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
             transaction.commit();
         }
-        Log.i(TAG, "onResume: " + System.currentTimeMillis());
+        Log.i(TAG, "onResume: at" + System.currentTimeMillis());
         comingMeetingsFragment.getMeetings_list_adapter().notifyDataSetChanged();
     }
 
@@ -337,6 +338,20 @@ public class MainActivity extends AppCompatActivity {
         mTitleBar.setTitle("    My meetings scheduler");
         mTitleBar.setTitleSize(2, 25);
         mTitleBar.setTitleColor(Color.MAGENTA);
+    }
+
+    protected void setmTitleBarActive() {
+        mTitleBar.setAlpha(0.94f);
+        String space_str = "           ";
+        mTitleBar.setLeftTitle(space_str + "Coming");
+        mTitleBar.setLeftSize(1, 25);
+        mTitleBar.setLeftColor(Color.LTGRAY);
+        mTitleBar.setRightTitle("Past" + space_str + "   ");
+        mTitleBar.setRightSize(1, 17);
+        mTitleBar.setRightColor(Color.GRAY);
+        mTitleBar.setBackgroundColor(titile_bar_color);
+        mTitleBar.setOnTitleBarListener(mTitleListener);
+        mTitleBar.setTitle("");
     }
 
     // Tool method for other activities to deactivate title bar
@@ -515,12 +530,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // send the meetings data array to server for saving if the life circle is in danger
-        saveMeetingsOnServer();
     }
 
     @Override
     protected void onDestroy() {
+        // send the meetings data array to server for saving if the life circle is in danger
+        saveMeetingsOnServer();
         super.onDestroy();
     }
 

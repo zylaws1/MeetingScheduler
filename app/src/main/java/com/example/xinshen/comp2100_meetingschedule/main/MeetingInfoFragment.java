@@ -59,6 +59,7 @@ public class MeetingInfoFragment extends Fragment {
             meet_icon = (ImageView) root_view.findViewById(R.id.imageView_meeting_icon);
         }
         // Fill the content according to the chosen way from coming fragment
+        Log.i(TAG, "init info frag:"+touched_id+" meeting_obj null:"+(meeting_obj==null));
         if (touched_id != -1) {
             MainActivity m = (MainActivity) base_activity;
             MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(touched_id);

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
     // Init the meeting item with parameters
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        Log.i("shenxin", "ScrolledMeetingAdapter getView. ");
         View view = LayoutInflater.from(getContext()).inflate(R.layout.scrolled_meetings_listview, null);
 
         ImageView icon = (ImageView) view.findViewById(R.id.scroll_meeting_list_icons);
@@ -43,8 +44,9 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
         TextView room = (TextView) view.findViewById(R.id.scroll_courses_list_category);
         TextView venue = (TextView) view.findViewById(R.id.scroll_courses_list_price);
         MeetingModel meeting;
-        if (position >= getCount()) meeting = new MeetingModel();
-        else meeting = (MeetingModel) getItem(position);
+        //if (position >= getCount()) meeting = new MeetingModel();
+        //else
+            meeting = (MeetingModel) getItem(position);
         Bitmap ic_bmp = BitmapFactory.decodeResource(getContext().getResources(), meeting.getIcon());
         ic_bmp = getCircleBitmapByShader(ic_bmp, ic_bmp.getWidth(), ic_bmp.getHeight(), 0);
         icon.setImageBitmap(ic_bmp);

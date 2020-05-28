@@ -52,8 +52,10 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in_right, R.anim.no_slide);
         setContentView(R.layout.activity_search);
-        if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
-            meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+        if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null){
+            meeting_model_list.clear();
+            meeting_model_list.addAll(MainActivity.instance.getComingMeetingsFragment().meetings_list);
+        }
         search_editTxt = findViewById(R.id.editText_search);
         mTitleBar = findViewById(R.id.title_bar);
         button_back = findViewById(R.id.button_back);
@@ -76,8 +78,10 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (MainActivity.instance != null)
-            full_meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+        if (MainActivity.instance != null){
+            full_meeting_model_list.clear();
+            full_meeting_model_list.addAll(MainActivity.instance.getComingMeetingsFragment().meetings_list);
+        }
     }
 
     @Override
@@ -115,6 +119,7 @@ public class SearchActivity extends AppCompatActivity {
     private class Buttonlistener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            MainActivity.instance.setmTitleBarActive();
             finish();
         }
     }

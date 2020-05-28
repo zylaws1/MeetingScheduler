@@ -26,6 +26,7 @@ public class MeetingListFragment extends Fragment {
 
     // set the meetings list and refresh ui if loaded
     public void setMeetings_list(ArrayList<MeetingModel> meetings_list) {
+        Log.i(TAG, "setMeetings_list: " + meetings_list.size());
         if (this.meetings_list == null)
             this.meetings_list = new ArrayList<>();
         this.meetings_list.clear();
@@ -39,6 +40,7 @@ public class MeetingListFragment extends Fragment {
     // init coming meetings data from server or mocked local data
     public MeetingListFragment() {
         super();
+        if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
         meetings_list = MainActivity.instance.getComing_meetings_data();
 //        meetings_list = get_mock_data();
     }
@@ -46,6 +48,7 @@ public class MeetingListFragment extends Fragment {
     // init past meetings data from server or mocked local data
     MeetingListFragment(boolean isPast) {
         super();
+        if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
         meetings_list = MainActivity.instance.getPast_meetings_data();
 //        meetings_list = get_mock_past_data();
     }
@@ -62,6 +65,8 @@ public class MeetingListFragment extends Fragment {
 
     // return the MeetingModel object by meeting name
     public MeetingModel getModelByName(String name) {
+        Log.i(TAG, "getModelByName to find:" + name);
+        Log.i(TAG, "getModelByName meetings_list size:" + meetings_list.size());
         for (int i = 0; i < meetings_list.size(); i++) {
             if (meetings_list.get(i).getName().equals(name))
                 return meetings_list.get(i);

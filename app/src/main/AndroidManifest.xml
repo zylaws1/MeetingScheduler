@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.xinshen.comp2100_meetingschedule">
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MeetingApplication"
@@ -16,6 +15,7 @@
 
         <activity
             android:name=".main.MainActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
             <intent-filter android:order="1">
@@ -30,8 +30,12 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.SearchActivity"></activity>
-        <activity android:name=".main.WelcomeActivity">
+        <activity
+            android:name=".main.SearchActivity"
+            android:launchMode="singleInstance"></activity>
+        <activity
+            android:name=".main.WelcomeActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,5 +48,7 @@
             android:enabled="true"
             android:process="system"></service>
     </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>
