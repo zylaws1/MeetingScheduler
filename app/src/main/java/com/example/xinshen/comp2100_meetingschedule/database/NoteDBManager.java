@@ -20,10 +20,9 @@ public class NoteDBManager {
     private static SQLiteDatabase db = null;
     private static volatile NoteDBManager instance;
     public static String DB_NAME = "NoteBook.db";
-    public static String DB_PATH="data/data/com.example.xinshen.comp2100_meetingschedule/NoteBook.db";
 
     private NoteDBManager(Context context) {
-        MeetingSQLiteOpenHelper helper = new MeetingSQLiteOpenHelper(context, DB_PATH, null, 1);
+        MeetingSQLiteOpenHelper helper = new MeetingSQLiteOpenHelper(context, DB_NAME, null, 1);
         db = helper.getWritableDatabase();
     }
 
