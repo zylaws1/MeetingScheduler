@@ -44,9 +44,8 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
         TextView room = (TextView) view.findViewById(R.id.scroll_courses_list_category);
         TextView venue = (TextView) view.findViewById(R.id.scroll_courses_list_price);
         MeetingModel meeting;
-        //if (position >= getCount()) meeting = new MeetingModel();
-        //else
-            meeting = (MeetingModel) getItem(position);
+        if (position >= getCount()) meeting = new MeetingModel();
+        else meeting = (MeetingModel) getItem(position);
         Bitmap ic_bmp = BitmapFactory.decodeResource(getContext().getResources(), meeting.getIcon());
         ic_bmp = getCircleBitmapByShader(ic_bmp, ic_bmp.getWidth(), ic_bmp.getHeight(), 0);
         icon.setImageBitmap(ic_bmp);
