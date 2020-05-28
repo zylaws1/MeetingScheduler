@@ -91,7 +91,6 @@ public class SearchActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.no_slide, R.anim.slide_out_right);
     }
 
-
     private void initViews() {
         // Init view with unfiltered meetings.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, list);
@@ -120,6 +119,7 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             MainActivity.instance.setmTitleBarActive();
+            MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
             finish();
         }
     }

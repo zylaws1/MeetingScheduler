@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1933/12/30"
+                    android:text="2020/05/28"
                     android:textAlignment="center"
                     android:textSize="18sp" />
 
@@ -172,7 +172,7 @@
                 android:layout_marginLeft="45sp"
                 android:layout_marginTop="4sp"
                 android:layout_marginRight="45sp"
-                android:text="description description description description description description description description description description description description description description"
+                android:text="description description description description description description description description description description description description description"
                 android:textAlignment="center"
                 android:textSize="18dp" />
 

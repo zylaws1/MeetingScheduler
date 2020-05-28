@@ -233,6 +233,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             Log.i(TAG, "apply onTouch " + touched_id);
             // normal mode: transact to meeting detailed fragment for selected meeting item
             if (touched_id != -1) {
+                Log.i(TAG, "onSingleTapUp: "+MainActivity.instance.getComingMeetingsFragment().meetings_list.size());
                 MainActivity.setmTitleBarInactive();
                 MainActivity.meetingInfoFragment.setTouched_id(touched_id);
                 FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();

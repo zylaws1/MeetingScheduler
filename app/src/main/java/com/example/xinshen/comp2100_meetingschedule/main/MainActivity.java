@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected static MeetingInfoFragment meetingInfoFragment;
     protected static SetPreferTimeslotFragment setPreferTimeslotFragment;
     protected static FragmentManager mFraManager;
-    protected static MeetingModel param_model;// = new MeetingModel();
+    protected static MeetingModel param_model = new MeetingModel();
     public static MainActivity instance = null;
     protected static Context mContext;
     protected MeetingListFragment comingMeetingsFragment;
@@ -529,13 +529,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        // send the meetings data array to server for saving if the life circle is in danger
+        saveMeetingsOnServer();
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        // send the meetings data array to server for saving if the life circle is in danger
-        saveMeetingsOnServer();
         super.onDestroy();
     }
 

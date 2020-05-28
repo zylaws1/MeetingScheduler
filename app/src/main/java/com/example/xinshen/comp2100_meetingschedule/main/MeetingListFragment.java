@@ -40,16 +40,18 @@ public class MeetingListFragment extends Fragment {
     // init coming meetings data from server or mocked local data
     public MeetingListFragment() {
         super();
+        Log.i(TAG, "MeetingListFragment: 1");
         if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
-        meetings_list = MainActivity.instance.getComing_meetings_data();
+            meetings_list = MainActivity.instance.getComing_meetings_data();
 //        meetings_list = get_mock_data();
     }
 
     // init past meetings data from server or mocked local data
     MeetingListFragment(boolean isPast) {
         super();
+        Log.i(TAG, "MeetingListFragment: 2");
         if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
-        meetings_list = MainActivity.instance.getPast_meetings_data();
+            meetings_list = MainActivity.instance.getPast_meetings_data();
 //        meetings_list = get_mock_past_data();
     }
 
@@ -116,7 +118,9 @@ public class MeetingListFragment extends Fragment {
         lv_meetins = (MeetingsListview) root_view.findViewById(R.id.scroll_coming_meetingLv);
         if (meetings_list == null) {    // reinitialise the meetings_list if the data come from server delayed
             Log.w(TAG, "MeetingListFragment onCreateView: meetings_list null");
-            meetings_list = new ArrayList<>();
+            if (MainActivity.instance.getComing_meetings_data() != null)
+                meetings_list = MainActivity.instance.getComing_meetings_data();
+            else meetings_list = new ArrayList<>();
         }
         meetings_list_adapter = new ScrolledMeetingAdapter(getContext(),
                 R.layout.scrolled_meetings_listview, meetings_list);
