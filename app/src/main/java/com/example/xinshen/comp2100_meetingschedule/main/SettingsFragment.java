@@ -57,7 +57,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 FragmentTransaction transaction = fraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, aboutFragment);
-                if (view.findViewById(R.id.main_linear) != null)
                 transaction.commit();
                 break;
             case R.id.layout_feedback:
@@ -66,8 +65,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
                     transaction1.replace(R.id.main_linear, feedbackFragment);
-                    if (view.findViewById(R.id.main_linear) != null)
-                        transaction1.commit();
+                    transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));
                 }
@@ -77,8 +75,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 FragmentTransaction transaction2 = fraManager2.beginTransaction();
                 transaction2.addToBackStack(null);
                 transaction2.replace(R.id.main_linear, quickHelpFragment);
-                if (view.findViewById(R.id.main_linear) != null)
-                    transaction2.commit();
+                transaction2.commit();
                 break;
             case R.id.layout_sign_out:
                 if (userName != null) {

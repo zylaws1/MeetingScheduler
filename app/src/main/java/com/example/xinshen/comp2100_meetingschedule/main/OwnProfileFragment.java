@@ -87,7 +87,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 transaction = fraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, loginFragment);
-                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
+                transaction.commit();
                 break;
             case R.id.layout_info_modification:
                 if (isLogin) {
@@ -95,7 +95,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
                     transaction1.replace(R.id.main_linear, registerFragment);
-                    if (view.findViewById(R.id.main_linear) != null) transaction1.commit();
+                    transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));
                 }
@@ -106,21 +106,21 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 transaction.replace(R.id.main_linear, MainActivity.instance.getComingMeetingsFragment());
                 MainActivity.instance.setmTitleBarStyle(true);
                 MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
-                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
+                transaction.commit();
                 break;
             case R.id.layout_my_notes:
                 transaction = MainActivity.mFraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, MainActivity.instance.getNoteListFragment());
                 transaction.addToBackStack(null);
-                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
+                transaction.commit();
                 break;
             case R.id.layout_timeslot_preference:
                 MainActivity.setmTitleBarInactive();
                 transaction = MainActivity.mFraManager.beginTransaction();
                 transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
                 transaction.addToBackStack(null);
-                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
+                transaction.commit();
                 break;
             default:
                 break;

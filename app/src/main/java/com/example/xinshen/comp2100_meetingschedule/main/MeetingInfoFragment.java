@@ -40,7 +40,7 @@ public class MeetingInfoFragment extends Fragment {
         super.onAttach(context);
         // save the activity when first time attached
         base_activity = getActivity();
-        Log.i(TAG, "onAttach: context" + base_activity);
+        Log.i(TAG, "onAttach context: " + base_activity);
     }
 
     @Override
@@ -63,8 +63,7 @@ public class MeetingInfoFragment extends Fragment {
             MainActivity m = (MainActivity) base_activity;
             MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(touched_id);
             setMeetingInfo(obj);
-        }
-        if (meeting_obj != null)
+        } else if (meeting_obj != null)
             setMeetingInfo(meeting_obj);
         else {
             meeting_obj = new MeetingModel();

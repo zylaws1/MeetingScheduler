@@ -230,13 +230,15 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             mEditListener.hide_delete_all_btn();
             isMultiDeleteShown = false;
         } else if (!isMultiDeleteShown && !isDeleteShown) {
-            Log.i(TAG, "apply onTouch ");
+            Log.i(TAG, "apply onTouch " + touched_id);
             // normal mode: transact to meeting detailed fragment for selected meeting item
-            MainActivity.setmTitleBarInactive();
-            MainActivity.meetingInfoFragment.setTouched_id(touched_id);
-            FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
-            transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
-            transaction.commit();
+            if (touched_id != -1) {
+                MainActivity.setmTitleBarInactive();
+                MainActivity.meetingInfoFragment.setTouched_id(touched_id);
+                FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
+                transaction.replace(R.id.main_linear, MainActivity.meetingInfoFragment);
+                transaction.commit();
+            }
         }
         return false;
     }
