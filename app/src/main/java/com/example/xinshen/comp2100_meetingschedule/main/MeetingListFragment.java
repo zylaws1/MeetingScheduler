@@ -197,4 +197,8 @@ public class MeetingListFragment extends Fragment {
     public MeetingsListview getLv_meetins() {
         return lv_meetins;
     }
+
+    public void setLv_meetins(MeetingsListview lv_meetins) {
+        this.lv_meetins = lv_meetins;
+    }
 }

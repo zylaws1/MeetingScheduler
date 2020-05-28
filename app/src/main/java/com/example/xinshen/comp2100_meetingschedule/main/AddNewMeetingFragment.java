@@ -91,11 +91,9 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
         Bundle bundle = getArguments();
         if (bundle != null) {
             String data = bundle.getString("item");
-            Log.i(TAG, "onCreateView get bundle:" + data);
             if (data != null) {
                 String datas[] = data.split(",");
                 if (datas.length == 8) {
-                    Log.i(TAG, "onCreateView: bundle info good");
                     name.setText(datas[0]);
                     room.setText(datas[1]);
                     description.setText(datas[2]);

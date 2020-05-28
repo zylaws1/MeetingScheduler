@@ -236,31 +236,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tool method for scaling icon
-    public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
-        int width = drawable.getIntrinsicWidth();
-        int height = drawable.getIntrinsicHeight();
-        Bitmap oldbmp = drawableToBitmap(drawable);
-        Matrix matrix = new Matrix();
-        float scaleWidth = ((float) w / width);
-        float scaleHeight = ((float) h / height);
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height,
-                matrix, true);
-        return new BitmapDrawable(null, newbmp);
-    }
+//    public static Drawable zoomDrawable(Drawable drawable, int w, int h) {
+//        int width = drawable.getIntrinsicWidth();
+//        int height = drawable.getIntrinsicHeight();
+//        Bitmap oldbmp = drawableToBitmap(drawable);
+//        Matrix matrix = new Matrix();
+//        float scaleWidth = ((float) w / width);
+//        float scaleHeight = ((float) h / height);
+//        matrix.postScale(scaleWidth, scaleHeight);
+//        Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height,
+//                matrix, true);
+//        return new BitmapDrawable(null, newbmp);
+//    }
 
     // Tool for transforming drawable to bitmap image
-    private static Bitmap drawableToBitmap(Drawable drawable) {
-        int width = drawable.getIntrinsicWidth();
-        int height = drawable.getIntrinsicHeight();
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
-                : Bitmap.Config.RGB_565;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, width, height);
-        drawable.draw(canvas);
-        return bitmap;
-    }
+//    private static Bitmap drawableToBitmap(Drawable drawable) {
+//        int width = drawable.getIntrinsicWidth();
+//        int height = drawable.getIntrinsicHeight();
+//        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+//                : Bitmap.Config.RGB_565;
+//        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+//        Canvas canvas = new Canvas(bitmap);
+//        drawable.setBounds(0, 0, width, height);
+//        drawable.draw(canvas);
+//        return bitmap;
+//    }
 
     // Init the homepage meeting ListView view
     private void initViews() {
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // change tag style with active category
-    void setActiveCategory(Boolean isLeft) {
+    public void setActiveCategory(Boolean isLeft) {
         if (isLeft) {
             mTitleBar.setLeftSize(1, 25);
             mTitleBar.setLeftColor(Color.LTGRAY);
@@ -525,10 +525,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Save the meetings data on server
-    private void saveMeetingsOnServer() {
+    public void saveMeetingsOnServer() {
 
         int size_coming_meets = comingMeetingsFragment.meetings_list.size();
-        int size_past_meets = pastMeetingsFragment.meetings_list.size();
+        int size_past_meets;
+        if (pastMeetingsFragment.meetings_list != null)
+            size_past_meets = pastMeetingsFragment.meetings_list.size();
+        else
+            size_past_meets = 0;
         Log.i(TAG, "saveMeetingsOnServer: " + size_coming_meets);
         mDatabase.child("size_coming").setValue(size_coming_meets);
         mDatabase.child("size_past").setValue(size_past_meets);
@@ -582,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tool method for transfer between coming and past meeting ListView
-    private void replaceMeetingsFragment(Boolean ChooseComing) {
+    public void replaceMeetingsFragment(Boolean ChooseComing) {
         FragmentTransaction transaction = mFraManager.beginTransaction();
         if (ChooseComing)
             transaction.replace(R.id.main_linear, comingMeetingsFragment);

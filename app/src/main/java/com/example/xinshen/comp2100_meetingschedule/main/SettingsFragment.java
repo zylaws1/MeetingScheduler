@@ -28,11 +28,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private AboutFragment aboutFragment;
     private FeedbackFragment feedbackFragment;
     public static String userName = null;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // bond the views and controls for initialization
-        View view = inflater.inflate(R.layout.activity_setting, null);
+        view = inflater.inflate(R.layout.activity_setting, null);
         mFeedback = view.findViewById(R.id.layout_feedback);
         mQuickHelp = view.findViewById(R.id.layout_quick_help);
         mAboutMeeting = view.findViewById(R.id.layout_about_meeting);
@@ -52,10 +53,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_about_meeting:
-                FragmentManager fraManager = getFragmentManager() ;
+                FragmentManager fraManager = getFragmentManager();
                 FragmentTransaction transaction = fraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, aboutFragment);
+                if (view.findViewById(R.id.main_linear) != null)
                 transaction.commit();
                 break;
             case R.id.layout_feedback:
@@ -64,17 +66,19 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
                     transaction1.replace(R.id.main_linear, feedbackFragment);
-                    transaction1.commit();
+                    if (view.findViewById(R.id.main_linear) != null)
+                        transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));
                 }
                 break;
             case R.id.layout_quick_help:
-                FragmentManager fraManager2 = getFragmentManager() ;
+                FragmentManager fraManager2 = getFragmentManager();
                 FragmentTransaction transaction2 = fraManager2.beginTransaction();
                 transaction2.addToBackStack(null);
                 transaction2.replace(R.id.main_linear, quickHelpFragment);
-                transaction2.commit();
+                if (view.findViewById(R.id.main_linear) != null)
+                    transaction2.commit();
                 break;
             case R.id.layout_sign_out:
                 if (userName != null) {
