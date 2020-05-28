@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Tool method for other activities to deactivate title bar
-    static void setmTitleBarInactive() {
+    public static void setmTitleBarInactive() {
         mTitleBar.setVisibility(View.VISIBLE);
         mTitleBar.setAlpha(1f);
         mTitleBar.setLeftTitle("");
@@ -629,6 +629,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static TitleBar getmTitleBar() {
         return mTitleBar;
+    }
+
+    //for test
+    public static void setMeetingModel(MeetingModel model) {
+        param_model = model;
     }
 
 

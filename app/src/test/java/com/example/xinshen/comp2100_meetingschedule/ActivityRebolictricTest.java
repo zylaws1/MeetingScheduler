@@ -4,9 +4,9 @@ import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Instrumentation;
 import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -15,26 +15,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.util.Preconditions;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.xinshen.comp2100_meetingschedule.data.model.Feedback;
+import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.FeedbackBean;
+import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
 import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
-import com.example.xinshen.comp2100_meetingschedule.database.MeetingSQLiteOpenHelper;
+import com.example.xinshen.comp2100_meetingschedule.database.MeetingDbManager;
 import com.example.xinshen.comp2100_meetingschedule.database.NoteDBManager;
 import com.example.xinshen.comp2100_meetingschedule.main.MainActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingDeadlineNotification;
@@ -50,19 +48,21 @@ import com.example.xinshen.comp2100_meetingschedule.main.QuickHelpFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.ScrolledMeetingAdapter;
 import com.example.xinshen.comp2100_meetingschedule.main.SearchActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.SetPreferTimeslotFragment;
+import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
 import com.example.xinshen.comp2100_meetingschedule.main.WelcomeActivity;
 import com.example.xinshen.comp2100_meetingschedule.main.AboutFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.FeedbackFragment;
 import com.example.xinshen.comp2100_meetingschedule.main.MeetingSchedulerView;
 import com.example.xinshen.comp2100_meetingschedule.main.SettingsFragment;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginViewModel;
+import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginViewModelFactory;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterViewModel;
 import com.google.firebase.FirebaseApp;
 
-import org.apache.tools.ant.Main;
+import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -70,16 +70,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowListView;
-import org.robolectric.shadows.ShadowToast;
-import org.robolectric.util.FragmentTestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import static androidx.core.util.Preconditions.checkNotNull;
-import static androidx.core.util.Preconditions.checkState;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.robolectric.Shadows.shadowOf;
@@ -272,6 +265,7 @@ public class ActivityRebolictricTest {
                 );
                 meetingsListview = new MeetingsListview(context);
                 assertNotNull(meetingsListview);
+                fragment.deleteSelectedMeetings(null);
                 fragment.setLv_meetins(null);
                 fragment.setMeetings_list(MeetingListFragment.get_mock_data());
                 assertNotNull(
@@ -279,10 +273,15 @@ public class ActivityRebolictricTest {
                                 MeetingListFragment.get_mock_data().get(0).getName()
                         )
                 );
+
             }
         });
         assertEquals(ori_size,
                 activity.getComingMeetingsFragment().meetings_list.size());
+        activity.deleteSelectedMeetings(null);
+        MeetingModel meetingModel = new MeetingModel();
+        MainActivity.setMeetingModel(meetingModel);
+        activity.shareMeeting(null);
     }
 
     // test tap and long press in past meetings list view
@@ -445,7 +444,7 @@ public class ActivityRebolictricTest {
                 assertTrue(qucik_help.isClickable());
                 assertTrue(about_meeting.isClickable());
                 assertTrue(layout_sign_out.isClickable());
-                feedback.performClick();
+//                feedback.performClick();
 //                qucik_help.performClick();
 //                about_meeting.performClick();
 //                layout_sign_out.performClick();
@@ -477,6 +476,7 @@ public class ActivityRebolictricTest {
     public void controllersOwnProfileFragmentView() {
         ActivityController<MainActivity> mainController = Robolectric.buildActivity(MainActivity.class);
         final MainActivity activity = mainController.create().start().resume().get();
+        MainActivity.setmTitleBarInactive();
         activity.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
         FragmentScenario<OwnProfileFragment> fragment =
                 FragmentScenario.launch(OwnProfileFragment.class);
@@ -501,7 +501,7 @@ public class ActivityRebolictricTest {
 
                 RelativeLayout layout_info_modification = fragment.getView().findViewById(R.id.layout_info_modification);
                 assertTrue(layout_info_modification.isClickable());
-                layout_info_modification.performClick();
+//                layout_info_modification.performClick();
                 fragment.setLogin(false);
                 layout_info_modification.performClick();
             }
@@ -536,10 +536,20 @@ public class ActivityRebolictricTest {
         fragment.onFragment(new FragmentScenario.FragmentAction<NoteListFragment>() {
             @Override
             public void perform(@NonNull NoteListFragment fragment) {
-                NoteDBManager.getInstance(RuntimeEnvironment.application);
                 Button add_noteBtn = fragment.getView().findViewById(R.id.addNote);
                 assertTrue(add_noteBtn.isClickable());
                 add_noteBtn.performClick();
+
+                ContentValues values = new ContentValues();
+                values.put("title", "my note");
+                values.put("content", "the meeting is very good");
+                NoteDBManager.getInstance(RuntimeEnvironment.application).addNote(values);
+                NoteDBManager.getInstance(RuntimeEnvironment.application).queryNoteById(1);
+                ContentValues value2 = new ContentValues();
+                value2.put("title", "my note");
+                value2.put("content", "I am good");
+                NoteDBManager.getInstance(RuntimeEnvironment.application).updateNoteById(1, value2);
+                NoteDBManager.getInstance(RuntimeEnvironment.application).deleteNoteById(1);
             }
         });
     }
@@ -619,11 +629,25 @@ public class ActivityRebolictricTest {
                 CharSequence userNameError1 = usernameEditText.getError();
                 assertEquals("Not a valid username", userNameError1);
 
+                usernameEditText.setText("1111");
+                passwordEditText.setText("1111111");
+
                 Object back_obj = fragment.getView().findViewById(R.id.iv_back);
                 assertEquals(ImageView.class, back_obj.getClass());
                 ImageView back_img = (ImageView) back_obj;
                 back_img.performClick();
 
+                LoginViewModel viewModel = ViewModelProviders.of(fragment, new LoginViewModelFactory())
+                        .get(LoginViewModel.class);
+                viewModel.setLoginResultValue("1100",true);
+                MessageEvent event = new MessageEvent();
+                event.setLoginState(Result.LOGIN_OK);
+                event.setMessage("1100");
+                EventBus.getDefault().post(event);
+                viewModel.setLoginResultValue("1101",false);
+                MessageEvent event1 = new MessageEvent();
+                event1.setLoginState(Result.LOGIN_ERROR);
+                event1.setMessage("1101");
             }
         });
     }
@@ -717,7 +741,7 @@ public class ActivityRebolictricTest {
                 userInfo.setDisplayName("1111");
                 userInfo.setPassword("1111111");
                 userInfo.setAge(19);
-                userInfo.setPhone("13297463212");
+                userInfo.setPhone("0405884821");
                 userInfo.setEmail("3412455432@gmail.com");
                 fragment.setEditTextEnable(userInfo, true);
 
@@ -735,15 +759,46 @@ public class ActivityRebolictricTest {
             @Override
             public void perform(@NonNull RegisterFragment fragment) {
                 fragment.userName = "1111";
+                RegisterViewModel viewModel = ViewModelProviders.of(fragment, new LoginViewModelFactory())
+                        .get(RegisterViewModel.class);
+                viewModel.query("1111", new UserInfoCallback() {
+
+                    @Override
+                    public void callback(UserInfo userInfo) {
+                    }
+                });
+                //test firebase insert and update
+                UserInfo userInfo = new UserInfo();
+                userInfo.setDisplayName("1111");
+                userInfo.setPassword("1111111");
+                userInfo.setAge(19);
+                userInfo.setPhone("0405884821");
+                userInfo.setEmail("3412455432@gmail.com");
+                viewModel.regiester(userInfo);
+                viewModel.update(userInfo);
+                viewModel.setRegisterResultValue("1111",true);
+                viewModel.setRegisterResultValue("1110",false);
+                MeetingDbManager.getInstance().insertUserInfoInFirebase(userInfo);
             }
         });
     }
 
+    // test for phone valid
     @Test
-    public void testPhoneValid() { // test for phone valid
+    public void testPhoneValid() {
         RegisterViewModel viewModel = new RegisterViewModel();
-        int result = viewModel.checkPhoneValid("13297463212");
+        int result = viewModel.checkPhoneValid("13273218231");
         assertEquals(R.string.phone_number_format_error, result);
+    }
+
+    // test for email valid
+    @Test
+    public void testEmailValid() {
+        RegisterViewModel viewModel = new RegisterViewModel();
+        boolean result = viewModel.isEmailValid("341245543gmail.com");
+        assertFalse(result);
+        boolean result1 = viewModel.isEmailValid("341245543@gmail.com");
+        assertTrue(result1);
     }
 
 }

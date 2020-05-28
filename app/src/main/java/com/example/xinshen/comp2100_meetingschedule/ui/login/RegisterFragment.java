@@ -247,11 +247,11 @@ public class RegisterFragment extends Fragment {
         Toast.makeText(getContext(), welcome, Toast.LENGTH_LONG).show();
     }
 
-    private void showFailed(@StringRes Integer errorString) {
+    public void showFailed(@StringRes Integer errorString) {
         Toast.makeText(getContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 
-    private void showToast(String info) {
+    public void showToast(String info) {
         Toast.makeText(getContext(), info, Toast.LENGTH_SHORT).show();
     }
 

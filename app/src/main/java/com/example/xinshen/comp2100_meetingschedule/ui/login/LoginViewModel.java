@@ -78,4 +78,14 @@ public class LoginViewModel extends ViewModel {
     private boolean isPasswordValid(String password) {
         return password != null && password.trim().length() > 5;
     }
+
+    // Set login result value
+    public void setLoginResultValue(String value, boolean isLoginSuccess) {
+        if (isLoginSuccess) {
+            loginResult.setValue(new LoginResult(new LoggedInUserView(value)));
+        } else {
+            loginResult.setValue(new LoginResult(R.string.login_failed));
+        }
+    }
+
 }

@@ -113,7 +113,7 @@ public class RegisterViewModel extends ViewModel {
         }
     }
 
-    private boolean isEmailValid(String email) {
+    public boolean isEmailValid(String email) {
         if (email == null) {
             return false;
         }
@@ -147,6 +147,15 @@ public class RegisterViewModel extends ViewModel {
             return 0;
         } else {
             return R.string.phone_number_format_error;
+        }
+    }
+
+    // Set register result value
+    public void setRegisterResultValue(String value, boolean isRegisterSuccess) {
+        if (isRegisterSuccess) {
+            loginResult.setValue(new LoginResult(new LoggedInUserView(value)));
+        } else {
+            loginResult.setValue(new LoginResult(R.string.register_error));
         }
     }
 }
