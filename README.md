@@ -2,7 +2,7 @@
 
 
     This is a private android project for ANU comp2100 group assignment 2020 semester1.
-    The original requirement of the project can be accessed from here:
+    The original requirement of the project can be accessed from:
     https://cs.anu.edu.au/courses/comp2100/assessments/02-project/
 
   
