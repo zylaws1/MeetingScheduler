@@ -25,6 +25,7 @@ import java.util.Map;
 /**
  * Meeting ListView for homepage display
  * Implements OnGestureListener so tha can detect gesture such as fling to delete, long press to multi delete.
+ *
  * @author Xin Shen, Shaocong Lang
  */
 public class MeetingsListview extends ListView implements OnGestureListener, View.OnTouchListener {
@@ -92,11 +93,11 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         init();
     }
 
-    public MeetingsListview(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        Log.i(TAG, "MeetingsListview: 3 params ");
-        init();
-    }
+//    public MeetingsListview(Context context, AttributeSet attrs, int defStyle) {
+//        super(context, attrs, defStyle);
+//        Log.i(TAG, "MeetingsListview: 3 params ");
+//        init();
+//    }
 
     private void init() {
         detector = new GestureDetector(getContext(), this);
@@ -112,9 +113,8 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
 
     @Override
     public boolean onDown(MotionEvent e) {
-        if (!isDeleteShown) {
+        if (!isDeleteShown)
             selectedId = pointToPosition((int) e.getX(), (int) e.getY());
-        }
         return false;
     }
 
@@ -147,7 +147,7 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         } else {
             // remove delete button if touch other place
 //            Log.i("shenxin", "onFling: else");
-            if (isDeleteShown)
+            if (isDeleteShown && itemLayout != null)
                 itemLayout.removeView(deleteButton);
             isDeleteShown = false;
         }
@@ -219,7 +219,8 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
         if (getChildCount() == 0) return false;
         // remove the single delete button when single tap on single deleting mode
         if (isDeleteShown && selectedId != touched_id) {
-            itemLayout.removeView(deleteButton);
+            if (itemLayout != null)
+                itemLayout.removeView(deleteButton);
             isDeleteShown = false;
         } else if (isMultiDeleteShown && e.getX() < MainActivity.SCREEN_WIDTH * 0.75) {
             // remove all delete checkbox views when single tap on multi deleting mode
@@ -238,5 +239,14 @@ public class MeetingsListview extends ListView implements OnGestureListener, Vie
             transaction.commit();
         }
         return false;
+    }
+
+
+    public void setMultiDeleteShown(boolean multiDeleteShown) {
+        isMultiDeleteShown = multiDeleteShown;
+    }
+
+    public void setDeleteShown(boolean deleteShown) {
+        isDeleteShown = deleteShown;
     }
 }

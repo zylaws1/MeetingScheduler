@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity instance = null;
     protected static Context mContext;
     protected MeetingListFragment comingMeetingsFragment;
-
     private static TitleBar mTitleBar;
     private static int titile_bar_color;
     private MeetingListFragment pastMeetingsFragment;
@@ -608,5 +607,10 @@ public class MainActivity extends AppCompatActivity {
     public NoteEditFragment getNoteEditFragment() {
         return noteEditFragment;
     }
+
+    public static TitleBar getmTitleBar() {
+        return mTitleBar;
+    }
+
 
 }

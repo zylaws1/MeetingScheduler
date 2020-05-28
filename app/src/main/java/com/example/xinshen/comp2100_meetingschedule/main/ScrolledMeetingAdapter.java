@@ -35,7 +35,6 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        MeetingModel meeting = (MeetingModel) getItem(position);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.scrolled_meetings_listview, null);
 
         ImageView icon = (ImageView) view.findViewById(R.id.scroll_meeting_list_icons);
@@ -43,10 +42,14 @@ public class ScrolledMeetingAdapter extends ArrayAdapter {
         TextView description = (TextView) view.findViewById(R.id.scroll_courses_list_description);
         TextView room = (TextView) view.findViewById(R.id.scroll_courses_list_category);
         TextView venue = (TextView) view.findViewById(R.id.scroll_courses_list_price);
-
+        MeetingModel meeting;
+        if (position >= getCount()) meeting = new MeetingModel();
+        else meeting = (MeetingModel) getItem(position);
         Bitmap ic_bmp = BitmapFactory.decodeResource(getContext().getResources(), meeting.getIcon());
         ic_bmp = getCircleBitmapByShader(ic_bmp, ic_bmp.getWidth(), ic_bmp.getHeight(), 0);
         icon.setImageBitmap(ic_bmp);
+        //get item from position
+
         name.setText(meeting.getName());
         description.setText(meeting.getDescription());
         room.setText(meeting.getRoom());

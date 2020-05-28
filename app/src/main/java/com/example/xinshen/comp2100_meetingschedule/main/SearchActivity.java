@@ -29,8 +29,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private TitleBar mTitleBar;
     private ListView search_result_lv;
-    public EditText search;
-    private Button button;
+    private EditText search_editTxt;
+    private Button button_back;
     private Button button_go;
 
     public ArrayList<String> getList() {
@@ -39,6 +39,12 @@ public class SearchActivity extends AppCompatActivity {
 
     ArrayList<String> list = new ArrayList<>();
     ArrayList<MeetingModel> meeting_model_list = new ArrayList<>();
+    ArrayList<MeetingModel> full_meeting_model_list = new ArrayList<>();
+
+    //setter for test by mock data
+    public void setFull_meeting_model_list(ArrayList<MeetingModel> full_meeting_model_list) {
+        this.full_meeting_model_list = full_meeting_model_list;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +54,10 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         if (MainActivity.instance != null && MainActivity.instance.getComingMeetingsFragment() != null)
             meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
-        search = findViewById(R.id.editText_search);
+        search_editTxt = findViewById(R.id.editText_search);
         mTitleBar = findViewById(R.id.title_bar);
-        button = findViewById(R.id.button);
-        button.setOnClickListener(new Buttonlistener());
+        button_back = findViewById(R.id.button_back);
+        button_back.setOnClickListener(new Buttonlistener());
         button_go = findViewById(R.id.button_go);
         button_go.setOnClickListener(new Buttonlistenner_go());
 
@@ -65,6 +71,13 @@ public class SearchActivity extends AppCompatActivity {
         for (MeetingModel m : meeting_model_list)
             list.add(m.getName());
         initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (MainActivity.instance != null)
+            full_meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
     }
 
     @Override
@@ -111,9 +124,9 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             list.clear();   // clean all data first
-            meeting_model_list = MainActivity.instance.getComingMeetingsFragment().meetings_list;
+            meeting_model_list = full_meeting_model_list;
             ArrayList<MeetingModel> tmp_ary = new ArrayList<>();
-            String input = search.getText().toString();
+            String input = search_editTxt.getText().toString();
             Log.i("shenxin input:", input);
             if (input != "" && input.length() > 0) {    // check if input keyword valid
                 for (MeetingModel m : meeting_model_list) {  // go through all meeting data
@@ -136,6 +149,14 @@ public class SearchActivity extends AppCompatActivity {
             meeting_model_list = tmp_ary;
             initViews();
         }
+    }
+
+    public EditText getSearchTxtView() {
+        return search_editTxt;
+    }
+
+    public ArrayList<MeetingModel> getMeeting_model_list() {
+        return meeting_model_list;
     }
 
 }

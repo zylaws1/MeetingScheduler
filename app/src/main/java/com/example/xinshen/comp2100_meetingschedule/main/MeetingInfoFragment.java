@@ -59,12 +59,16 @@ public class MeetingInfoFragment extends Fragment {
             meet_icon = (ImageView) root_view.findViewById(R.id.imageView_meeting_icon);
         }
         // Fill the content according to the chosen way from coming fragment
-        if (touched_id != -1)
-            setMeetingInfo(touched_id);
-        else if (meeting_obj != null)
+        if (touched_id != -1) {
+            MainActivity m = (MainActivity) base_activity;
+            MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(touched_id);
+            setMeetingInfo(obj);
+        }
+        if (meeting_obj != null)
             setMeetingInfo(meeting_obj);
-        else
-            return root_view;
+        else {
+            meeting_obj = new MeetingModel();
+        }
         // Make a copy to mainactivity public param_model in order for quick share by token
         MainActivity.param_model.setName(meet_name.getText().toString());
         MainActivity.param_model.setRoom(meet_room.getText().toString());
@@ -89,21 +93,21 @@ public class MeetingInfoFragment extends Fragment {
     }
 
     // fill the content meeting information by id
-    public void setMeetingInfo(int i) {
-        MainActivity m = (MainActivity) base_activity;
-        if (base_activity == null) Log.i(TAG, "null base_activity");
-        if (m.comingMeetingsFragment == null) Log.i(TAG, "null ComingMeetingsFragment");
-        if (m.comingMeetingsFragment.meetings_list == null) Log.i(TAG, "null meetings_list");
-        MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(i);
-//      if (obj == null) Log.i(TAG, "null obj");
-        meet_icon.setImageResource(obj.getIcon());
-        meet_name.setText(obj.getName());
-        meet_room.setText(obj.getRoom());
-        meet_venue.setText(obj.getVenue());
-        meet_description.setText(obj.getDescription());
-        meet_date.setText(obj.getDate_str());
-        meet_time.setText(obj.getStart_time_str());
-    }
+//    public void setMeetingInfo(int i) {
+//        MainActivity m = (MainActivity) base_activity;
+//        if (base_activity == null) Log.i(TAG, "null base_activity");
+//        if (m.comingMeetingsFragment == null) Log.i(TAG, "null ComingMeetingsFragment");
+//        if (m.comingMeetingsFragment.meetings_list == null) Log.i(TAG, "null meetings_list");
+//        MeetingModel obj = m.comingMeetingsFragment.meetings_list.get(i);
+////      if (obj == null) Log.i(TAG, "null obj");
+//        meet_icon.setImageResource(obj.getIcon());
+//        meet_name.setText(obj.getName());
+//        meet_room.setText(obj.getRoom());
+//        meet_venue.setText(obj.getVenue());
+//        meet_description.setText(obj.getDescription());
+//        meet_date.setText(obj.getDate_str());
+//        meet_time.setText(obj.getStart_time_str());
+//    }
 
     // set filling method by MeetingModel object parameter
     public void setMeetingModel(MeetingModel model) {
@@ -121,5 +125,9 @@ public class MeetingInfoFragment extends Fragment {
         meet_date.setText(obj.getDate_str());
         meet_time.setText(obj.getStart_time_str());
         touched_id = -1;
+    }
+
+    public TextView getMeet_name() {
+        return meet_name;
     }
 }

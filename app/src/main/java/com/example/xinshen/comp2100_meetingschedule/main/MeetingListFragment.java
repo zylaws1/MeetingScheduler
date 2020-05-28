@@ -94,7 +94,7 @@ public class MeetingListFragment extends Fragment {
     }
 
     // get mocked  local data for test
-    ArrayList<MeetingModel> get_mock_past_data() {
+    static public ArrayList<MeetingModel> get_mock_past_data() {
         ArrayList<MeetingModel> data = new ArrayList<>();
         data.add(new MeetingModel(R.drawable.icon, "comp2100 group formation",
                 "team formation", "101", "CSIT ground floor", 3, "2020-05-22", "8:30", 8));

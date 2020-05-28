@@ -1,6 +1,7 @@
 package com.example.xinshen.comp2100_meetingschedule.main;
 
 import android.os.Bundle;
+
 import com.example.xinshen.comp2100_meetingschedule.R;
 import com.example.xinshen.comp2100_meetingschedule.data.Result;
 import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
@@ -10,13 +11,16 @@ import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -33,15 +37,16 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
     RelativeLayout mMyMeeting;
     RelativeLayout mMyNotes;
     RelativeLayout mMyTimeslotPreference;
-    boolean isLogin;
+    private boolean isLogin;
     String userName;
     LoginFragment loginFragment;
     RegisterFragment registerFragment;
+    View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // bond the views and controls for the initialization
-        View view = inflater.inflate(R.layout.activity_personal_center, null);
+        view = inflater.inflate(R.layout.activity_personal_center, null);
         mInfoModification = view.findViewById(R.id.layout_info_modification);
         mMyMeeting = view.findViewById(R.id.layout_my_meeting);
         mMyNotes = view.findViewById(R.id.layout_my_notes);
@@ -82,7 +87,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 transaction = fraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, loginFragment);
-                transaction.commit();
+                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
                 break;
             case R.id.layout_info_modification:
                 if (isLogin) {
@@ -90,7 +95,7 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                     FragmentTransaction transaction1 = fraManager1.beginTransaction();
                     transaction1.addToBackStack(null);
                     transaction1.replace(R.id.main_linear, registerFragment);
-                    transaction1.commit();
+                    if (view.findViewById(R.id.main_linear) != null) transaction1.commit();
                 } else {
                     showToast(getString(R.string.no_login));
                 }
@@ -101,21 +106,21 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
                 transaction.replace(R.id.main_linear, MainActivity.instance.getComingMeetingsFragment());
                 MainActivity.instance.setmTitleBarStyle(true);
                 MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
-                transaction.commit();
+                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
                 break;
             case R.id.layout_my_notes:
                 transaction = MainActivity.mFraManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.main_linear, MainActivity.instance.getNoteListFragment());
                 transaction.addToBackStack(null);
-                transaction.commit();
+                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
                 break;
             case R.id.layout_timeslot_preference:
                 MainActivity.setmTitleBarInactive();
                 transaction = MainActivity.mFraManager.beginTransaction();
                 transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);
                 transaction.addToBackStack(null);
-                transaction.commit();
+                if (view.findViewById(R.id.main_linear) != null) transaction.commit();
                 break;
             default:
                 break;
@@ -147,6 +152,10 @@ public class OwnProfileFragment extends Fragment implements View.OnClickListener
 
     private void showToast(String info) {
         Toast.makeText(getActivity().getApplicationContext(), info, Toast.LENGTH_SHORT).show();
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
     }
 
 }

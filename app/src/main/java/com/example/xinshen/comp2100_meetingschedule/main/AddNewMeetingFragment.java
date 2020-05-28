@@ -143,6 +143,8 @@ public class AddNewMeetingFragment extends Fragment implements View.OnClickListe
     public static int dateToWeek(String datetime) {
         Log.i(TAG, "dateToWeek: " + datetime);
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        if (datetime.contains("/"))
+            f = new SimpleDateFormat("yyyy/MM/dd");
         Calendar cal = Calendar.getInstance(); // get the calendar
         Date datet = null;
         try {

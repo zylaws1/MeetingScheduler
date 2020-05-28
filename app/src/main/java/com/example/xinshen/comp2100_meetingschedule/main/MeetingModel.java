@@ -21,7 +21,7 @@ public class MeetingModel {
     private int start_time_minute;  // meeting start minute in integer
     private int end_time;   // meeting end hour in integer
     private int day;       // meeting start weekday in int (1-7 from Monday to Sunday)
-    private String date_str;    // meeting start date in string
+    private String date_str;    // meeting start date in string eg:yyyy/MM/dd
     private String start_time_str = ""; // meeting start time in string
     private String end_time_str = "";   // meeting end time in string
     private String name = "";   // meeting name
@@ -29,8 +29,13 @@ public class MeetingModel {
     private String room = "";   // meeting room
     private String venue = "";  // meeting happening place
 
+    //default meeting data for test
     public MeetingModel() {
-
+        id = id_cnt++;
+        icon = R.drawable.icon;
+        start_time_str = "09:00";
+        date_str="1980/01/01";
+        day = 1;
     }
 
     public MeetingModel(String name, String room, String venue, String description, int day, String date_str, String time_str, int start_hour, int minute) {

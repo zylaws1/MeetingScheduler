@@ -47,32 +47,7 @@ public class NoteEditFragment extends Fragment {
                                 Toast.LENGTH_LONG).show();
                         return;
                     }
-
-                    // Saving tips
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("Tips")
-                            .setMessage("Do you want to save note?")
-                            .setPositiveButton("Yes!",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            ContentValues values = new ContentValues();
-                                            values.put("title", title);
-                                            values.put("content", content);
-
-                                            // If noteId is not empty, then it is an update operation, and empty is an add operation
-                                            if (null == noteId || "".equals(noteId))
-                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).addNote(values);
-                                            else
-                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).updateNoteById(Integer.valueOf(noteId), values);
-                                            // finish fragment
-                                            getActivity().onBackPressed();
-                                            Toast.makeText(MainActivity.mContext, "Save successfully! ",
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                    })
-                            .setNegativeButton("Cancel", null).show();
-
+                    buildAlert(title, content).show();
                 }
             });
 
@@ -102,6 +77,35 @@ public class NoteEditFragment extends Fragment {
             bundle.clear();
         }
         return root_view;
+    }
+
+    //build a alert to double check if save title and content
+    public AlertDialog.Builder buildAlert(final String title, final String content) {
+        // Saving tips
+        AlertDialog.Builder res = new AlertDialog.Builder(getContext())
+                .setTitle("Tips")
+                .setMessage("Do you want to save note?")
+                .setPositiveButton("Yes!",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                ContentValues values = new ContentValues();
+                                values.put("title", title);
+                                values.put("content", content);
+
+                                // If noteId is not empty, then it is an update operation, and empty is an add operation
+                                if (null == noteId || "".equals(noteId))
+                                    NoteDBManager.getInstance(getActivity().getApplicationContext()).addNote(values);
+                                else
+                                    NoteDBManager.getInstance(getActivity().getApplicationContext()).updateNoteById(Integer.valueOf(noteId), values);
+                                // finish fragment
+                                getActivity().onBackPressed();
+                                Toast.makeText(MainActivity.mContext, "Save successfully! ",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        })
+                .setNegativeButton("Cancel", null);
+        return res;
     }
 
     /**
