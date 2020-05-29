@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase = null;
     private ArrayList<MeetingModel> coming_meetings_data;
     private ArrayList<MeetingModel> past_meetings_data;
+    private boolean first_loading = true;
 
     public ArrayList<MeetingModel> getComing_meetings_data() {
         return coming_meetings_data;
@@ -160,33 +161,36 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the meetings data
 //                Log.i(TAG, "server data str:" + str);
-                Object size_coming = dataSnapshot.child("size_coming").getValue();
-                if (size_coming == null) return;
-                int size_come = Integer.parseInt(size_coming.toString());
-                Object size_past = dataSnapshot.child("size_past").getValue();
-                if (size_past == null) return;
-                int size_past_int = Integer.parseInt(size_past.toString());
-                coming_meetings_data = new ArrayList<>();
-                past_meetings_data = new ArrayList<>();
-                MeetingModel meet;
-                // add data into ListView arrays for coming meetings
-                for (int i = 0; i < size_come; i++) {
-                    meet = dataSnapshot.child("coming_" + i).getValue(MeetingModel.class);
-                    coming_meetings_data.add(meet);
+                if (first_loading) {
+                    Object size_coming = dataSnapshot.child("size_coming").getValue();
+                    if (size_coming == null) return;
+                    int size_come = Integer.parseInt(size_coming.toString());
+                    Object size_past = dataSnapshot.child("size_past").getValue();
+                    if (size_past == null) return;
+                    int size_past_int = Integer.parseInt(size_past.toString());
+                    coming_meetings_data = new ArrayList<>();
+                    past_meetings_data = new ArrayList<>();
+                    MeetingModel meet;
+                    // add data into ListView arrays for coming meetings
+                    for (int i = 0; i < size_come; i++) {
+                        meet = dataSnapshot.child("coming_" + i).getValue(MeetingModel.class);
+                        coming_meetings_data.add(meet);
+                    }
+                    // add data into ListView arrays for past meetings
+                    for (int i = 0; i < size_past_int; i++) {
+                        meet = dataSnapshot.child("past_" + i).getValue(MeetingModel.class);
+                        past_meetings_data.add(meet);
+                    }
+                    Log.i(TAG, "onDataChange coming data.size():" + coming_meetings_data.size());
+                    Log.i(TAG, "onDataChange past data.size():" + past_meetings_data.size());
+                    Log.i(TAG, "onDataChange: recieve data at:" + System.currentTimeMillis());
+                    comingMeetingsFragment.setMeetings_list(coming_meetings_data);
+                    pastMeetingsFragment.setMeetings_list(past_meetings_data);
+                    comingMeetingsFragment.getMeetings_list_adapter().notifyDataSetChanged();
+                    // perform click to synchronize the view content;
+                    //mTitleBar.getRightView().performClick();
+                    first_loading = false;
                 }
-                // add data into ListView arrays for past meetings
-                for (int i = 0; i < size_past_int; i++) {
-                    meet = dataSnapshot.child("past_" + i).getValue(MeetingModel.class);
-                    past_meetings_data.add(meet);
-                }
-                Log.i(TAG, "onDataChange coming data.size():" + coming_meetings_data.size());
-                Log.i(TAG, "onDataChange past data.size():" + past_meetings_data.size());
-                Log.i(TAG, "onDataChange: recieve data at:" + System.currentTimeMillis());
-                comingMeetingsFragment.setMeetings_list(coming_meetings_data);
-                pastMeetingsFragment.setMeetings_list(past_meetings_data);
-                comingMeetingsFragment.getMeetings_list_adapter().notifyDataSetChanged();
-                // perform click to synchronize the view content;
-                //mTitleBar.getRightView().performClick();
             }
 
             @Override
@@ -224,8 +228,10 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(delayTask, 2000);
         String info_intent = getIntent().getStringExtra("Info");
         if (info_intent != null && info_intent.length() > 0) {
-            Log.i(TAG, "onResume got search info:" + info_intent);
+            Log.i(TAG, "onResume from search info:" + info_intent);
             MeetingModel m = comingMeetingsFragment.getModelByName(info_intent);
+            if (info_intent != null && m == null)
+                m = param_model;
             MainActivity.setmTitleBarInactive();
             MainActivity.meetingInfoFragment.setMeetingModel(m);
             FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();
