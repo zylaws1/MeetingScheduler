@@ -1,0 +1,301 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MeetingModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MeetingModel (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MeetingModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80.6%
+  </span>
+  <span class="absValue">
+    (25/ 31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.3%
+  </span>
+  <span class="absValue">
+    (91/ 103)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.icu.text.DateFormat;
+<i>4</i>&nbsp;import android.icu.text.SimpleDateFormat;
+<i>5</i>&nbsp;import android.os.Build;
+<i>6</i>&nbsp;import android.util.Log;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import androidx.annotation.RequiresApi;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import java.util.Date;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;// meeting object class
+<i>15</i>&nbsp;public class MeetingModel {
+<b class="fc"><i>16</i>&nbsp;    public static int id_cnt = 0;</b>
+<i>17</i>&nbsp;    private final static int DEFAULT_ICON = 700041;
+<b class="fc"><i>18</i>&nbsp;    private int icon = DEFAULT_ICON;</b>
+<i>19</i>&nbsp;    private int id; // meeting id
+<i>20</i>&nbsp;    private int start_hour; // meeting start hour in integer
+<i>21</i>&nbsp;    private int start_time_minute;  // meeting start minute in integer
+<i>22</i>&nbsp;    private int end_time;   // meeting end hour in integer
+<i>23</i>&nbsp;    private int day;       // meeting start weekday in int (1-7 from Monday to Sunday)
+<i>24</i>&nbsp;    private String date_str;    // meeting start date in string eg:yyyy/MM/dd
+<b class="fc"><i>25</i>&nbsp;    private String start_time_str = &quot;&quot;; // meeting start time in string</b>
+<b class="fc"><i>26</i>&nbsp;    private String end_time_str = &quot;&quot;;   // meeting end time in string</b>
+<b class="fc"><i>27</i>&nbsp;    private String name = &quot;&quot;;   // meeting name</b>
+<b class="fc"><i>28</i>&nbsp;    private String description = &quot;&quot;;    // meeting description</b>
+<b class="fc"><i>29</i>&nbsp;    private String room = &quot;&quot;;   // meeting room</b>
+<b class="fc"><i>30</i>&nbsp;    private String venue = &quot;&quot;;  // meeting happening place</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    //default meeting data for test
+<b class="fc"><i>33</i>&nbsp;    public MeetingModel() {</b>
+<b class="fc"><i>34</i>&nbsp;        id = id_cnt++;</b>
+<b class="fc"><i>35</i>&nbsp;        icon = R.drawable.icon;</b>
+<b class="fc"><i>36</i>&nbsp;        start_time_str = &quot;09:00&quot;;</b>
+<b class="fc"><i>37</i>&nbsp;        date_str=&quot;1980/01/01&quot;;</b>
+<b class="fc"><i>38</i>&nbsp;        day = 1;</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public MeetingModel(String name, String room, String venue, String description, int day, String date_str, String time_str, int start_hour, int minute) {
+<b class="fc"><i>42</i>&nbsp;        super();</b>
+<b class="fc"><i>43</i>&nbsp;        id = id_cnt++;</b>
+<b class="fc"><i>44</i>&nbsp;        icon = R.drawable.icon;</b>
+<b class="fc"><i>45</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>46</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>47</i>&nbsp;        this.room = room;</b>
+<b class="fc"><i>48</i>&nbsp;        this.venue = venue;</b>
+<b class="fc"><i>49</i>&nbsp;        this.start_hour = start_hour;</b>
+<b class="fc"><i>50</i>&nbsp;        start_time_minute = minute;</b>
+<b class="fc"><i>51</i>&nbsp;        this.day = day;</b>
+<b class="fc"><i>52</i>&nbsp;        end_time = start_hour + 1;</b>
+<b class="fc"><i>53</i>&nbsp;        start_time_str = time_str;</b>
+<b class="fc"><i>54</i>&nbsp;        this.date_str = date_str;</b>
+<b class="fc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int start_hour) {
+<b class="fc"><i>58</i>&nbsp;        super();</b>
+<b class="fc"><i>59</i>&nbsp;        id = id_cnt++;</b>
+<b class="fc"><i>60</i>&nbsp;        this.icon = icon;</b>
+<b class="fc"><i>61</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>62</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>63</i>&nbsp;        this.room = room;</b>
+<b class="fc"><i>64</i>&nbsp;        this.venue = venue;</b>
+<b class="fc"><i>65</i>&nbsp;        this.day = day;</b>
+<b class="fc"><i>66</i>&nbsp;        this.start_hour = start_hour;</b>
+<b class="fc"><i>67</i>&nbsp;        end_time = start_hour + 1;</b>
+<b class="fc"><i>68</i>&nbsp;        start_time_str = time_str;</b>
+<b class="fc"><i>69</i>&nbsp;        this.date_str = date_str;</b>
+<b class="fc"><i>70</i>&nbsp;    }</b>
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    public MeetingModel(int icon, String name, String description, String room, String venue, int day, String date_str, String time_str, int start_hour, int end_time) {
+<b class="fc"><i>73</i>&nbsp;        super();</b>
+<b class="fc"><i>74</i>&nbsp;        id = id_cnt++;</b>
+<b class="fc"><i>75</i>&nbsp;        this.icon = icon;</b>
+<b class="fc"><i>76</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>77</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>78</i>&nbsp;        this.room = room;</b>
+<b class="fc"><i>79</i>&nbsp;        this.venue = venue;</b>
+<b class="fc"><i>80</i>&nbsp;        this.day = day;</b>
+<b class="fc"><i>81</i>&nbsp;        this.start_hour = start_hour;</b>
+<b class="fc"><i>82</i>&nbsp;        this.end_time = end_time;</b>
+<b class="fc"><i>83</i>&nbsp;        start_time_str = time_str;</b>
+<b class="fc"><i>84</i>&nbsp;        this.date_str = date_str;</b>
+<b class="fc"><i>85</i>&nbsp;    }</b>
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;//    @Override
+<i>88</i>&nbsp;//    public String toString() {
+<i>89</i>&nbsp;//        return &quot;MeetingModel [id=&quot; + id + &quot;, startnum=&quot; + start_time_hour
+<i>90</i>&nbsp;//                + &quot;, endnum=&quot; + end_time + &quot;, week=&quot; + day + &quot;, starttime=&quot;
+<i>91</i>&nbsp;//                + start_time_str + &quot;, endtime=&quot; + end_time_str + &quot;, name=&quot; + name
+<i>92</i>&nbsp;//                + &quot;, teacher=&quot; + description + &quot;, classroom=&quot; + room
+<i>93</i>&nbsp;//                + &quot;, weeknum=&quot; + venue + &quot;]&quot;;
+<i>94</i>&nbsp;//    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    public void setDate_str(String date_str) {
+<b class="fc"><i>97</i>&nbsp;        this.date_str = date_str;</b>
+<b class="fc"><i>98</i>&nbsp;    }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    public int getStart_time_minute() {
+<b class="nc"><i>101</i>&nbsp;        return start_time_minute;</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    public void setStart_time_minute(int start_time_minute) {
+<b class="fc"><i>105</i>&nbsp;        this.start_time_minute = start_time_minute;</b>
+<b class="fc"><i>106</i>&nbsp;    }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    public String getDate_str() {
+<b class="fc"><i>110</i>&nbsp;        return date_str;</b>
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    public int getId() {
+<b class="nc"><i>114</i>&nbsp;        return id;</b>
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    public int getStar_hour() {
+<b class="fc"><i>118</i>&nbsp;        return Integer.parseInt(start_time_str.substring(0, start_time_str.indexOf(&quot;:&quot;)));</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    public int getEnd_time() {
+<b class="fc"><i>122</i>&nbsp;        return end_time;</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    public int getDay() {
+<i>126</i>&nbsp;//        Log.i(&quot;shenxin&quot;, &quot;getDay: &quot; + day);
+<b class="fc"><i>127</i>&nbsp;        return day;</b>
+<i>128</i>&nbsp;    }
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;    public String getStart_time_str() {
+<b class="fc"><i>131</i>&nbsp;        return start_time_str;</b>
+<i>132</i>&nbsp;    }
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;    public String getEnd_time_str() {
+<b class="nc"><i>135</i>&nbsp;        return end_time_str;</b>
+<i>136</i>&nbsp;    }
+<i>137</i>&nbsp;
+<i>138</i>&nbsp;    public String getName() {
+<b class="fc"><i>139</i>&nbsp;        return name;</b>
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;    public String getRoom() {
+<b class="fc"><i>144</i>&nbsp;        return room;</b>
+<i>145</i>&nbsp;    }
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    public String getVenue() {
+<b class="fc"><i>148</i>&nbsp;        return venue;</b>
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    public void setId(int id) {
+<b class="nc"><i>152</i>&nbsp;        this.id = id;</b>
+<b class="nc"><i>153</i>&nbsp;    }</b>
+<i>154</i>&nbsp;
+<i>155</i>&nbsp;    public void setStart_hour(int start_hour) {
+<b class="fc"><i>156</i>&nbsp;        this.start_hour = start_hour;</b>
+<b class="fc"><i>157</i>&nbsp;    }</b>
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    public void setEnd_time(int end_time) {
+<b class="nc"><i>160</i>&nbsp;        this.end_time = end_time;</b>
+<b class="nc"><i>161</i>&nbsp;    }</b>
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    public void setDay(int day) {
+<b class="fc"><i>164</i>&nbsp;        this.day = day;</b>
+<b class="fc"><i>165</i>&nbsp;    }</b>
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;    public void setStart_time_str(String start_time_str) {
+<b class="fc"><i>168</i>&nbsp;        this.start_time_str = start_time_str;</b>
+<b class="fc"><i>169</i>&nbsp;    }</b>
+<i>170</i>&nbsp;
+<i>171</i>&nbsp;    public void setEnd_time_str(String end_time_str) {
+<b class="nc"><i>172</i>&nbsp;        this.end_time_str = end_time_str;</b>
+<b class="nc"><i>173</i>&nbsp;    }</b>
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;    public void setName(String name) {
+<b class="fc"><i>176</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>177</i>&nbsp;    }</b>
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;    public void setDescription(String description) {
+<b class="fc"><i>180</i>&nbsp;        this.description = description;</b>
+<b class="fc"><i>181</i>&nbsp;    }</b>
+<i>182</i>&nbsp;
+<i>183</i>&nbsp;    public void setRoom(String room) {
+<b class="fc"><i>184</i>&nbsp;        this.room = room;</b>
+<b class="fc"><i>185</i>&nbsp;    }</b>
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;    public void setVenue(String venue) {
+<b class="fc"><i>188</i>&nbsp;        this.venue = venue;</b>
+<b class="fc"><i>189</i>&nbsp;    }</b>
+<i>190</i>&nbsp;
+<i>191</i>&nbsp;    public String getDescription() {
+<b class="fc"><i>192</i>&nbsp;        return description;</b>
+<i>193</i>&nbsp;    }
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;    public int getIcon() {
+<b class="fc"><i>196</i>&nbsp;        return icon;</b>
+<i>197</i>&nbsp;    }
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;    // get remain time in ms from now to meeting deadline, to set the deadline notification
+<i>200</i>&nbsp;    // return: long : remain meeting reminding time from now to deadline
+<i>201</i>&nbsp;    @RequiresApi(api = Build.VERSION_CODES.N)
+<i>202</i>&nbsp;    public long getTimeRemain() {
+<b class="fc"><i>203</i>&nbsp;        long res = -1;</b>
+<b class="fc"><i>204</i>&nbsp;        DateFormat df = new SimpleDateFormat(&quot;yyyy/MM/dd-HH:mm:ss&quot;);</b>
+<i>205</i>&nbsp;        // parse the meeting time to long type
+<i>206</i>&nbsp;        try {
+<b class="fc"><i>207</i>&nbsp;            String time_str = date_str + &quot;-&quot; + start_time_str + &quot;:00 &quot;;</b>
+<b class="fc"><i>208</i>&nbsp;            Log.i(&quot;shenxin&quot;, &quot;time_str: &quot; + time_str);</b>
+<i>209</i>&nbsp;            // calculate the time difference from deadline to current system time
+<b class="fc"><i>210</i>&nbsp;            Date d1 = df.parse(time_str);</b>
+<b class="nc"><i>211</i>&nbsp;            Date d2 = new Date(System.currentTimeMillis());</b>
+<b class="nc"><i>212</i>&nbsp;            res = d1.getTime() - d2.getTime();  // get the ms remain time as return value</b>
+<b class="fc"><i>213</i>&nbsp;        } catch (Exception e) {</b>
+<b class="fc"><i>214</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>215</i>&nbsp;        }</b>
+<b class="fc"><i>216</i>&nbsp;        return res;</b>
+<i>217</i>&nbsp;    }
+<i>218</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

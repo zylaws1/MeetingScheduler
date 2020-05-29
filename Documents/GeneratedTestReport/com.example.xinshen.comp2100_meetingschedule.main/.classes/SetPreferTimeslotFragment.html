@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SetPreferTimeslotFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SetPreferTimeslotFragment (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SetPreferTimeslotFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SetPreferTimeslotFragment$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.2%
+  </span>
+  <span class="absValue">
+    (23/ 27)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    89.7%
+  </span>
+  <span class="absValue">
+    (35/ 39)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;
+<i>2</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import android.content.Context;
+<i>5</i>&nbsp;import android.os.Bundle;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import androidx.annotation.NonNull;
+<i>8</i>&nbsp;import androidx.fragment.app.Fragment;
+<i>9</i>&nbsp;import androidx.fragment.app.FragmentTransaction;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import android.util.Log;
+<i>12</i>&nbsp;import android.view.LayoutInflater;
+<i>13</i>&nbsp;import android.view.View;
+<i>14</i>&nbsp;import android.view.ViewGroup;
+<i>15</i>&nbsp;import android.widget.Button;
+<i>16</i>&nbsp;import android.widget.EditText;
+<i>17</i>&nbsp;import android.widget.TextView;
+<i>18</i>&nbsp;import android.widget.Toast;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import java.util.regex.Pattern;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;/**
+<i>25</i>&nbsp; * Set preference time slot fragment for quick add meeting
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>28</i>&nbsp; */
+<b class="fc"><i>29</i>&nbsp;public class SetPreferTimeslotFragment extends Fragment {</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    private EditText edtTxt_pref1;
+<i>32</i>&nbsp;    private EditText edtTxt_pref2;
+<i>33</i>&nbsp;    private EditText edtTxt_pref3;
+<i>34</i>&nbsp;    Button btnSavePref;
+<i>35</i>&nbsp;    View rootview;
+<i>36</i>&nbsp;    Context mContext;
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @Override
+<i>39</i>&nbsp;    public void onAttach(@NonNull Context context) {
+<i>40</i>&nbsp;        // save the activity when first time attached
+<b class="fc"><i>41</i>&nbsp;        super.onAttach(context);</b>
+<b class="fc"><i>42</i>&nbsp;        mContext = context;</b>
+<b class="fc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    @Override
+<i>46</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+<i>47</i>&nbsp;        // bond the views and controls for the first time initialization
+<b class="fc"><i>48</i>&nbsp;        if (rootview == null) {</b>
+<b class="fc"><i>49</i>&nbsp;            rootview = inflater.inflate(R.layout.fragment_set_own_timeslot_preference, null);</b>
+<b class="fc"><i>50</i>&nbsp;            edtTxt_pref1 = (EditText) rootview.findViewById(R.id.editText_pref_1);</b>
+<b class="fc"><i>51</i>&nbsp;            edtTxt_pref2 = (EditText) rootview.findViewById(R.id.editText_pref_2);</b>
+<b class="fc"><i>52</i>&nbsp;            edtTxt_pref3 = (EditText) rootview.findViewById(R.id.editText_pref_3);</b>
+<b class="fc"><i>53</i>&nbsp;            btnSavePref = (Button) rootview.findViewById(R.id.btn_save_pref);</b>
+<b class="fc"><i>54</i>&nbsp;            btnSavePref.setOnClickListener(new View.OnClickListener() {</b>
+<i>55</i>&nbsp;                @Override
+<i>56</i>&nbsp;                public void onClick(View v) {
+<i>57</i>&nbsp;                    // use regular expression to check if the input preference time is valid
+<b class="fc"><i>58</i>&nbsp;                    Pattern p = Pattern.compile(&quot;(\\s)*\\d{1,2}(\\s)*[:|£º](\\s)*\\d{1,2}(\\s)*&quot;);</b>
+<b class="fc"><i>59</i>&nbsp;                    String str[] = new String[3];</b>
+<b class="fc"><i>60</i>&nbsp;                    str[0] = edtTxt_pref1.getText().toString();</b>
+<b class="fc"><i>61</i>&nbsp;                    str[1] = edtTxt_pref2.getText().toString();</b>
+<b class="fc"><i>62</i>&nbsp;                    str[2] = edtTxt_pref3.getText().toString();</b>
+<i>63</i>&nbsp;                    // check three preference time validation
+<b class="fc"><i>64</i>&nbsp;                    boolean allValid = true;</b>
+<b class="fc"><i>65</i>&nbsp;                    for (int i = 0; i &lt; 3; i++) {</b>
+<i>66</i>&nbsp;//                        Log.i(&quot;shenxin&quot;, &quot;set pref str:&quot; + str[i]);
+<b class="fc"><i>67</i>&nbsp;                        if (p.matcher(str[i]).matches()) {</b>
+<b class="fc"><i>68</i>&nbsp;                            String hour_str = str[i].substring(0, str[i].indexOf(&quot;:&quot;));</b>
+<b class="fc"><i>69</i>&nbsp;                            String minute_str = str[i].substring(str[i].indexOf(&quot;:&quot;) + 1);</b>
+<b class="fc"><i>70</i>&nbsp;                            int hour = Integer.parseInt(hour_str.trim().replaceAll(&quot; &quot;, &quot;&quot;));</b>
+<b class="fc"><i>71</i>&nbsp;                            int minute = Integer.parseInt(minute_str.trim().replaceAll(&quot; &quot;, &quot;&quot;));</b>
+<b class="fc"><i>72</i>&nbsp;                            Log.i(&quot;shenxin&quot;, &quot;set pref hour and min:&quot; + hour + &quot; || &quot; + minute);</b>
+<i>73</i>&nbsp;                            // Set the preference time slot in adding fragment if valid
+<b class="fc"><i>74</i>&nbsp;                            if (0 &lt;= hour &amp;&amp; hour &lt; 25 &amp;&amp; 0 &lt;= minute &amp;&amp; minute &lt; 61) {</b>
+<b class="fc"><i>75</i>&nbsp;                                AddNewMeetingFragment.spinnerItems[i] = hour + &quot;:&quot; + minute;</b>
+<i>76</i>&nbsp;                            } else {     // do not add and toast if input time value not valid
+<b class="nc"><i>77</i>&nbsp;                                allValid = false;</b>
+<b class="nc"><i>78</i>&nbsp;                                Toast.makeText(mContext, &quot;bad time!&quot;, Toast.LENGTH_LONG);</b>
+<i>79</i>&nbsp;                            }
+<b class="fc"><i>80</i>&nbsp;                        } else {     // do not add and toast if input expression not valid</b>
+<b class="nc"><i>81</i>&nbsp;                            allValid = false;</b>
+<b class="nc"><i>82</i>&nbsp;                            Toast.makeText(mContext, &quot;invalid time preference&quot;, Toast.LENGTH_LONG);</b>
+<i>83</i>&nbsp;                        }
+<i>84</i>&nbsp;                    }
+<i>85</i>&nbsp;                    // Toast if all times are valid
+<b class="fc"><i>86</i>&nbsp;                    if (allValid){</b>
+<b class="fc"><i>87</i>&nbsp;                        Toast.makeText(mContext, &quot;preference time changed!&quot;, Toast.LENGTH_LONG);</b>
+<b class="fc"><i>88</i>&nbsp;                        FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();</b>
+<b class="fc"><i>89</i>&nbsp;                        transaction.replace(R.id.main_linear, MainActivity.instance.getOwnProfileFragment());</b>
+<b class="fc"><i>90</i>&nbsp;                        transaction.commit();</b>
+<i>91</i>&nbsp;                    }
+<b class="fc"><i>92</i>&nbsp;                }</b>
+<i>93</i>&nbsp;            });
+<i>94</i>&nbsp;        }
+<b class="fc"><i>95</i>&nbsp;        return rootview;</b>
+<i>96</i>&nbsp;    }
+<i>97</i>&nbsp;//   local test
+<i>98</i>&nbsp;//    public static void main(String[] args) {
+<i>99</i>&nbsp;//        String regex = &quot;\\d{1,2}[:]\\d{1,2}&quot;;
+<i>100</i>&nbsp;//        System.out.println(regex.matches(&quot;12:00&quot;));
+<i>101</i>&nbsp;//        System.out.println(regex.matches(&quot;24:60&quot;));
+<i>102</i>&nbsp;//        System.out.println(regex.matches(&quot;25:66&quot;));
+<i>103</i>&nbsp;//        System.out.println(regex.matches(&quot;666:666&quot;));
+<i>104</i>&nbsp;//        System.out.println(regex.matches(&quot;6:666&quot;));
+<i>105</i>&nbsp;//    }
+<i>106</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: NoteListFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: NoteListFragment (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NoteListFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/ 20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">NoteListFragment$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">NoteListFragment$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    14.3%
+  </span>
+  <span class="absValue">
+    (1/ 7)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">NoteListFragment$2$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">NoteListFragment$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/ 9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (8/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    59.6%
+  </span>
+  <span class="absValue">
+    (28/ 47)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.app.AlertDialog;
+<i>4</i>&nbsp;import android.content.DialogInterface;
+<i>5</i>&nbsp;import android.content.Intent;
+<i>6</i>&nbsp;import android.database.Cursor;
+<i>7</i>&nbsp;import android.os.Bundle;
+<i>8</i>&nbsp;import android.util.Log;
+<i>9</i>&nbsp;import android.view.LayoutInflater;
+<i>10</i>&nbsp;import android.view.View;
+<i>11</i>&nbsp;import android.view.ViewGroup;
+<i>12</i>&nbsp;import android.widget.AdapterView;
+<i>13</i>&nbsp;import android.widget.CursorAdapter;
+<i>14</i>&nbsp;import android.widget.ListView;
+<i>15</i>&nbsp;import android.widget.SimpleCursorAdapter;
+<i>16</i>&nbsp;import android.widget.Toast;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;import androidx.fragment.app.Fragment;
+<i>19</i>&nbsp;import androidx.fragment.app.FragmentTransaction;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>22</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.database.NoteDBManager;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;/**
+<i>25</i>&nbsp; * Note fragment, list the notes in database
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>28</i>&nbsp; */
+<b class="fc"><i>29</i>&nbsp;public class NoteListFragment extends Fragment {</b>
+<b class="fc"><i>30</i>&nbsp;    private Cursor listItemCursor = null;</b>
+<i>31</i>&nbsp;    View view;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+<b class="fc"><i>35</i>&nbsp;        view = inflater.inflate(R.layout.fragment_notes_listview, null);</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;        // Set add note button event, switch fragment
+<b class="fc"><i>38</i>&nbsp;        view.findViewById(R.id.addNote).setOnClickListener(</b>
+<b class="fc"><i>39</i>&nbsp;                new View.OnClickListener() {</b>
+<i>40</i>&nbsp;                    @Override
+<i>41</i>&nbsp;                    public void onClick(View arg0) {
+<b class="fc"><i>42</i>&nbsp;                        FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();</b>
+<b class="fc"><i>43</i>&nbsp;                        transaction.replace(R.id.main_linear, MainActivity.instance.getNoteEditFragment());</b>
+<b class="fc"><i>44</i>&nbsp;                        transaction.addToBackStack(null);</b>
+<b class="fc"><i>45</i>&nbsp;                        transaction.commit();</b>
+<b class="fc"><i>46</i>&nbsp;                    }</b>
+<i>47</i>&nbsp;                });
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;        // Query all notes and display in list view
+<b class="fc"><i>50</i>&nbsp;        listItemCursor = NoteDBManager.getInstance(getActivity().getApplicationContext()).queryAll();</b>
+<b class="fc"><i>51</i>&nbsp;        Log.i(&quot;shenxin&quot;, &quot;listItemCursor: &quot; + listItemCursor.getCount());</b>
+<b class="fc"><i>52</i>&nbsp;        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getContext(),</b>
+<i>53</i>&nbsp;                R.layout.note_item, listItemCursor, new String[]{&quot;_id&quot;,
+<i>54</i>&nbsp;                &quot;title&quot;, &quot;createTime&quot;}, new int[]{R.id.noteId,
+<i>55</i>&nbsp;                R.id.noteTitle, R.id.noteCreateTime},
+<i>56</i>&nbsp;                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+<b class="fc"><i>57</i>&nbsp;        ListView lv = (ListView) view.findViewById(R.id.listNote);</b>
+<b class="fc"><i>58</i>&nbsp;        lv.setAdapter(adapter);</b>
+<b class="fc"><i>59</i>&nbsp;        initListNoteListener();</b>
+<b class="fc"><i>60</i>&nbsp;        return view;</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     * Long press and click events to initialize the note list
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    private void initListNoteListener() {
+<i>67</i>&nbsp;        // delete when long press
+<b class="fc"><i>68</i>&nbsp;        ((ListView) view.findViewById(R.id.listNote))</b>
+<b class="fc"><i>69</i>&nbsp;                .setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {</b>
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;                    @Override
+<i>72</i>&nbsp;                    public boolean onItemLongClick(AdapterView&lt;?&gt; parent,
+<i>73</i>&nbsp;                                                   View view, int position, final long id) {
+<b class="nc"><i>74</i>&nbsp;                        new AlertDialog.Builder(MainActivity.instance)</b>
+<b class="nc"><i>75</i>&nbsp;                                .setTitle(&quot;Tip:&quot;)</b>
+<b class="nc"><i>76</i>&nbsp;                                .setMessage(&quot;Delete the note?&quot;)</b>
+<b class="nc"><i>77</i>&nbsp;                                .setPositiveButton(&quot;Yes&quot;,</b>
+<b class="nc"><i>78</i>&nbsp;                                        new DialogInterface.OnClickListener() {</b>
+<i>79</i>&nbsp;                                            @Override
+<i>80</i>&nbsp;                                            public void onClick(DialogInterface arg0, int arg1) {
+<b class="nc"><i>81</i>&nbsp;                                                NoteDBManager.getInstance(getActivity().getApplicationContext()).deleteNoteById((int) id);</b>
+<i>82</i>&nbsp;                                                // refresh list view after deletion
+<b class="nc"><i>83</i>&nbsp;                                                onResume();</b>
+<b class="nc"><i>84</i>&nbsp;                                                Toast.makeText(MainActivity.instance,</b>
+<b class="nc"><i>85</i>&nbsp;                                                        &quot;note deleted!&quot;, Toast.LENGTH_LONG).show();</b>
+<i>86</i>&nbsp;                                            }
+<b class="nc"><i>87</i>&nbsp;                                        }).setNegativeButton(&quot;Cancel&quot;, null).show();</b>
+<b class="nc"><i>88</i>&nbsp;                        return true;</b>
+<i>89</i>&nbsp;                    }
+<i>90</i>&nbsp;                });
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;        //Click to edit note
+<b class="fc"><i>93</i>&nbsp;        ((ListView) view.findViewById(R.id.listNote))</b>
+<b class="fc"><i>94</i>&nbsp;                .setOnItemClickListener(new AdapterView.OnItemClickListener() {</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;                    @Override
+<i>97</i>&nbsp;                    public void onItemClick(AdapterView&lt;?&gt; parent, View view, int position, long id) {
+<i>98</i>&nbsp;                        // Put the id in bundle, pass the data after switching the fragment
+<b class="nc"><i>99</i>&nbsp;                        FragmentTransaction transaction = MainActivity.mFraManager.beginTransaction();</b>
+<b class="nc"><i>100</i>&nbsp;                        transaction.replace(R.id.main_linear, MainActivity.instance.getNoteEditFragment());</b>
+<b class="nc"><i>101</i>&nbsp;                        transaction.addToBackStack(null);</b>
+<b class="nc"><i>102</i>&nbsp;                        Bundle bundle = new Bundle();</b>
+<b class="nc"><i>103</i>&nbsp;                        bundle.putLong(&quot;id&quot;, id);</b>
+<b class="nc"><i>104</i>&nbsp;                        MainActivity.instance.getNoteEditFragment().setArguments(bundle);</b>
+<b class="nc"><i>105</i>&nbsp;                        transaction.commit();</b>
+<b class="nc"><i>106</i>&nbsp;                    }</b>
+<i>107</i>&nbsp;                });
+<i>108</i>&nbsp;
+<b class="fc"><i>109</i>&nbsp;    }</b>
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;//    @Override
+<i>112</i>&nbsp;//    public boolean onCreateOptionsMenu(Menu menu) {
+<i>113</i>&nbsp;//        getMenuInflater().inflate(R.menu.main, menu);
+<i>114</i>&nbsp;//        return true;
+<i>115</i>&nbsp;//    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    @Override
+<i>118</i>&nbsp;    public void onResume() {
+<b class="fc"><i>119</i>&nbsp;        super.onResume();</b>
+<i>120</i>&nbsp;        // Refresh home page list notes
+<b class="fc"><i>121</i>&nbsp;        if (listItemCursor != null) {</b>
+<b class="fc"><i>122</i>&nbsp;            listItemCursor.requery();</b>
+<i>123</i>&nbsp;        }
+<b class="fc"><i>124</i>&nbsp;    }</b>
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: LoginViewModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.ui.login</a> ]
+</div>
+
+<h1>Coverage Summary for Class: LoginViewModel (com.example.xinshen.comp2100_meetingschedule.ui.login)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">LoginViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.3%
+  </span>
+  <span class="absValue">
+    (24/ 26)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">LoginViewModel$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    20%
+  </span>
+  <span class="absValue">
+    (1/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80.6%
+  </span>
+  <span class="absValue">
+    (25/ 31)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.ui.login;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import androidx.lifecycle.LiveData;
+<i>4</i>&nbsp;import androidx.lifecycle.MutableLiveData;
+<i>5</i>&nbsp;import androidx.lifecycle.ViewModel;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import android.util.Patterns;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.LoginRepository;
+<i>10</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.Result;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.model.UserInfo;
+<i>13</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>14</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.main.UserInfoCallback;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; * Login view model to wrap login information view
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>20</i>&nbsp; */
+<b class="nc"><i>21</i>&nbsp;public class LoginViewModel extends ViewModel {</b>
+<i>22</i>&nbsp;
+<b class="fc"><i>23</i>&nbsp;    private MutableLiveData&lt;LoginFormState&gt; loginFormState = new MutableLiveData&lt;&gt;();</b>
+<b class="fc"><i>24</i>&nbsp;    private MutableLiveData&lt;LoginResult&gt; loginResult = new MutableLiveData&lt;&gt;();</b>
+<i>25</i>&nbsp;    private LoginRepository loginRepository;
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;    LoginViewModel(LoginRepository loginRepository) {</b>
+<b class="fc"><i>28</i>&nbsp;        this.loginRepository = loginRepository;</b>
+<b class="fc"><i>29</i>&nbsp;    }</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    LiveData&lt;LoginFormState&gt; getLoginFormState() {
+<b class="fc"><i>32</i>&nbsp;        return loginFormState;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public LiveData&lt;LoginResult&gt; getLoginResult() {
+<b class="fc"><i>36</i>&nbsp;        return loginResult;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public void login(String username, final String password) {
+<i>40</i>&nbsp;        // can be launched in a separate asynchronous job
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;        loginRepository.login(username, new UserInfoCallback() {</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;            @Override
+<i>45</i>&nbsp;            public void callback(UserInfo userInfo) {
+<b class="nc"><i>46</i>&nbsp;                if (userInfo != null &amp;&amp; userInfo.getPassword() != null &amp;&amp; userInfo.getPassword().equals(password)) {</b>
+<b class="nc"><i>47</i>&nbsp;                    loginResult.setValue(new LoginResult(new LoggedInUserView(userInfo.getDisplayName())));</b>
+<i>48</i>&nbsp;                } else {
+<b class="nc"><i>49</i>&nbsp;                    loginResult.setValue(new LoginResult(R.string.login_failed));</b>
+<i>50</i>&nbsp;                }
+<b class="nc"><i>51</i>&nbsp;            }</b>
+<i>52</i>&nbsp;        });
+<b class="fc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    public void loginDataChanged(String username, String password) {
+<b class="fc"><i>56</i>&nbsp;        if (!isUserNameValid(username)) {</b>
+<b class="fc"><i>57</i>&nbsp;            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));</b>
+<b class="fc"><i>58</i>&nbsp;        } else if (!isPasswordValid(password)) {</b>
+<b class="fc"><i>59</i>&nbsp;            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));</b>
+<i>60</i>&nbsp;        } else {
+<b class="fc"><i>61</i>&nbsp;            loginFormState.setValue(new LoginFormState(true));</b>
+<i>62</i>&nbsp;        }
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    // A placeholder username validation check
+<i>66</i>&nbsp;    private boolean isUserNameValid(String username) {
+<b class="fc"><i>67</i>&nbsp;        if (username == null) {</b>
+<b class="nc"><i>68</i>&nbsp;            return false;</b>
+<i>69</i>&nbsp;        }
+<b class="fc"><i>70</i>&nbsp;        if (username.contains(&quot;@&quot;)) {</b>
+<b class="fc"><i>71</i>&nbsp;            return Patterns.EMAIL_ADDRESS.matcher(username).matches();</b>
+<i>72</i>&nbsp;        } else {
+<b class="fc"><i>73</i>&nbsp;            return !username.trim().isEmpty();</b>
+<i>74</i>&nbsp;        }
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    // A placeholder password validation check
+<i>78</i>&nbsp;    private boolean isPasswordValid(String password) {
+<b class="fc"><i>79</i>&nbsp;        return password != null &amp;&amp; password.trim().length() &gt; 5;</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    // Set login result value
+<i>83</i>&nbsp;    public void setLoginResultValue(String value, boolean isLoginSuccess) {
+<b class="fc"><i>84</i>&nbsp;        if (isLoginSuccess) {</b>
+<b class="fc"><i>85</i>&nbsp;            loginResult.setValue(new LoginResult(new LoggedInUserView(value)));</b>
+<i>86</i>&nbsp;        } else {
+<b class="fc"><i>87</i>&nbsp;            loginResult.setValue(new LoginResult(R.string.login_failed));</b>
+<i>88</i>&nbsp;        }
+<b class="fc"><i>89</i>&nbsp;    }</b>
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

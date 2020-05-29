@@ -1,0 +1,273 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FeedbackFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FeedbackFragment (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FeedbackFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (24/ 24)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FeedbackFragment$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FeedbackFragment$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    92.9%
+  </span>
+  <span class="absValue">
+    (13/ 14)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FeedbackFragment$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/ 15)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    76.9%
+  </span>
+  <span class="absValue">
+    (10/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68.4%
+  </span>
+  <span class="absValue">
+    (39/ 57)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import androidx.annotation.NonNull;
+<i>4</i>&nbsp;import androidx.databinding.DataBindingUtil;
+<i>5</i>&nbsp;import android.os.Bundle;
+<i>6</i>&nbsp;import android.view.LayoutInflater;
+<i>7</i>&nbsp;import android.view.View;
+<i>8</i>&nbsp;import android.view.ViewGroup;
+<i>9</i>&nbsp;import android.widget.Toast;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>12</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.adapter.FeedbackAdapter;
+<i>13</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.model.Feedback;
+<i>14</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.model.FeedbackBean;
+<i>15</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
+<i>16</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.databinding.ActivityFeedbackBinding;
+<i>17</i>&nbsp;import com.google.firebase.database.DataSnapshot;
+<i>18</i>&nbsp;import com.google.firebase.database.DatabaseError;
+<i>19</i>&nbsp;import com.google.firebase.database.DatabaseReference;
+<i>20</i>&nbsp;import com.google.firebase.database.FirebaseDatabase;
+<i>21</i>&nbsp;import com.google.firebase.database.ValueEventListener;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;import java.util.ArrayList;
+<i>24</i>&nbsp;import java.util.List;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;import androidx.annotation.Nullable;
+<i>27</i>&nbsp;import androidx.fragment.app.Fragment;
+<i>28</i>&nbsp;import androidx.recyclerview.widget.LinearLayoutManager;
+<i>29</i>&nbsp;import androidx.recyclerview.widget.RecyclerView;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;/**
+<i>32</i>&nbsp; * Provide users with fragment that can write feedback
+<i>33</i>&nbsp; *
+<i>34</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>35</i>&nbsp; */
+<b class="fc"><i>36</i>&nbsp;public class FeedbackFragment extends Fragment {</b>
+<i>37</i>&nbsp;    private static final String TAG = &quot;shenxin&quot;;
+<i>38</i>&nbsp;    private static final String FBFD_NAME = &quot;feedback_list&quot;;
+<i>39</i>&nbsp;    private static final String FB_SIZE = &quot;feedback_size&quot;;
+<i>40</i>&nbsp;    private static final String TEST_NAME = &quot;test_fb&quot;;
+<b class="fc"><i>41</i>&nbsp;    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child(FBFD_NAME);</b>
+<i>42</i>&nbsp;    ActivityFeedbackBinding mBinding;
+<b class="fc"><i>43</i>&nbsp;    List&lt;Feedback&gt; list = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>44</i>&nbsp;    public static List&lt;FeedbackBean&gt; beanList = new ArrayList&lt;&gt;();</b>
+<i>45</i>&nbsp;    FeedbackAdapter mAdapter;
+<i>46</i>&nbsp;    public static String userName;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    @Nullable
+<i>49</i>&nbsp;    @Override
+<i>50</i>&nbsp;    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+<b class="fc"><i>51</i>&nbsp;        mBinding = ActivityFeedbackBinding.inflate(inflater);</b>
+<b class="fc"><i>52</i>&nbsp;        mBinding.fbRight.setVisibility(View.VISIBLE);</b>
+<b class="fc"><i>53</i>&nbsp;        mBinding.fbTitle.setText(R.string.feedback);</b>
+<b class="fc"><i>54</i>&nbsp;        MainActivity.setHideTitleBar();</b>
+<b class="fc"><i>55</i>&nbsp;        userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();</b>
+<b class="fc"><i>56</i>&nbsp;        mBinding.fbBack.setOnClickListener(new View.OnClickListener() {</b>
+<i>57</i>&nbsp;            @Override
+<i>58</i>&nbsp;            public void onClick(View v) {
+<b class="nc"><i>59</i>&nbsp;                getFragmentManager().popBackStack();</b>
+<b class="nc"><i>60</i>&nbsp;                MainActivity.instance.setShowTitleBar();</b>
+<b class="nc"><i>61</i>&nbsp;            }</b>
+<i>62</i>&nbsp;        });
+<b class="fc"><i>63</i>&nbsp;        mBinding.fbRight.setOnClickListener(new View.OnClickListener() {</b>
+<i>64</i>&nbsp;            @Override
+<i>65</i>&nbsp;            public void onClick(View v) {
+<b class="fc"><i>66</i>&nbsp;                String feedbackValue = mBinding.etFeedback.getText().toString();</b>
+<b class="fc"><i>67</i>&nbsp;                if (feedbackValue.trim().equals(&quot;&quot;)) {</b>
+<b class="nc"><i>68</i>&nbsp;                    showToast(getActivity().getString(R.string.feedback_null));</b>
+<i>69</i>&nbsp;                } else {
+<b class="fc"><i>70</i>&nbsp;                    mBinding.etFeedback.setText(&quot;&quot;);</b>
+<b class="fc"><i>71</i>&nbsp;                    showToast(getActivity().getString(R.string.feedback_success));</b>
+<b class="fc"><i>72</i>&nbsp;                    Feedback feedback = new Feedback(userName + &quot;:&quot;, feedbackValue);</b>
+<b class="fc"><i>73</i>&nbsp;                    list.add(feedback);</b>
+<b class="fc"><i>74</i>&nbsp;                    FeedbackBean bean = new FeedbackBean();</b>
+<b class="fc"><i>75</i>&nbsp;                    bean.setName(userName);</b>
+<b class="fc"><i>76</i>&nbsp;                    bean.setFeedback(feedbackValue);</b>
+<b class="fc"><i>77</i>&nbsp;                    beanList.add(bean);</b>
+<b class="fc"><i>78</i>&nbsp;                    mDatabase.child(bean.getName()).setValue(bean);</b>
+<i>79</i>&nbsp;                }
+<b class="fc"><i>80</i>&nbsp;            }</b>
+<i>81</i>&nbsp;        });
+<b class="fc"><i>82</i>&nbsp;        loadFeedbackDataFromFirebase();</b>
+<b class="fc"><i>83</i>&nbsp;        initView();</b>
+<b class="fc"><i>84</i>&nbsp;        return mBinding.getRoot();</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    // Randomly update a node to trigger the callback to get data from server
+<i>88</i>&nbsp;    private void loadFeedbackDataFromFirebase() {
+<b class="fc"><i>89</i>&nbsp;        mDatabase.orderByChild(&quot;name&quot;).addValueEventListener(new ValueEventListener() {</b>
+<i>90</i>&nbsp;            @Override
+<i>91</i>&nbsp;            public void onDataChange(DataSnapshot dataSnapshot) {
+<b class="nc"><i>92</i>&nbsp;                list.clear();</b>
+<b class="nc"><i>93</i>&nbsp;                beanList.clear();</b>
+<b class="nc"><i>94</i>&nbsp;                for (DataSnapshot ds : dataSnapshot.getChildren()) {</b>
+<b class="nc"><i>95</i>&nbsp;                    if (!FB_SIZE.equals(ds.getKey()) &amp;&amp; !TEST_NAME.equals(ds.getKey())) {</b>
+<b class="nc"><i>96</i>&nbsp;                        FeedbackBean bean = ds.getValue(FeedbackBean.class);</b>
+<b class="nc"><i>97</i>&nbsp;                        Feedback feedback = new Feedback(bean.getName(), bean.getFeedback());</b>
+<b class="nc"><i>98</i>&nbsp;                        list.add(feedback);</b>
+<b class="nc"><i>99</i>&nbsp;                        beanList.add(bean);</b>
+<i>100</i>&nbsp;                    }
+<b class="nc"><i>101</i>&nbsp;                }</b>
+<b class="nc"><i>102</i>&nbsp;                if (list.size() &gt; 0) {</b>
+<b class="nc"><i>103</i>&nbsp;                    mAdapter.setList(list);</b>
+<b class="nc"><i>104</i>&nbsp;                    mAdapter.notifyDataSetChanged();</b>
+<i>105</i>&nbsp;                }
+<b class="nc"><i>106</i>&nbsp;            }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;            @Override
+<i>109</i>&nbsp;            public void onCancelled(@NonNull DatabaseError databaseError) {
+<b class="nc"><i>110</i>&nbsp;            }</b>
+<i>111</i>&nbsp;        });
+<b class="fc"><i>112</i>&nbsp;    }</b>
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    // Init the view by adding some demo feedback
+<i>115</i>&nbsp;    private void initView() {
+<b class="fc"><i>116</i>&nbsp;        RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());</b>
+<b class="fc"><i>117</i>&nbsp;        mBinding.rvFeedback.setLayoutManager(manager);</b>
+<b class="fc"><i>118</i>&nbsp;        mAdapter = new FeedbackAdapter();</b>
+<b class="fc"><i>119</i>&nbsp;        mAdapter.setList(list);</b>
+<b class="fc"><i>120</i>&nbsp;        mBinding.rvFeedback.setAdapter(mAdapter);</b>
+<b class="fc"><i>121</i>&nbsp;    }</b>
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    private void showToast(String info) {
+<b class="fc"><i>124</i>&nbsp;        Toast.makeText(getActivity().getApplicationContext(), info, Toast.LENGTH_SHORT).show();</b>
+<b class="fc"><i>125</i>&nbsp;    }</b>
+<i>126</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

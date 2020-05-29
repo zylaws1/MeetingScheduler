@@ -1,0 +1,244 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OwnProfileFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OwnProfileFragment (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OwnProfileFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85.7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    44.6%
+  </span>
+  <span class="absValue">
+    (37/ 83)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Bundle;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>6</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.Result;
+<i>7</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.data.model.MessageEvent;
+<i>8</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.database.SpManager;
+<i>9</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.ui.login.LoginFragment;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import androidx.fragment.app.Fragment;
+<i>12</i>&nbsp;import androidx.fragment.app.FragmentManager;
+<i>13</i>&nbsp;import androidx.fragment.app.FragmentTransaction;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.ui.login.RegisterFragment;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import android.view.LayoutInflater;
+<i>18</i>&nbsp;import android.view.View;
+<i>19</i>&nbsp;import android.view.ViewGroup;
+<i>20</i>&nbsp;import android.widget.RelativeLayout;
+<i>21</i>&nbsp;import android.widget.TextView;
+<i>22</i>&nbsp;import android.widget.Toast;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;import org.greenrobot.eventbus.EventBus;
+<i>25</i>&nbsp;import org.greenrobot.eventbus.Subscribe;
+<i>26</i>&nbsp;import org.greenrobot.eventbus.ThreadMode;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;/**
+<i>29</i>&nbsp; * User own profile and login/register fragment
+<i>30</i>&nbsp; *
+<i>31</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>32</i>&nbsp; */
+<b class="fc"><i>33</i>&nbsp;public class OwnProfileFragment extends Fragment implements View.OnClickListener {</b>
+<i>34</i>&nbsp;    TextView mTvUser;
+<i>35</i>&nbsp;    TextView mTvLogin;
+<i>36</i>&nbsp;    RelativeLayout mInfoModification;
+<i>37</i>&nbsp;    RelativeLayout mMyMeeting;
+<i>38</i>&nbsp;    RelativeLayout mMyNotes;
+<i>39</i>&nbsp;    RelativeLayout mMyTimeslotPreference;
+<i>40</i>&nbsp;    private boolean isLogin;
+<i>41</i>&nbsp;    String userName;
+<i>42</i>&nbsp;    LoginFragment loginFragment;
+<i>43</i>&nbsp;    RegisterFragment registerFragment;
+<i>44</i>&nbsp;    View view;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+<i>48</i>&nbsp;        // bond the views and controls for the initialization
+<b class="fc"><i>49</i>&nbsp;        view = inflater.inflate(R.layout.activity_personal_center, null);</b>
+<b class="fc"><i>50</i>&nbsp;        mInfoModification = view.findViewById(R.id.layout_info_modification);</b>
+<b class="fc"><i>51</i>&nbsp;        mMyMeeting = view.findViewById(R.id.layout_my_meeting);</b>
+<b class="fc"><i>52</i>&nbsp;        mMyNotes = view.findViewById(R.id.layout_my_notes);</b>
+<b class="fc"><i>53</i>&nbsp;        mMyTimeslotPreference = view.findViewById(R.id.layout_timeslot_preference);</b>
+<b class="fc"><i>54</i>&nbsp;        mTvUser = view.findViewById(R.id.tv_user);</b>
+<b class="fc"><i>55</i>&nbsp;        mTvLogin = view.findViewById(R.id.tv_login);</b>
+<b class="fc"><i>56</i>&nbsp;        mInfoModification.setOnClickListener(this);</b>
+<b class="fc"><i>57</i>&nbsp;        mMyMeeting.setOnClickListener(this);</b>
+<b class="fc"><i>58</i>&nbsp;        mMyNotes.setOnClickListener(this);</b>
+<b class="fc"><i>59</i>&nbsp;        mMyTimeslotPreference.setOnClickListener(this);</b>
+<b class="fc"><i>60</i>&nbsp;        mTvUser.setOnClickListener(this);</b>
+<b class="fc"><i>61</i>&nbsp;        mTvLogin.setOnClickListener(this);</b>
+<b class="fc"><i>62</i>&nbsp;        loginFragment = new LoginFragment();</b>
+<b class="fc"><i>63</i>&nbsp;        registerFragment = new RegisterFragment();</b>
+<b class="fc"><i>64</i>&nbsp;        userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();</b>
+<b class="fc"><i>65</i>&nbsp;        MainActivity.instance.setShowTitleBar();</b>
+<b class="fc"><i>66</i>&nbsp;        if (userName != null) {</b>
+<b class="fc"><i>67</i>&nbsp;            isLogin = true;</b>
+<b class="fc"><i>68</i>&nbsp;            mTvUser.setVisibility(View.VISIBLE);</b>
+<b class="fc"><i>69</i>&nbsp;            mTvLogin.setVisibility(View.GONE);</b>
+<b class="fc"><i>70</i>&nbsp;            mTvUser.setText(userName);</b>
+<b class="fc"><i>71</i>&nbsp;            mTvUser.setEnabled(false);</b>
+<i>72</i>&nbsp;        } else {
+<b class="nc"><i>73</i>&nbsp;            isLogin = false;</b>
+<b class="nc"><i>74</i>&nbsp;            mTvUser.setVisibility(View.GONE);</b>
+<b class="nc"><i>75</i>&nbsp;            mTvLogin.setVisibility(View.VISIBLE);</b>
+<i>76</i>&nbsp;        }
+<b class="fc"><i>77</i>&nbsp;        return view;</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    @Override
+<i>81</i>&nbsp;    public void onClick(View v) {
+<i>82</i>&nbsp;        // add listener to each functional link by id.
+<i>83</i>&nbsp;        FragmentTransaction transaction;
+<b class="fc"><i>84</i>&nbsp;        switch (v.getId()) {</b>
+<i>85</i>&nbsp;            case R.id.tv_login:
+<b class="nc"><i>86</i>&nbsp;                FragmentManager fraManager = getFragmentManager();</b>
+<b class="nc"><i>87</i>&nbsp;                transaction = fraManager.beginTransaction();</b>
+<b class="nc"><i>88</i>&nbsp;                transaction.addToBackStack(null);</b>
+<b class="nc"><i>89</i>&nbsp;                transaction.replace(R.id.main_linear, loginFragment);</b>
+<b class="nc"><i>90</i>&nbsp;                transaction.commit();</b>
+<b class="nc"><i>91</i>&nbsp;                break;</b>
+<i>92</i>&nbsp;            case R.id.layout_info_modification:
+<b class="fc"><i>93</i>&nbsp;                if (isLogin) {</b>
+<b class="nc"><i>94</i>&nbsp;                    FragmentManager fraManager1 = getFragmentManager();</b>
+<b class="nc"><i>95</i>&nbsp;                    FragmentTransaction transaction1 = fraManager1.beginTransaction();</b>
+<b class="nc"><i>96</i>&nbsp;                    transaction1.addToBackStack(null);</b>
+<b class="nc"><i>97</i>&nbsp;                    transaction1.replace(R.id.main_linear, registerFragment);</b>
+<b class="nc"><i>98</i>&nbsp;                    transaction1.commit();</b>
+<b class="nc"><i>99</i>&nbsp;                } else {</b>
+<b class="fc"><i>100</i>&nbsp;                    showToast(getString(R.string.no_login));</b>
+<i>101</i>&nbsp;                }
+<b class="fc"><i>102</i>&nbsp;                break;</b>
+<i>103</i>&nbsp;            case R.id.layout_my_meeting:
+<b class="nc"><i>104</i>&nbsp;                FragmentManager fraManager1 = getFragmentManager();</b>
+<b class="nc"><i>105</i>&nbsp;                transaction = fraManager1.beginTransaction();</b>
+<b class="nc"><i>106</i>&nbsp;                transaction.replace(R.id.main_linear, MainActivity.instance.getComingMeetingsFragment());</b>
+<b class="nc"><i>107</i>&nbsp;                MainActivity.instance.setmTitleBarStyle(true);</b>
+<b class="nc"><i>108</i>&nbsp;                MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);</b>
+<b class="nc"><i>109</i>&nbsp;                transaction.commit();</b>
+<b class="nc"><i>110</i>&nbsp;                break;</b>
+<i>111</i>&nbsp;            case R.id.layout_my_notes:
+<b class="nc"><i>112</i>&nbsp;                transaction = MainActivity.mFraManager.beginTransaction();</b>
+<b class="nc"><i>113</i>&nbsp;                transaction.addToBackStack(null);</b>
+<b class="nc"><i>114</i>&nbsp;                transaction.replace(R.id.main_linear, MainActivity.instance.getNoteListFragment());</b>
+<b class="nc"><i>115</i>&nbsp;                transaction.addToBackStack(null);</b>
+<b class="nc"><i>116</i>&nbsp;                transaction.commit();</b>
+<b class="nc"><i>117</i>&nbsp;                break;</b>
+<i>118</i>&nbsp;            case R.id.layout_timeslot_preference:
+<b class="nc"><i>119</i>&nbsp;                MainActivity.setmTitleBarInactive();</b>
+<b class="nc"><i>120</i>&nbsp;                transaction = MainActivity.mFraManager.beginTransaction();</b>
+<b class="nc"><i>121</i>&nbsp;                transaction.replace(R.id.main_linear, MainActivity.setPreferTimeslotFragment);</b>
+<b class="nc"><i>122</i>&nbsp;                transaction.addToBackStack(null);</b>
+<b class="nc"><i>123</i>&nbsp;                transaction.commit();</b>
+<b class="nc"><i>124</i>&nbsp;                break;</b>
+<i>125</i>&nbsp;            default:
+<i>126</i>&nbsp;                break;
+<i>127</i>&nbsp;        }
+<b class="fc"><i>128</i>&nbsp;    }</b>
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;    @Subscribe(threadMode = ThreadMode.MAIN)
+<i>131</i>&nbsp;    public void onMessageEvent(MessageEvent event) {
+<i>132</i>&nbsp;        // Monitor the log in status
+<b class="nc"><i>133</i>&nbsp;        if (event.getLoginState() == Result.LOGIN_OK) {</b>
+<b class="nc"><i>134</i>&nbsp;            mTvUser.setVisibility(View.VISIBLE);</b>
+<b class="nc"><i>135</i>&nbsp;            mTvUser.setText(event.getMessage());</b>
+<b class="nc"><i>136</i>&nbsp;            mTvLogin.setVisibility(View.GONE);</b>
+<b class="nc"><i>137</i>&nbsp;            isLogin = true;</b>
+<b class="nc"><i>138</i>&nbsp;            userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();</b>
+<b class="nc"><i>139</i>&nbsp;        } else if (event.getLoginState() == Result.LOGIN_ERROR) {</b>
+<b class="nc"><i>140</i>&nbsp;            mTvUser.setVisibility(View.GONE);</b>
+<b class="nc"><i>141</i>&nbsp;            mTvLogin.setVisibility(View.VISIBLE);</b>
+<b class="nc"><i>142</i>&nbsp;            isLogin = false;</b>
+<b class="nc"><i>143</i>&nbsp;            userName = SpManager.getInstance(getActivity().getApplicationContext()).getUserName();</b>
+<i>144</i>&nbsp;        }
+<b class="nc"><i>145</i>&nbsp;    }</b>
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    @Override
+<i>148</i>&nbsp;    public void onDestroy() {
+<b class="fc"><i>149</i>&nbsp;        super.onDestroy();</b>
+<b class="fc"><i>150</i>&nbsp;        EventBus.getDefault().unregister(this);</b>
+<b class="fc"><i>151</i>&nbsp;    }</b>
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;    private void showToast(String info) {
+<b class="fc"><i>154</i>&nbsp;        Toast.makeText(getActivity().getApplicationContext(), info, Toast.LENGTH_SHORT).show();</b>
+<b class="fc"><i>155</i>&nbsp;    }</b>
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    public void setLogin(boolean login) {
+<b class="fc"><i>158</i>&nbsp;        isLogin = login;</b>
+<b class="fc"><i>159</i>&nbsp;    }</b>
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

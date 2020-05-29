@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ScrolledMeetingAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ScrolledMeetingAdapter (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ScrolledMeetingAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (35/ 42)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.graphics.Bitmap;
+<i>5</i>&nbsp;import android.graphics.BitmapFactory;
+<i>6</i>&nbsp;import android.graphics.BitmapShader;
+<i>7</i>&nbsp;import android.graphics.Canvas;
+<i>8</i>&nbsp;import android.graphics.Color;
+<i>9</i>&nbsp;import android.graphics.Matrix;
+<i>10</i>&nbsp;import android.graphics.Paint;
+<i>11</i>&nbsp;import android.graphics.Shader;
+<i>12</i>&nbsp;import android.util.Log;
+<i>13</i>&nbsp;import android.view.LayoutInflater;
+<i>14</i>&nbsp;import android.view.View;
+<i>15</i>&nbsp;import android.view.ViewGroup;
+<i>16</i>&nbsp;import android.widget.ArrayAdapter;
+<i>17</i>&nbsp;import android.widget.ImageView;
+<i>18</i>&nbsp;import android.widget.TextView;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import java.util.List;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;/**
+<i>25</i>&nbsp; * Scroller for meeting ListView
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>28</i>&nbsp; */
+<i>29</i>&nbsp;public class ScrolledMeetingAdapter extends ArrayAdapter {
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public ScrolledMeetingAdapter(Context context, int resource, List&lt;MeetingModel&gt; objects) {
+<b class="fc"><i>32</i>&nbsp;        super(context, resource, objects);</b>
+<b class="fc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    // Init the meeting item with parameters
+<i>36</i>&nbsp;    @Override
+<i>37</i>&nbsp;    public View getView(int position, View convertView, ViewGroup parent) {
+<b class="fc"><i>38</i>&nbsp;        Log.i(&quot;shenxin&quot;, &quot;ScrolledMeetingAdapter getView. &quot;);</b>
+<b class="fc"><i>39</i>&nbsp;        View view = LayoutInflater.from(getContext()).inflate(R.layout.scrolled_meetings_listview, null);</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        ImageView icon = (ImageView) view.findViewById(R.id.scroll_meeting_list_icons);</b>
+<b class="fc"><i>42</i>&nbsp;        TextView name = (TextView) view.findViewById(R.id.scroll_courses_list_names);</b>
+<b class="fc"><i>43</i>&nbsp;        TextView description = (TextView) view.findViewById(R.id.scroll_courses_list_description);</b>
+<b class="fc"><i>44</i>&nbsp;        TextView room = (TextView) view.findViewById(R.id.scroll_courses_list_category);</b>
+<b class="fc"><i>45</i>&nbsp;        TextView venue = (TextView) view.findViewById(R.id.scroll_courses_list_price);</b>
+<i>46</i>&nbsp;        MeetingModel meeting;
+<b class="fc"><i>47</i>&nbsp;        if (position &gt;= getCount()) meeting = new MeetingModel();</b>
+<b class="nc"><i>48</i>&nbsp;        else meeting = (MeetingModel) getItem(position);</b>
+<b class="fc"><i>49</i>&nbsp;        Bitmap ic_bmp = BitmapFactory.decodeResource(getContext().getResources(), meeting.getIcon());</b>
+<b class="fc"><i>50</i>&nbsp;        ic_bmp = getCircleBitmapByShader(ic_bmp, ic_bmp.getWidth(), ic_bmp.getHeight(), 0);</b>
+<b class="fc"><i>51</i>&nbsp;        icon.setImageBitmap(ic_bmp);</b>
+<i>52</i>&nbsp;        //get item from position
+<i>53</i>&nbsp;
+<b class="fc"><i>54</i>&nbsp;        name.setText(meeting.getName());</b>
+<b class="fc"><i>55</i>&nbsp;        description.setText(meeting.getDescription());</b>
+<b class="fc"><i>56</i>&nbsp;        room.setText(meeting.getRoom());</b>
+<b class="fc"><i>57</i>&nbsp;        venue.setText(meeting.getVenue());</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        return view;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    // Crop the meeting icon to have a round corner
+<i>63</i>&nbsp;    public static Bitmap getCircleBitmapByShader(Bitmap bitmap, int outWidth, int outHeight, float boarder) {
+<i>64</i>&nbsp;        int radius;
+<b class="fc"><i>65</i>&nbsp;        int width = bitmap.getWidth();</b>
+<b class="fc"><i>66</i>&nbsp;        int height = bitmap.getHeight();</b>
+<b class="fc"><i>67</i>&nbsp;        float widthScale = outWidth * 1f / width;</b>
+<b class="fc"><i>68</i>&nbsp;        float heightScale = outHeight * 1f / height;</b>
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;        Bitmap desBitmap = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);</b>
+<b class="fc"><i>71</i>&nbsp;        if (outHeight &gt; outWidth) {</b>
+<b class="nc"><i>72</i>&nbsp;            radius = (int) (outWidth * 0.75);</b>
+<i>73</i>&nbsp;        } else {
+<b class="fc"><i>74</i>&nbsp;            radius = (int) (outWidth * 0.75);</b>
+<i>75</i>&nbsp;        }
+<i>76</i>&nbsp;        // create canvas
+<b class="fc"><i>77</i>&nbsp;        Canvas canvas = new Canvas(desBitmap);</b>
+<b class="fc"><i>78</i>&nbsp;        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);</b>
+<b class="fc"><i>79</i>&nbsp;        BitmapShader bitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);</b>
+<b class="fc"><i>80</i>&nbsp;        Matrix matrix = new Matrix();</b>
+<b class="fc"><i>81</i>&nbsp;        matrix.setScale(widthScale, heightScale);</b>
+<b class="fc"><i>82</i>&nbsp;        bitmapShader.setLocalMatrix(matrix);</b>
+<b class="fc"><i>83</i>&nbsp;        paint.setShader(bitmapShader);</b>
+<b class="fc"><i>84</i>&nbsp;        canvas.drawCircle(outWidth / 2, outHeight / 2, radius - boarder, paint);</b>
+<b class="fc"><i>85</i>&nbsp;        if (boarder &gt; 0) {</b>
+<i>86</i>&nbsp;            //paint boarder
+<b class="nc"><i>87</i>&nbsp;            Paint boarderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);</b>
+<b class="nc"><i>88</i>&nbsp;            boarderPaint.setColor(Color.GREEN);</b>
+<b class="nc"><i>89</i>&nbsp;            boarderPaint.setStyle(Paint.Style.STROKE);</b>
+<b class="nc"><i>90</i>&nbsp;            boarderPaint.setStrokeWidth(boarder);</b>
+<b class="nc"><i>91</i>&nbsp;            canvas.drawCircle(outWidth / 2, outHeight / 2, radius - boarder, boarderPaint);</b>
+<i>92</i>&nbsp;        }
+<b class="fc"><i>93</i>&nbsp;        return desBitmap;</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

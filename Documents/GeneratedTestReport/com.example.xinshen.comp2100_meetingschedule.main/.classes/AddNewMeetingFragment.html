@@ -1,0 +1,424 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AddNewMeetingFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.main</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AddNewMeetingFragment (com.example.xinshen.comp2100_meetingschedule.main)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AddNewMeetingFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78.8%
+  </span>
+  <span class="absValue">
+    (67/ 85)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">AddNewMeetingFragment$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.1%
+  </span>
+  <span class="absValue">
+    (1/ 9)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AddNewMeetingFragment$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    16.7%
+  </span>
+  <span class="absValue">
+    (1/ 6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AddNewMeetingFragment$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    54.5%
+  </span>
+  <span class="absValue">
+    (6/ 11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">AddNewMeetingFragment$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/ 4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    78.9%
+  </span>
+  <span class="absValue">
+    (15/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    67.8%
+  </span>
+  <span class="absValue">
+    (78/ 115)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.main;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.app.Activity;
+<i>4</i>&nbsp;import android.app.DatePickerDialog;
+<i>5</i>&nbsp;import android.app.TimePickerDialog;
+<i>6</i>&nbsp;import android.os.Bundle;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import androidx.fragment.app.Fragment;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import android.util.Log;
+<i>13</i>&nbsp;import android.view.LayoutInflater;
+<i>14</i>&nbsp;import android.view.View;
+<i>15</i>&nbsp;import android.view.ViewGroup;
+<i>16</i>&nbsp;import android.widget.AdapterView;
+<i>17</i>&nbsp;import android.widget.ArrayAdapter;
+<i>18</i>&nbsp;import android.widget.Button;
+<i>19</i>&nbsp;import android.widget.DatePicker;
+<i>20</i>&nbsp;import android.widget.EditText;
+<i>21</i>&nbsp;import android.widget.Spinner;
+<i>22</i>&nbsp;import android.widget.TextView;
+<i>23</i>&nbsp;import android.widget.TimePicker;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;import java.text.ParseException;
+<i>26</i>&nbsp;import java.text.SimpleDateFormat;
+<i>27</i>&nbsp;import java.util.Calendar;
+<i>28</i>&nbsp;import java.util.Date;
+<i>29</i>&nbsp;import java.util.Locale;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;/**
+<i>32</i>&nbsp; * Add new meeting fragment
+<i>33</i>&nbsp; *
+<i>34</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>35</i>&nbsp; */
+<b class="fc"><i>36</i>&nbsp;public class AddNewMeetingFragment extends Fragment implements View.OnClickListener {</b>
+<i>37</i>&nbsp;    private static final String TAG = &quot;shenxin&quot;;
+<i>38</i>&nbsp;    private TextView txtDate;
+<i>39</i>&nbsp;    private TextView txtTime;
+<i>40</i>&nbsp;    private TextView txtRemindTime;
+<i>41</i>&nbsp;    private Button btnDate;
+<i>42</i>&nbsp;    private Button btnTime;
+<i>43</i>&nbsp;    public static int date;
+<i>44</i>&nbsp;    public static int hour;
+<i>45</i>&nbsp;    public static int minute;
+<i>46</i>&nbsp;    public static String date_str;
+<i>47</i>&nbsp;    public static String time_str;
+<b class="fc"><i>48</i>&nbsp;    public static long remind_time_advance = 1;</b>
+<i>49</i>&nbsp;    public EditText name;
+<i>50</i>&nbsp;    public EditText room;
+<i>51</i>&nbsp;    public EditText venue;
+<i>52</i>&nbsp;    public EditText description;
+<i>53</i>&nbsp;    private Spinner mSpinner_pref_time;
+<i>54</i>&nbsp;    private Spinner mSpinner_remind_time;
+<b class="fc"><i>55</i>&nbsp;    public static String[] spinnerItems = {&quot;10:00&quot;, &quot;14:00&quot;, &quot;18:00&quot;};</b>
+<b class="fc"><i>56</i>&nbsp;    Calendar my_calendar = Calendar.getInstance(Locale.ENGLISH);</b>
+<i>57</i>&nbsp;    View rootView;
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    AddNewMeetingFragment() {
+<b class="fc"><i>60</i>&nbsp;        super();</b>
+<i>61</i>&nbsp;//        Log.i(TAG, &quot;init AddNewMeetingFragment&quot;);
+<b class="fc"><i>62</i>&nbsp;    }</b>
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    @Override
+<i>65</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+<i>66</i>&nbsp;        // bond the views and controls for the first time initialization
+<b class="fc"><i>67</i>&nbsp;        if (rootView == null) {</b>
+<b class="fc"><i>68</i>&nbsp;            rootView = inflater.inflate(R.layout.fragment_add_new_meeting, null);</b>
+<b class="fc"><i>69</i>&nbsp;            btnDate = (Button) rootView.findViewById(R.id.btn_Date);</b>
+<b class="fc"><i>70</i>&nbsp;            btnTime = (Button) rootView.findViewById(R.id.btn_Time);</b>
+<b class="fc"><i>71</i>&nbsp;            txtDate = (TextView) rootView.findViewById(R.id.txtDate);</b>
+<b class="fc"><i>72</i>&nbsp;            txtTime = (TextView) rootView.findViewById(R.id.txtTime);</b>
+<b class="fc"><i>73</i>&nbsp;            txtRemindTime = (TextView) rootView.findViewById(R.id.txt_remind_time);</b>
+<b class="fc"><i>74</i>&nbsp;            name = (EditText) rootView.findViewById(R.id.edit_txt_name);</b>
+<b class="fc"><i>75</i>&nbsp;            room = (EditText) rootView.findViewById(R.id.edit_txt_room);</b>
+<b class="fc"><i>76</i>&nbsp;            venue = (EditText) rootView.findViewById(R.id.edit_txt_venue);</b>
+<b class="fc"><i>77</i>&nbsp;            description = (EditText) rootView.findViewById(R.id.edit_txt_description);</b>
+<b class="fc"><i>78</i>&nbsp;            mSpinner_pref_time = (Spinner) rootView.findViewById(R.id.spinner_add);</b>
+<b class="fc"><i>79</i>&nbsp;            mSpinner_remind_time = (Spinner) rootView.findViewById(R.id.spinner_remind_time);</b>
+<b class="fc"><i>80</i>&nbsp;            btnDate.setOnClickListener(this);</b>
+<b class="fc"><i>81</i>&nbsp;            btnTime.setOnClickListener(this);</b>
+<b class="fc"><i>82</i>&nbsp;            name.setSaveEnabled(false);</b>
+<b class="fc"><i>83</i>&nbsp;            room.setSaveEnabled(false);</b>
+<b class="fc"><i>84</i>&nbsp;            venue.setSaveEnabled(false);</b>
+<b class="fc"><i>85</i>&nbsp;            description.setSaveEnabled(false);</b>
+<i>86</i>&nbsp;        }
+<i>87</i>&nbsp;        // init Spinner style and content
+<b class="fc"><i>88</i>&nbsp;        ChangeSpinner(rootView);</b>
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;        // Init the content if find bundle information from shared token.
+<b class="fc"><i>91</i>&nbsp;        Bundle bundle = getArguments();</b>
+<b class="fc"><i>92</i>&nbsp;        if (bundle != null) {</b>
+<b class="nc"><i>93</i>&nbsp;            String data = bundle.getString(&quot;item&quot;);</b>
+<b class="nc"><i>94</i>&nbsp;            if (data != null) {</b>
+<b class="nc"><i>95</i>&nbsp;                String datas[] = data.split(&quot;,&quot;);</b>
+<b class="nc"><i>96</i>&nbsp;                if (datas.length == 8) {</b>
+<b class="nc"><i>97</i>&nbsp;                    name.setText(datas[0]);</b>
+<b class="nc"><i>98</i>&nbsp;                    room.setText(datas[1]);</b>
+<b class="nc"><i>99</i>&nbsp;                    description.setText(datas[2]);</b>
+<b class="nc"><i>100</i>&nbsp;                    venue.setText(datas[3]);</b>
+<b class="nc"><i>101</i>&nbsp;                    txtDate.setText(datas[4]);</b>
+<b class="nc"><i>102</i>&nbsp;                    date_str = datas[4];</b>
+<b class="nc"><i>103</i>&nbsp;                    time_str = datas[5];</b>
+<b class="nc"><i>104</i>&nbsp;                    date = Integer.parseInt(datas[6]);</b>
+<b class="nc"><i>105</i>&nbsp;                    txtTime.setText(datas[5]);</b>
+<b class="nc"><i>106</i>&nbsp;                    hour = Integer.parseInt(datas[7]);</b>
+<i>107</i>&nbsp;                }
+<i>108</i>&nbsp;            }
+<b class="nc"><i>109</i>&nbsp;            bundle.clear();</b>
+<i>110</i>&nbsp;        }
+<b class="fc"><i>111</i>&nbsp;        return rootView;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    public static void showDatePickerDialog(Activity activity, int themeResId, final TextView tv, Calendar calendar) {
+<i>115</i>&nbsp;        // calendar.set(2020, 05, 20);
+<i>116</i>&nbsp;        // create an instance of DatePickerDialog and show
+<b class="fc"><i>117</i>&nbsp;        new DatePickerDialog(activity, themeResId, new DatePickerDialog.OnDateSetListener() {</b>
+<i>118</i>&nbsp;            // bond the listener (How the parent is notified that the date is set.)
+<i>119</i>&nbsp;            @Override
+<i>120</i>&nbsp;            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+<i>121</i>&nbsp;                // set the date params for meeting according to chosen result.
+<b class="nc"><i>122</i>&nbsp;                Log.i(TAG, &quot;monthOfYear: &quot; + monthOfYear);</b>
+<b class="nc"><i>123</i>&nbsp;                monthOfYear++;</b>
+<b class="nc"><i>124</i>&nbsp;                date_str = &quot;&quot; + year + &quot;/&quot; + monthOfYear + &quot;/&quot; + dayOfMonth;</b>
+<b class="nc"><i>125</i>&nbsp;                tv.setText(&quot;Date:&quot; + date_str);</b>
+<b class="nc"><i>126</i>&nbsp;                if (monthOfYear &lt; 10) {</b>
+<b class="nc"><i>127</i>&nbsp;                    date = dateToWeek(year + &quot;-0&quot; + monthOfYear + &quot;-&quot; + dayOfMonth);</b>
+<i>128</i>&nbsp;                } else {
+<b class="nc"><i>129</i>&nbsp;                    date = dateToWeek(year + &quot;-&quot; + monthOfYear + &quot;-&quot; + dayOfMonth);</b>
+<i>130</i>&nbsp;                }
+<b class="nc"><i>131</i>&nbsp;            }</b>
+<i>132</i>&nbsp;        }
+<i>133</i>&nbsp;                // set init date
+<b class="fc"><i>134</i>&nbsp;                , calendar.get(Calendar.YEAR)</b>
+<b class="fc"><i>135</i>&nbsp;                , calendar.get(Calendar.MONTH)</b>
+<b class="fc"><i>136</i>&nbsp;                , calendar.get(Calendar.DAY_OF_MONTH)).show();</b>
+<b class="fc"><i>137</i>&nbsp;    }</b>
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    // Transfer the &quot;yyyy-MM-dd&quot; date to weekday
+<i>140</i>&nbsp;    // return: int: range: 1-7 as Monday to Sunday
+<i>141</i>&nbsp;    public static int dateToWeek(String datetime) {
+<b class="fc"><i>142</i>&nbsp;        Log.i(TAG, &quot;dateToWeek: &quot; + datetime);</b>
+<b class="fc"><i>143</i>&nbsp;        SimpleDateFormat f = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</b>
+<b class="fc"><i>144</i>&nbsp;        if (datetime.contains(&quot;/&quot;))</b>
+<b class="fc"><i>145</i>&nbsp;            f = new SimpleDateFormat(&quot;yyyy/MM/dd&quot;);</b>
+<b class="fc"><i>146</i>&nbsp;        Calendar cal = Calendar.getInstance(); // get the calendar</b>
+<b class="fc"><i>147</i>&nbsp;        Date datet = null;</b>
+<i>148</i>&nbsp;        try {
+<b class="fc"><i>149</i>&nbsp;            datet = f.parse(datetime);</b>
+<b class="fc"><i>150</i>&nbsp;            cal.setTime(datet);</b>
+<b class="nc"><i>151</i>&nbsp;        } catch (ParseException e) {</b>
+<b class="nc"><i>152</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i>153</i>&nbsp;        }</b>
+<b class="fc"><i>154</i>&nbsp;        int w = cal.get(Calendar.DAY_OF_WEEK); // transfer to the day in a week.</b>
+<b class="fc"><i>155</i>&nbsp;        if (w &lt; 0)</b>
+<b class="nc"><i>156</i>&nbsp;            w = 0;</b>
+<b class="fc"><i>157</i>&nbsp;        return w;</b>
+<i>158</i>&nbsp;    }
+<i>159</i>&nbsp;
+<i>160</i>&nbsp;    /**
+<i>161</i>&nbsp;     * Time Picker
+<i>162</i>&nbsp;     *
+<i>163</i>&nbsp;     * @param activity
+<i>164</i>&nbsp;     * @param themeResId
+<i>165</i>&nbsp;     * @param tv
+<i>166</i>&nbsp;     * @param calendar
+<i>167</i>&nbsp;     */
+<i>168</i>&nbsp;    public static void showTimePickerDialog(Activity activity, int themeResId, final TextView tv, Calendar calendar) {
+<b class="fc"><i>169</i>&nbsp;        TimePickerDialog time_dialog = new TimePickerDialog(activity, themeResId,</b>
+<i>170</i>&nbsp;                // bond listener
+<b class="fc"><i>171</i>&nbsp;                new TimePickerDialog.OnTimeSetListener() {</b>
+<i>172</i>&nbsp;                    @Override
+<i>173</i>&nbsp;                    public void onTimeSet(TimePicker view, int hourOfDay, int minuteC) {
+<i>174</i>&nbsp;                        //  set time as chosen result.
+<b class="nc"><i>175</i>&nbsp;                        time_str = hourOfDay + &quot;:&quot; + minuteC;</b>
+<b class="nc"><i>176</i>&nbsp;                        tv.setText(&quot;Time:&quot; + hourOfDay + &quot;:&quot; + minuteC);</b>
+<b class="nc"><i>177</i>&nbsp;                        hour = hourOfDay;</b>
+<b class="nc"><i>178</i>&nbsp;                        minute = minuteC;</b>
+<b class="nc"><i>179</i>&nbsp;                    }</b>
+<i>180</i>&nbsp;                }
+<i>181</i>&nbsp;                // set init time
+<b class="fc"><i>182</i>&nbsp;                , calendar.get(Calendar.HOUR_OF_DAY)</b>
+<b class="fc"><i>183</i>&nbsp;                , calendar.get(Calendar.MINUTE)</b>
+<i>184</i>&nbsp;                // 24 hours format
+<i>185</i>&nbsp;                , true);
+<b class="fc"><i>186</i>&nbsp;        time_dialog.show();</b>
+<b class="fc"><i>187</i>&nbsp;    }</b>
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    @Override
+<i>190</i>&nbsp;    public void onClick(View view) {    // respond the click action to open picker
+<b class="fc"><i>191</i>&nbsp;        int themeResid = 4; // android dark style 4</b>
+<i>192</i>&nbsp;//        Log.i(TAG, &quot;add Frag onClick: &quot; + view.getId());
+<b class="fc"><i>193</i>&nbsp;        switch (view.getId()) {</b>
+<i>194</i>&nbsp;            case R.id.btn_Date:
+<b class="fc"><i>195</i>&nbsp;                showDatePickerDialog(getActivity(), themeResid, txtDate, my_calendar);</b>
+<b class="fc"><i>196</i>&nbsp;                break;</b>
+<i>197</i>&nbsp;            case R.id.btn_Time:
+<b class="fc"><i>198</i>&nbsp;                showTimePickerDialog(getActivity(), themeResid, txtTime, my_calendar);</b>
+<b class="fc"><i>199</i>&nbsp;                break;</b>
+<i>200</i>&nbsp;//            case R.id.btn_submit_add:
+<i>201</i>&nbsp;//                showTimePickerDialog(getActivity(), themeResid, txtTime, my_calendar);
+<i>202</i>&nbsp;//                break;
+<i>203</i>&nbsp;            default:
+<i>204</i>&nbsp;                break;
+<i>205</i>&nbsp;        }
+<b class="fc"><i>206</i>&nbsp;    }</b>
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;    // init the spinner style and parameters
+<i>209</i>&nbsp;    public void ChangeSpinner(View v) {
+<i>210</i>&nbsp;        // init spinner style
+<b class="fc"><i>211</i>&nbsp;        mSpinner_pref_time.setDropDownWidth(400); // drop Width</b>
+<b class="fc"><i>212</i>&nbsp;        mSpinner_pref_time.setDropDownHorizontalOffset(100); // drop horizontal offset</b>
+<b class="fc"><i>213</i>&nbsp;        mSpinner_pref_time.setDropDownVerticalOffset(100); // drop vertical offset</b>
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;        // set adapter as content
+<b class="fc"><i>216</i>&nbsp;        ArrayAdapter&lt;String&gt; spinnerAdapter = new ArrayAdapter&lt;&gt;(getContext(),</b>
+<i>217</i>&nbsp;                R.layout.spinner_select, spinnerItems);
+<i>218</i>&nbsp;        // set the drop style
+<b class="fc"><i>219</i>&nbsp;        spinnerAdapter.setDropDownViewResource(R.layout.spinner_drop);</b>
+<b class="fc"><i>220</i>&nbsp;        mSpinner_pref_time.setAdapter(spinnerAdapter);</b>
+<i>221</i>&nbsp;
+<b class="fc"><i>222</i>&nbsp;        mSpinner_pref_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {</b>
+<b class="fc"><i>223</i>&nbsp;            boolean isSpinnerFirst = true;</b>
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;            @Override
+<i>226</i>&nbsp;            public void onItemSelected(AdapterView&lt;?&gt; parent, View view, int pos, long id) {
+<b class="fc"><i>227</i>&nbsp;                Log.i(TAG, &quot;onItemSelected: &quot; + id);</b>
+<i>228</i>&nbsp;                // first time loaded do not make default select
+<b class="fc"><i>229</i>&nbsp;                if (isSpinnerFirst) {</b>
+<b class="fc"><i>230</i>&nbsp;                    isSpinnerFirst = false;</b>
+<i>231</i>&nbsp;                } else {  // set meeting time according to selected item
+<b class="nc"><i>232</i>&nbsp;                    time_str = spinnerItems[(int) id];</b>
+<b class="nc"><i>233</i>&nbsp;                    String hour_str = time_str.substring(0, time_str.indexOf(&quot;:&quot;));</b>
+<b class="nc"><i>234</i>&nbsp;                    hour = Integer.parseInt(hour_str);</b>
+<b class="nc"><i>235</i>&nbsp;                    txtTime.setText(&quot;Time: &quot; + time_str);</b>
+<i>236</i>&nbsp;                }
+<b class="fc"><i>237</i>&nbsp;            }</b>
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;            @Override
+<i>240</i>&nbsp;            public void onNothingSelected(AdapterView&lt;?&gt; parent) {
+<i>241</i>&nbsp;                // Another interface callback
+<b class="nc"><i>242</i>&nbsp;            }</b>
+<i>243</i>&nbsp;        });
+<i>244</i>&nbsp;
+<b class="fc"><i>245</i>&nbsp;        mSpinner_remind_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {</b>
+<i>246</i>&nbsp;            @Override
+<i>247</i>&nbsp;            public void onItemSelected(AdapterView&lt;?&gt; parent, View view, int pos, long id) {
+<i>248</i>&nbsp;                // set meeting reminding time according to selected item
+<b class="fc"><i>249</i>&nbsp;                txtRemindTime.setText(mSpinner_remind_time.getAdapter().getItem(pos).toString());</b>
+<b class="fc"><i>250</i>&nbsp;            }</b>
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;            @Override
+<i>253</i>&nbsp;            public void onNothingSelected(AdapterView&lt;?&gt; parent) {
+<i>254</i>&nbsp;                // Another interface callback
+<b class="nc"><i>255</i>&nbsp;            }</b>
+<i>256</i>&nbsp;        });
+<b class="fc"><i>257</i>&nbsp;    }</b>
+<i>258</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>

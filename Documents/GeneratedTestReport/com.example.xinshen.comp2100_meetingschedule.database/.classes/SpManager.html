@@ -1,0 +1,127 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SpManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.xinshen.comp2100_meetingschedule.database</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SpManager (com.example.xinshen.comp2100_meetingschedule.database)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SpManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.xinshen.comp2100_meetingschedule.database;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.content.SharedPreferences;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.xinshen.comp2100_meetingschedule.R;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; * SharedPreferences management class, providing operations on the SharedPreferences
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * @author Xin Shen, Shaocong Lang
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public class SpManager {
+<i>14</i>&nbsp;    private static volatile SpManager instance;
+<i>15</i>&nbsp;    private Context sPContext;
+<i>16</i>&nbsp;    private SharedPreferences sP;
+<i>17</i>&nbsp;    private SharedPreferences.Editor editor;
+<i>18</i>&nbsp;
+<b class="fc"><i>19</i>&nbsp;    private SpManager(Context context) {</b>
+<b class="fc"><i>20</i>&nbsp;        sPContext=context;</b>
+<b class="fc"><i>21</i>&nbsp;        sP = context.getSharedPreferences(&quot;meeting&quot;, Context.MODE_PRIVATE);</b>
+<b class="fc"><i>22</i>&nbsp;        editor = sP.edit();</b>
+<b class="fc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public static SpManager getInstance(Context context) {
+<b class="fc"><i>26</i>&nbsp;        if (instance == null) {</b>
+<b class="fc"><i>27</i>&nbsp;            synchronized (SpManager.class) {</b>
+<b class="fc"><i>28</i>&nbsp;                if (instance == null) {</b>
+<b class="fc"><i>29</i>&nbsp;                    instance = new SpManager(context);</b>
+<i>30</i>&nbsp;                }
+<b class="fc"><i>31</i>&nbsp;            }</b>
+<i>32</i>&nbsp;        }
+<b class="fc"><i>33</i>&nbsp;        return instance;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public void setUserName(String name, boolean applyNow) {
+<b class="fc"><i>37</i>&nbsp;        editor.putString(sPContext.getString(R.string.sp_name), name);</b>
+<b class="fc"><i>38</i>&nbsp;        editor.apply();</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public String getUserName() {
+<b class="fc"><i>42</i>&nbsp;        return sP.getString(sPContext.getString(R.string.sp_name), null);</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-29 10:13</div>
+</div>
+</body>
+</html>
