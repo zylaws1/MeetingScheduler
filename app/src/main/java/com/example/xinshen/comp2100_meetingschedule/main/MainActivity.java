@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
         timer.schedule(delayTask, 2000);
         String info_intent = getIntent().getStringExtra("Info");
         if (info_intent != null && info_intent.length() > 0) {
+            getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
             Log.i(TAG, "onResume from search info:" + info_intent);
             MeetingModel m = comingMeetingsFragment.getModelByName(info_intent);
             if (info_intent != null && m == null)

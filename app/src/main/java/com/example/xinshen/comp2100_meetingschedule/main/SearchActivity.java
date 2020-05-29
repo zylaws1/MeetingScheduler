@@ -120,7 +120,6 @@ public class SearchActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             MainActivity.instance.setmTitleBarActive();
-            MainActivity.instance.getBotm_navigation().setSelectedItemId(R.id.navigation_meeting_lists);
             finish();
         }
     }
