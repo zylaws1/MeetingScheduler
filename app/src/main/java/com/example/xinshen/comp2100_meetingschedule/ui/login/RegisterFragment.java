@@ -182,6 +182,7 @@ public class RegisterFragment extends Fragment {
         etConfirmPassword.addTextChangedListener(afterTextChangedListener);
         etAge.addTextChangedListener(afterTextChangedListener);
         etPhone.addTextChangedListener(afterTextChangedListener);
+        etEmail.addTextChangedListener(afterTextChangedListener);
 
         btRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,7 +198,13 @@ public class RegisterFragment extends Fragment {
                     }
                 }
                 info.setGender(index);
-                info.setAge(Integer.valueOf(etAge.getText().toString().trim()));
+                try {
+                    info.setAge(Integer.valueOf(etAge.getText().toString().trim()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showToast(getString(R.string.age_range_or_format_error));
+                    return;
+                }
                 info.setPhone(etPhone.getText().toString().trim());
                 info.setEmail(etEmail.getText().toString().trim());
                 if (userName != null) {
